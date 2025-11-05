@@ -11,6 +11,8 @@ weatherdata/
 *.csv
 *.joblib
 *.parquet
+test.py
+*.png
 
 # Editors
 .vscode/
