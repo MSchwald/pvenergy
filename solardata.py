@@ -147,15 +147,19 @@ class Pvdaq:
         return full_df
     
     @classmethod
-    def load_dcp_data(cls, system_id: int, file_limit: int | None = None) -> pd.DataFrame:
+    def load_dcp_module_temp_data(cls, system_id: int, file_limit: int | None = None) -> pd.DataFrame:
         """Load dataset of a pvdaq pv system with a given id containing DC power data for all recorded times."""
         dcp_column = cls.meta(system_id)[META_COL.DCP_COLUMN]
+        mt_column = cls.meta(system_id)[META_COL.MT_COLUMN]
         if dcp_column is None:
             print(f"No DC power column found for system {system_id}")
             return pd.DataFrame()
 
         use_columns = ['measured_on', dcp_column]
         rename_columns = [PV_COL.TIME, PV_COL.DC_POWER]
+        if mt_column is not None:
+            use_columns.append(mt_column)
+            rename_columns.append(PV_COL.MODULE_TEMP)
         return cls.load_raw_data(system_id, file_limit=file_limit, use_columns=use_columns, rename_columns=rename_columns)
 
     @classmethod
