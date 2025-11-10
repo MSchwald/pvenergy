@@ -1,0 +1,159 @@
+from pandas.api.extensions import register_dataframe_accessor
+import pandas as pd
+import numpy as np
+from typing import Dict, Any, List, Union
+from feature_catalog import Feature, FeatureCatalog, Source
+from feature_processing import FeatureProcessing as fp
+from pathlib import Path
+
+# alias for typing, allowing a single or a list of features
+FeatureList = Union[Feature, List[Feature], None] 
+
+
+@register_dataframe_accessor("ftr")
+class FeatureAccessor:
+    """
+    Create for every pd.DataFrame df a pandas accessor df.ftr
+    for convenient access and management of features, relevant constants and metadata.
+    """
+    def __init__(self, pandas_obj: Union[pd.DataFrame, pd.Series]):
+        self._df: pd.DataFrame = pandas_obj
+        self._constants: Dict[Feature, Any] = {}
+
+    def available(self, feature: Feature) -> bool:
+        return feature.name in self._df.columns.tolist() + [self._df.index.name]
+    
+    @property
+    def features(self) -> list[Feature]:
+        return [fp.FEATURE_FROM_NAME[col] for col in self._df.columns.tolist() + [self._df.index.name] if col in fp.ALL_FEATURE_NAMES]
+
+    def get(self, feature: FeatureList = None) -> Union[pd.Series, pd.DataFrame]:
+        """
+        Return given features as a pd.Series (or as a constant)
+        Read from given pf.DataFrame or calculates it missing.
+        """
+        if feature is None:
+            feature = self.features
+        if isinstance(feature, list):
+            missing_features = [ftr for ftr in feature if not self.available(ftr)]
+            for ftr in missing_features:
+                self.get(ftr)
+            df = self._df[[ftr.name for ftr in feature if ftr.name != self._df.index.name]]
+            if any(self._df.index.name == ftr.name for ftr in feature):
+                df[self._df.index.name] = self._df.index
+            df.ftr.set_const(self._constants.copy())
+            return df
+        if self.available(feature):
+            if feature.name == self._df.index.name:
+                return self._df.index.to_series()
+            return self._df[feature.name]
+        if feature.is_constant:
+            return pd.Series(data = self.get_const(feature), index = self._df.index)
+        series = self._calculate(feature)
+        self._df[feature.name] = series
+        return series
+    
+    def set(self, feature: Feature, col: pd.Series):
+        if len(col) != len(self._df):
+            raise ValueError(f"Series {col} must have the same length as the DataFrame!")
+        col.index = self._df.index
+        self._df[feature.name] = col
+
+    def get_const(self, const_feature: FeatureList = None) -> Union[float, Dict[Feature, np.dtype]]:
+        """
+        Return given constant; if constant has not yet been calculated before,
+        delegate the calculation and save its result.
+        """
+        if const_feature is None:
+            return self._constants
+        if isinstance(const_feature, list):
+            return {ftr: self.get_const(ftr) for ftr in const_feature}
+        if const_feature in self._constants.keys():
+            return self._constants[const_feature]
+        result = self._calculate(const_feature)
+        self.set_const({const_feature: result})
+        return result
+    
+    def set_const(self, value_dict: dict[Feature, Any]):
+        self._constants.update(value_dict)
+
+    def _calculate(self, feature: Feature) -> Union[pd.Series, np.dtype]:
+        """Wrapper method for error handling and potential type casting when calculating missing features"""
+        if feature.source not in [Source.CALCULATED, Source.PVLIB]:
+            print(f"Error: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
+            if feature.is_constant:
+                return np.nan
+            return pd.Series(np.nan, index=self._df.index)
+        try:
+            result = fp.calculate(feature = feature, api = self) 
+        except NotImplementedError:
+            print(f"Error: Calculation of feature {feature.name} is not implemented.")
+            if feature.is_constant:
+                return np.nan
+            return pd.Series(np.nan, index=self._df.index, dtype=feature.data_type)
+        if feature.is_constant:
+            return np.dtype(feature.data_type).type(result)
+        #return result.astype(feature.data_type)
+        return result
+    
+    def drop(self, feature: FeatureList) -> pd.DataFrame:
+        """Remove column(s) corresponding to given feature(s) if they are available"""
+        if feature is None:
+            feature = [ftr for ftr in self.features if ftr.name != self._df.index.name]
+        if isinstance(feature, Feature):
+            feature = [feature]
+        self._df = self._df.drop(columns = [ftr.name for ftr in feature], errors="ignore")
+        return self._df
+
+    def copy(self, feature: FeatureList | None = None) -> pd.DataFrame:
+        """Returns a copied dataframe with the requested features and same constants."""
+        df = self.get(feature).copy()
+        df.ftr.set_const(self._constants.copy())
+        return df
+
+    def to_csv(self, path: Path, feature: FeatureList | None = None, index = True):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if feature is None:
+            feature = [ftr for ftr in self.features if ftr.name != self._df.index.name]
+        self.get(feature).to_csv(path, index = index)
+        
+    def filter(self, min_max_dict: dict) -> pd.DataFrame:
+        """
+        Filter the DataFrame by min/max values for given features.
+        (To filter only by one bound, provide None for the other)
+        Remove rows out of bound or containing None/NaN values.
+        """
+        for feature in min_max_dict.keys():
+            if not self.available(feature):
+                self.get(feature)
+        for feature, (min_value, max_value) in min_max_dict.items():
+            if min_value is None:
+                self._df = self._df[self._df[feature.name] <= max_value]
+            elif max_value is None:
+                self._df = self._df[self._df[feature.name] >= min_value]
+            else:
+                self._df = self._df[(self._df[feature.name] >= min_value) & (self._df[feature.name] <= max_value)]
+        return self._df
+    
+    def clip(self, min_max_dict: dict) -> pd.DataFrame:
+        """
+        Filter the DataFrame by min/max values for given features.
+        (To filter only by one bound, provide None for the other)
+        Round row out of bound to min/max values.
+        """
+        for feature in min_max_dict.keys():
+            if not self.available(feature):
+                self.get(feature)
+        for feature, (min_value, max_value) in min_max_dict.items():
+            self.set(feature, self.get(feature).clip(lower = min_value, upper = max_value))
+        return self._df
+ 
+    def dropna(self, feature: FeatureList = None, how = "any") -> pd.DataFrame:
+        if feature is None:
+            feature = [ftr for ftr in self.features if ftr.name != self._df.index.name]
+        if isinstance(feature, Feature):
+            feature = [feature]
+        self._df = self._df.dropna(subset = [ftr.name for ftr in feature], how = how)
+        return self._df
+
+    #def plot  

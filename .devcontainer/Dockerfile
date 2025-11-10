@@ -19,6 +19,10 @@ RUN groupadd -g ${NB_GID} ${NB_USER} || true && \
 
 USER ${NB_USER}
 
-RUN pip install --no-cache-dir s3fs tqdm timezonefinder scikit-learn matplotlib requests pandas pvlib pytz
+RUN pip install --no-cache-dir \
+    scikit-learn matplotlib pandas pvlib \
+    requests fsspec s3fs \
+    timezonefinder pytz \
+    tqdm
 
 USER root
