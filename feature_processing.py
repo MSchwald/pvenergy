@@ -10,15 +10,16 @@ from sklearn.linear_model import LinearRegression
 import pvlib
 import pytz
 from timezonefinder import TimezoneFinder
+from pathlib import Path
 
 class FeatureProcessing:
-    ALL_FEATURES: list[Feature] = [
+    ALL_FEATURES: tuple[Feature] = tuple(
         feature for feature in vars(F).values() if isinstance(feature, Feature)
-    ]
-    ALL_FEATURE_NAMES: list[str] = [feature.name for feature in ALL_FEATURES]
-    CALCULATED_FEATURES: list[Feature] = [
+    )
+    ALL_FEATURE_NAMES: tuple[str] = tuple(feature.name for feature in ALL_FEATURES)
+    CALCULATED_FEATURES: tuple[Feature] = tuple(
         feature for feature in ALL_FEATURES if feature.source == Source.CALCULATED
-    ]
+    )
 
     FEATURE_FROM_NAME: dict[str, Feature] = {feature.name: feature for feature in ALL_FEATURES}
     tf = TimezoneFinder()
@@ -43,30 +44,67 @@ class FeatureProcessing:
                 api.set_const({F.DCP0: dcp0, F.GAMMA: gamma})
                 return api.get_const(feature)
             # Pvlib features (often require localized time)
-            case F.SOLAR_ZENITH | F.SOLAR_AZIMUTH:
+            case F.SOLAR_ZENITH | F.SOLAR_AZIMUTH | F.SOLAR_UNCORRECTED_ZENITH | F.SOLAR_ELEVATION:
                 solpos = pvlib.solarposition.get_solarposition(time = api.get(F.LOCALIZED_TIME),
                                                         latitude = api.get_const(F.LATITUDE),
                                                         longitude = api.get_const(F.LONGITUDE),
                                                         altitude = api.get_const(F.ELEVATION))
                 api.set(F.SOLAR_AZIMUTH, solpos["azimuth"])
                 api.set(F.SOLAR_ZENITH, solpos["apparent_zenith"])
+                api.set(F.SOLAR_UNCORRECTED_ZENITH, solpos["zenith"])
+                api.set(F.SOLAR_ELEVATION, solpos["apparent_elevation"])
                 return api.get(feature)
-            case F.PVLIB_POA_IRRADIANCE:
-                poa = pvlib.irradiance.get_total_irradiance(surface_tilt = api.get_const(F.TILT),
-                                                surface_azimuth = api.get_const(F.AZIMUTH),
-                                                solar_zenith = api.get(F.SOLAR_ZENITH),
-                                                solar_azimuth = api.get(F.SOLAR_AZIMUTH),
-                                                dni = api.get(F.DNI),
-                                                ghi = api.get(F.GHI),
-                                                dhi = api.get(F.DHI),
-                                                albedo = api.get(F.SURFACE_ALBEDO))
-                return poa["poa_global"]
+
             case F.AOI:
                 return pvlib.irradiance.aoi(surface_tilt = api.get_const(F.TILT),
                                 surface_azimuth = api.get_const(F.AZIMUTH),
                                 solar_zenith = api.get(F.SOLAR_ZENITH),
                                 solar_azimuth = api.get(F.SOLAR_AZIMUTH))
-    
+            case F.PVLIB_DC_POWER:
+                return pvlib.pvsystem.pvwatts_dc(api.get(F.PVLIB_POA_IRRADIANCE), 
+                                                api.get(F.FAIMAN_MODULE_TEMP),
+                                                api.get_const(F.DCP0),
+                                                api.get_const(F.GAMMA))
+            case F.PVLIB_CLEAR_SKY_GHI | F.PVLIB_CLEAR_SKY_DHI | F.PVLIB_CLEAR_SKY_DNI:
+                location = pvlib.location.Location(api.get_const(F.LATITUDE),
+                                          api.get_const(F.LONGITUDE),
+                                          api.get_const(F.TIME_ZONE),
+                                          api.get_const(F.ELEVATION)
+                )
+                solar_position = api.get([F.SOLAR_ZENITH, F.SOLAR_UNCORRECTED_ZENITH, F.SOLAR_ELEVATION])
+                solar_position = solar_position.rename(columns = {F.SOLAR_ZENITH.name: "apparent_zenith",
+                                                                F.SOLAR_UNCORRECTED_ZENITH.name: "zenith",
+                                                                F.SOLAR_ELEVATION.name: "apparent_elevation"}
+                )
+                result = location.get_clearsky(pd.DatetimeIndex(api.get(F.TIME)), solar_position = solar_position)
+                api.set(F.PVLIB_CLEAR_SKY_GHI, result["ghi"])
+                api.set(F.PVLIB_CLEAR_SKY_DHI, result["dhi"])
+                api.set(F.PVLIB_CLEAR_SKY_DNI, result["dni"])
+                return api.get(feature)
+            case F.PVLIB_POA_IRRADIANCE | F.PVLIB_CLEAR_SKY_POA | F.NSRDB_CLEAR_SKY_POA:
+                if feature == F.PVLIB_POA_IRRADIANCE:
+                    dni, ghi, dhi, albedo = api.get(F.DNI), api.get(F.GHI), api.get(F.DHI), api.get(F.SURFACE_ALBEDO)
+                elif feature == F.PVLIB_CLEAR_SKY_POA:
+                    dni, ghi, dhi, albedo = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI), 0.25
+                else:
+                    dni, ghi, dhi, albedo = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI), 0.25
+                poa = pvlib.irradiance.get_total_irradiance(surface_tilt = api.get_const(F.TILT),
+                                                            surface_azimuth = api.get_const(F.AZIMUTH),
+                                                            solar_zenith = api.get(F.SOLAR_ZENITH),
+                                                            solar_azimuth = api.get(F.SOLAR_AZIMUTH),
+                                                            dni = dni, ghi = ghi, dhi = dhi, albedo = albedo)
+                return poa["poa_global"]
+            case F.NSRDB_CLEAR_SKY_RATIO | F.PVLIB_CLEAR_SKY_RATIO:
+                if feature == F.PVLIB_CLEAR_SKY_RATIO:
+                    clear_sky_poa = F.PVLIB_CLEAR_SKY_POA
+                else:
+                    clear_sky_poa = F.NSRDB_CLEAR_SKY_POA
+                df = api.get([F.PVLIB_POA_IRRADIANCE, clear_sky_poa])
+                sunny = df[clear_sky_poa.name] >= 1
+                ratio = pd.Series(np.nan, index=df.index, dtype=float)
+                ratio[sunny] = df.loc[sunny, F.PVLIB_POA_IRRADIANCE.name] / df.loc[sunny, clear_sky_poa.name]
+                return ratio.clip(upper = 1)
+                
             # Time features
             # General features
             case F.TIME_ZONE:
@@ -79,6 +117,8 @@ class FeatureProcessing:
                 return time_series.apply(lambda t: tz.localize(t, is_dst = False))
             case F.YEAR:
                 return api.get(F.TIME).dt.year
+            case F.DAY:
+                return api.get(F.TIME).dt.day
             case F.HOUR:
                 return api.get(F.TIME).dt.hour
             # Time features to model degradation, seasonal soiling and daily heat inertia
@@ -87,11 +127,34 @@ class FeatureProcessing:
                 return (api.get(F.TIME) - starting_day).dt.days
             case F.DAY_OF_YEAR:
                 return api.get(F.TIME).dt.dayofyear
+            case F.ANNUAL_COSINUS:
+                t = api.get(F.TIME)
+                year_start = t.dt.to_period("Y").dt.start_time
+
+                seconds = (t - year_start).dt.total_seconds()
+                days_in_year = ((t.dt.to_period("Y").dt.end_time - year_start).dt.days + 1)
+
+                year_fraction = seconds / (days_in_year * 24 * 3600)
+                return np.cos(2 * np.pi * year_fraction)
+
+                
             # Other derived features
             case F.POWER_RATIO:
-                return api.get(F.PVDAQ_DC_POWER) / api.get_const(F.DCP0)
+                return api.get(F.PVLIB_DC_POWER) / api.get_const(F.DCP0)
             case F.COS_AOI:
                 return np.cos(api.get(F.AOI))
+            case F.TIME_SINCE_SUNLIGHT:
+                df = api.get([F.TIME, F.DAY, F.PVLIB_POA_IRRADIANCE])
+                sunrise = (
+                    df[df[F.PVLIB_POA_IRRADIANCE.name] > 5]
+                    .groupby(df[F.DAY.name])[F.TIME.name]
+                    .first()
+                )
+                sunrise = sunrise.reindex(df[F.DAY.name].unique(), fill_value=df[F.TIME.name].min())
+                day_to_sunrise = df[F.DAY.name].map(sunrise)
+                result = (df[F.TIME.name] - day_to_sunrise).dt.total_seconds()/3600
+                return result
+
             case _:
                 raise NotImplementedError
 
@@ -118,7 +181,10 @@ class FeatureProcessing:
         return reg.intercept_, reg.coef_[0]  
 
     @classmethod
-    def calculate_annual_dcp0_gamma(cls, api: FeatureAccessor, max_dcp_per_area: float = 150, poa_min: float = 200, poa_max: float = 1200) -> pd.DataFrame:
+    def calculate_annual_dcp0_gamma(cls, api: FeatureAccessor,
+                                    max_dcp_per_area: float = 150,
+                                    poa_min: float = 200,
+                                    poa_max: float = 1200) -> pd.DataFrame:
         area = api.get_const(F.AREA)
         physics_dcp_limit = area * max_dcp_per_area if area is not None else float('inf')
         dcp_filter_limit = min(api.get(F.PVDAQ_DC_POWER).quantile(0.99), physics_dcp_limit)
@@ -127,7 +193,6 @@ class FeatureProcessing:
             F.PVLIB_POA_IRRADIANCE: (poa_min, poa_max),
             F.PVDAQ_DC_POWER: (1, dcp_filter_limit)
         })
-        print(df_fit.info)
          # Necessary for averaging year dependend weather
         years = api.get(F.YEAR).unique()
         results = []
@@ -147,6 +212,8 @@ class FeatureProcessing:
                 "annual_dcp0": dcp0, 
                 "annual_gamma": gamma
             })
+        if not results:
+            return np.nan, np.nan
         results_df = pd.DataFrame(results).set_index(F.YEAR.name).sort_index()
         results_df.ftr.to_csv(Path("parameter") / "dcp0_gamma_per_year" / f"{api.get_const(F.SYSTEM_ID)}.csv")
         dcp0 = results_df['annual_dcp0'].mean()
@@ -160,7 +227,7 @@ class FeatureProcessing:
         X = (api.get(F.FAIMAN_MODULE_TEMP) - 25).values.reshape(-1,1)  # delta T
         poa = (api.get(F.PVLIB_POA_IRRADIANCE) / 1000).values.reshape(-1,1)
         X_fit = np.hstack([poa, poa*X])
-        y_fit = api.get(F.PVDAQ_DC_POWER).values.reshape(-1,1)
+        y_fit = api.get(F.PVDAQ_DC_POWER).values
         model = LinearRegression(fit_intercept=False)
         try:
             model.fit(X_fit, y_fit)

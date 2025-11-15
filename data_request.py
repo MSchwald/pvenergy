@@ -16,7 +16,7 @@ import pandas as pd
 from datetime import datetime
 from typing import Any, Union
 
-FeatureList = Union[Feature, list[Feature], None] 
+FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
 class Pvdaq:
     fs = s3fs.S3FileSystem(anon=True)
@@ -96,7 +96,7 @@ class Pvdaq:
         return {feature: row[feature.name] for feature in meta_df.ftr.features}
 
     @classmethod
-    def filter_sytems(cls, metacols: FeatureList = None) -> list[int]:
+    def filter_systems(cls, metacols: FeatureList = None) -> list[int]:
         """Filter pvdaq systems based on metadata criteria.
         Returns a list of system IDs that meet the criteria."""
         df = cls.load_metadata()
@@ -127,18 +127,20 @@ class Pvdaq:
 
         dfs = []
         # Download all data files
-        for remote_file in files if mute_tqdm else tqdm(files, desc=f"Loading PVDAQ csv files for System {system_id}"):
-            tqdm.write(f"Loading file {remote_file}")
+        for remote_file in files if mute_tqdm else tqdm(files, desc=f"Loading PVDAQ csv files for system {system_id}"):
+            if not mute_tqdm:
+                tqdm.write(f"Loading file {remote_file}")
             local_file = local_dir / Path(remote_file).name
             if not local_file.exists():
                 cls.fs.get(remote_file, local_file)
             try:
                 df = pd.read_csv(local_file, parse_dates = ['measured_on'])
                 if use_columns is not None:
-                    df = df[use_columns]
+                    df = df[[col for col in use_columns if col in df.columns]]
                 if rename_columns is not None:
-                    df.columns = rename_columns
-                dfs.append(df)
+                    df = df.rename(columns = {col: name for (col, name) in zip(use_columns, rename_columns)})
+                if not df.empty:
+                    dfs.append(df)
             except Exception as e:
                 print(f"Error while reading {local_file}: {e}")
 
@@ -172,13 +174,18 @@ class Pvdaq:
 class Nsrdb:
     COLUMN_NAME_MAP = {
         "Temperature": F.AIR_TEMP.name,
+        "Clearsky DHI": F.NSRDB_CLEAR_SKY_DHI.name,
+        "Clearsky DNI": F.NSRDB_CLEAR_SKY_DNI.name,
+        "Clearsky GHI": F.NSRDB_CLEAR_SKY_GHI.name,
         "DHI": F.DHI.name,
         "DNI": F.DNI.name,
         "GHI": F.GHI.name,
         "Surface Albedo": F.SURFACE_ALBEDO.name,
         "Wind Speed": F.WIND_SPEED.name,
+        "Wind Direction": F.WIND_DIRECTION.name,
         "time": F.TIME.name
     }
+    
 
     @classmethod
     def load_year(cls, latitude: float, longitude: float,
@@ -198,7 +205,10 @@ class Nsrdb:
         output_metafile = output_root / f"meta_lat={latitude},lon={longitude},y={year}.csv"
 
         # Load all attributes that are relevant to calculate POA irridiance and temperature of a PV system
-        attributes = ["Temperature", "DHI", "DNI", "GHI", "Surface Albedo", "Wind Speed"]
+        attributes = ["air_temperature", "clearsky_dhi", "clearsky_dni", "clearsky_ghi",
+                    "dhi", "dni", "ghi", "surface_albedo",                    
+                    "wind_direction", "wind_speed"]
+        #["cloud_fill_flag", "cloud_type", "dew_point","ozone", "relative_humidity","solar_zenith_angle", "ssa","surface_pressure", "total_precipitable_water"]
 
         url = "https://developer.nrel.gov/api/nsrdb/v2/solar/nsrdb-GOES-aggregated-v4-0-0-download.csv"
         params = {
@@ -221,7 +231,7 @@ class Nsrdb:
         meta = pd.read_csv(StringIO(response.text), nrows = 1)
         meta.to_csv(output_metafile)
 
-        data = pd.read_csv(StringIO(response.text), skiprows = 2).dropna(axis = 1, how = "all")
+        data = pd.read_csv(StringIO(response.text), skiprows = 2)#.dropna(axis = 1, how = "all")
         data.insert(0, F.TIME.name, pd.to_datetime(dict(
                     year=data['Year'],
                     month=data['Month'],
@@ -232,7 +242,7 @@ class Nsrdb:
         data = data.drop(columns=['Year','Month','Day','Hour','Minute'])
         data = data.rename(columns = cls.COLUMN_NAME_MAP)
         data = data.set_index(F.TIME.name)
-        data.ftr.to_csv(output_file)
+        data.to_csv(output_file)
         data.ftr.set_const({F.LATITUDE: latitude, F.LONGITUDE: longitude})
         
         return data
@@ -246,7 +256,8 @@ class Nsrdb:
         years = list(range(start_year, end_year+1))
         dfs = []
         for year in years if mute_tqdm else tqdm(years, desc=f"Loading weather data from {start_date}-{end_date} - CSVs"):
-            tqdm.write(f"Loading weather data from year {year}")
+            if not mute_tqdm:
+                tqdm.write(f"Loading weather data from year {year}")
             dfs.append(cls.load_year(latitude, longitude, year))
         
         dfs[0] = dfs[0][dfs[0].index >= start_date]
@@ -273,3 +284,24 @@ def request_data(system_id: int, file_limit: int | None = None, mute_tqdm = Fals
     df = pd.merge(pv_data, weather_data, left_index = True, right_index = True, how='inner')
     df.ftr.set_const(pv_data.ftr.get_const())
     return df
+
+def get_features(system_id: int,
+                features: FeatureList = None,
+                file_limit: int | None = None,
+                mute_tqdm = False) -> pd.DataFrame:
+    """
+    Download PVDAQ and NSRDB data for a given system id and calculate a list of given features.
+    (Method could later be expanded to automatically adapt data requests precisely to
+    only the necessary features. I skipped this for now, as on the other hand,
+    downloading all data maximally necessary for the implemented FeatureCatalog and caching
+    the results saves further data requests upon changing the provided list of training features.)
+    """
+    df = request_data(system_id, file_limit = file_limit, mute_tqdm = mute_tqdm)        
+    if df.empty:
+        print(f"No measured data available for system ID {system_id}.")
+        return
+    return df.ftr.get(features)
+
+
+if __name__ == "__main__":
+    print(request_data(2, file_limit=10))

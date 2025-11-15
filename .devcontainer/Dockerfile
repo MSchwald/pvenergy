@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-jupyter
+FROM tensorflow/tensorflow:2.15.0-jupyter
 
 ARG NB_USER=jovyan
 ARG NB_UID=1000

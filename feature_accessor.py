@@ -7,7 +7,7 @@ from feature_processing import FeatureProcessing as fp
 from pathlib import Path
 
 # alias for typing, allowing a single or a list of features
-FeatureList = Union[Feature, List[Feature], None] 
+FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
 
 @register_dataframe_accessor("ftr")
@@ -34,13 +34,13 @@ class FeatureAccessor:
         """
         if feature is None:
             feature = self.features
-        if isinstance(feature, list):
+        if isinstance(feature, list) or isinstance(feature, tuple):
             missing_features = [ftr for ftr in feature if not self.available(ftr)]
             for ftr in missing_features:
                 self.get(ftr)
             df = self._df[[ftr.name for ftr in feature if ftr.name != self._df.index.name]]
             if any(self._df.index.name == ftr.name for ftr in feature):
-                df[self._df.index.name] = self._df.index
+                df.insert(0, self._df.index.name, self._df.index)
             df.ftr.set_const(self._constants.copy())
             return df
         if self.available(feature):
@@ -48,8 +48,9 @@ class FeatureAccessor:
                 return self._df.index.to_series()
             return self._df[feature.name]
         if feature.is_constant:
-            return pd.Series(data = self.get_const(feature), index = self._df.index)
-        series = self._calculate(feature)
+            series = pd.Series(data = self.get_const(feature), index = self._df.index)
+        else:
+            series = self._calculate(feature)
         self._df[feature.name] = series
         return series
     
@@ -57,7 +58,7 @@ class FeatureAccessor:
         if len(col) != len(self._df):
             raise ValueError(f"Series {col} must have the same length as the DataFrame!")
         col.index = self._df.index
-        self._df[feature.name] = col
+        self._df.loc[:, feature.name] = col
 
     def get_const(self, const_feature: FeatureList = None) -> Union[float, Dict[Feature, np.dtype]]:
         """
@@ -79,11 +80,19 @@ class FeatureAccessor:
 
     def _calculate(self, feature: Feature) -> Union[pd.Series, np.dtype]:
         """Wrapper method for error handling and potential type casting when calculating missing features"""
-        if feature.source not in [Source.CALCULATED, Source.PVLIB]:
+        if feature.source != Source.CALCULATED:
             print(f"Error: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
             if feature.is_constant:
                 return np.nan
             return pd.Series(np.nan, index=self._df.index)
+        if feature.required_features is not None:
+            df = self.get(feature.required_features)
+            nan_cols = [col for col in df.columns if df[col].isna().all().any()]
+            if nan_cols:
+                print(f"Warning: {nan_cols} is missing to calculate feature {feature}.")
+                if feature.is_constant:
+                    return np.nan
+                return pd.Series(np.nan, index=self._df.index, dtype=feature.data_type)
         try:
             result = fp.calculate(feature = feature, api = self) 
         except NotImplementedError:
@@ -92,7 +101,7 @@ class FeatureAccessor:
                 return np.nan
             return pd.Series(np.nan, index=self._df.index, dtype=feature.data_type)
         if feature.is_constant:
-            return np.dtype(feature.data_type).type(result)
+            return feature.data_type(result)
         #return result.astype(feature.data_type)
         return result
     
