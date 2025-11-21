@@ -1,8 +1,8 @@
 from pandas.api.extensions import register_dataframe_accessor
 import pandas as pd
 import numpy as np
-from typing import Dict, Any, List, Union
-from feature_catalog import Feature, FeatureCatalog, Source
+from typing import Dict, Any, Union
+from feature_catalog import Feature, Source
 from feature_processing import FeatureProcessing as fp
 from pathlib import Path
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, Union
+from typing import Any
 import pandas as pd
 from enum import Enum
 import numpy as np
@@ -72,8 +72,8 @@ class FeatureCatalog:
     GHI = Feature("ghi", Source.NSRDB, unit="W/m^2", required_features=(TIME, LATITUDE, LONGITUDE))
     SURFACE_ALBEDO = Feature("surface_albedo", Source.NSRDB, unit="W/m^2", required_features=(TIME, LATITUDE, LONGITUDE))
     WIND_SPEED = Feature("wind_speed", Source.NSRDB, unit="m/s", required_features=(TIME, LATITUDE, LONGITUDE))
-    WIND_DIRECTION = Feature("wind_direction", Source.NSRDB, unit="°", required_features=(TIME, LATITUDE, LONGITUDE))
-    
+    WIND_DIRECTION = Feature("wind_direction", Source.NSRDB, unit="°", required_features=(TIME, LATITUDE, LONGITUDE))    
+
     # CALCULATED features, derived from the above
     # Derived features calculated with pvlib
     SOLAR_ZENITH = Feature("solar_zenith", Source.CALCULATED, unit="°", required_features=(LOCALIZED_TIME, LATITUDE, LONGITUDE, ELEVATION))
@@ -102,9 +102,23 @@ class FeatureCatalog:
     NSRDB_CLEAR_SKY_POA = Feature("Nsrdb_clear_sky_poa", Source.CALCULATED, required_features=(LATITUDE, LONGITUDE, TIME_ZONE, ELEVATION, NSRDB_CLEAR_SKY_GHI, NSRDB_CLEAR_SKY_DHI, NSRDB_CLEAR_SKY_DNI, TILT, AZIMUTH))
     NSRDB_CLEAR_SKY_RATIO = Feature("Nsrdb_clear_sky_ratio", Source.CALCULATED, required_features=(PVLIB_POA_IRRADIANCE, NSRDB_CLEAR_SKY_POA))
 
-    # Other derived features
-    POWER_RATIO = Feature("power_ratio", Source.CALCULATED, required_features=(PVLIB_DC_POWER, DCP0))
-    COS_AOI = Feature("cos_aoi", Source.CALCULATED, required_features=(AOI,))
     # Time feature to model thermal inertia
     TIME_SINCE_SUNLIGHT = Feature("time_since_sunrise", Source.CALCULATED, required_features=(TIME, DAY, PVLIB_POA_IRRADIANCE))
+
+    # Other composed features with non-linear influence on the model
+    POWER_RATIO = Feature("power_ratio", Source.CALCULATED, required_features=(PVLIB_DC_POWER, DCP0))
+    COS_AOI = Feature("cos(aoi)", Source.CALCULATED, required_features=(AOI,))
+    RELATIVE_WIND_DIRECTION = Feature("relative_wind_direction", Source.CALCULATED, unit="°", required_features=(AZIMUTH, WIND_DIRECTION))
+    WIND_NORMAL_COMPONENT = Feature("wind_normal_component", Source.CALCULATED, unit="m/s", required_features=(RELATIVE_WIND_DIRECTION, WIND_SPEED, TILT))
+
+    POA_COS_AOI = Feature("poa*cos(aoi)", Source.CALCULATED, required_features = (PVLIB_POA_IRRADIANCE, COS_AOI))
+    #POA_PER_MODULE_TEMP = Feature("poa/module_temp", Source.CALCULATED, required_features = (PVLIB_POA_IRRADIANCE, FAIMAN_MODULE_TEMP))
+    POA_WIND_SPEED = Feature("poa*wind_speed", Source.CALCULATED, required_features = (PVLIB_POA_IRRADIANCE, WIND_SPEED))
+    DCP_PER_AREA = Feature("dcp/area", Source.CALCULATED, required_features = (PVLIB_DC_POWER, AREA))
+    DHI_PER_GHI = Feature("dhi/ghi", Source.CALCULATED, required_features = (DHI, GHI))
+    GAMMA_TEMP_DIFFERENCE = Feature("gamma*temp_diff", Source.CALCULATED, required_features = (GAMMA, AIR_TEMP, FAIMAN_MODULE_TEMP))
+    GAMMA_POA = Feature("gamma*poa", Source.CALCULATED, required_features = (GAMMA, PVLIB_POA_IRRADIANCE))
+    RELATIVE_AZIMUTH = Feature("relative_azimuth", Source.CALCULATED, required_features = (AZIMUTH, SOLAR_AZIMUTH))
+
+
     

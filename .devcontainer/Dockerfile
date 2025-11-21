@@ -23,6 +23,9 @@ RUN pip install --no-cache-dir \
     scikit-learn matplotlib pandas pvlib \
     requests fsspec s3fs \
     timezonefinder pytz \
-    tqdm
+    tqdm \
+    pyarrow \
+    natsort \
+    xgboost lightgbm
 
 USER root

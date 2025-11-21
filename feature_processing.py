@@ -1,9 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Union, Any
+from typing import Union
 import pandas as pd
 import numpy as np
-from enum import Enum
 from feature_catalog import Feature, Source
 from feature_catalog import FeatureCatalog as F
 from sklearn.linear_model import LinearRegression
@@ -137,7 +136,7 @@ class FeatureProcessing:
                 year_fraction = seconds / (days_in_year * 24 * 3600)
                 return np.cos(2 * np.pi * year_fraction)
 
-                
+             
             # Other derived features
             case F.POWER_RATIO:
                 return api.get(F.PVLIB_DC_POWER) / api.get_const(F.DCP0)
@@ -154,6 +153,28 @@ class FeatureProcessing:
                 day_to_sunrise = df[F.DAY.name].map(sunrise)
                 result = (df[F.TIME.name] - day_to_sunrise).dt.total_seconds()/3600
                 return result
+            case F.RELATIVE_WIND_DIRECTION:
+                return api.get(F.WIND_DIRECTION) - api.get_const(F.AZIMUTH)
+            case F.WIND_NORMAL_COMPONENT:
+                return api.get(F.WIND_SPEED) * np.cos(np.deg2rad(api.get(F.RELATIVE_WIND_DIRECTION))) * np.sin(np.deg2rad(api.get_const(F.TILT)))
+
+            #new composed features
+            case F.POA_COS_AOI:
+                return api.get(F.PVLIB_POA_IRRADIANCE) * api.get(F.COS_AOI)
+            case F.POA_WIND_SPEED:
+                return api.get(F.PVLIB_POA_IRRADIANCE) * api.get(F.WIND_SPEED)
+            case F.DCP_PER_AREA:
+                return api.get(F.PVLIB_DC_POWER) / api.get(F.AREA)
+            case F.DHI_PER_GHI:
+                return api.get(F.DHI) / api.get(F.GHI)
+            case F.GAMMA_TEMP_DIFFERENCE:
+                return api.get(F.GAMMA) * (api.get(F.AIR_TEMP) - api.get(F.FAIMAN_MODULE_TEMP))
+            case F.GAMMA_POA:
+                return api.get(F.GAMMA) * api.get(F.PVLIB_POA_IRRADIANCE)
+            case F.RELATIVE_AZIMUTH:
+                return api.get(F.AZIMUTH) - api.get(F.SOLAR_AZIMUTH)
+            
+
 
             case _:
                 raise NotImplementedError
