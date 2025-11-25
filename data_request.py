@@ -28,7 +28,6 @@ class Pvdaq:
     """Request pv data and metadata of PVDAQ systems."""
 
     url = "s3://oedi-data-lake/pvdaq"
-    SYSTEM_IDS = []
     META_COLUMN_NAME_MAP = {
         "system_id": F.SYSTEM_ID.name,
         "azimuth": F.AZIMUTH.name,
@@ -45,15 +44,24 @@ class Pvdaq:
     DATA_COLUMN_PREFIXES = list(DATA_COLUMN_PREFIX_MAP.keys())
     DATA_COLUMNS = list(DATA_COLUMN_PREFIX_MAP.values())
 
+    LOCAL_DIR = Path("pvdata")
+    METADATA_FILE = LOCAL_DIR / Path("metadata.csv")
+
+    _metadata = None
+    _system_ids = None
+    _metrics = None
+    _metric_ids = None
+
     @classmethod
-    def load_metadata(cls) -> pd.DataFrame:
+    def get_metadata(cls) -> pd.DataFrame:
         """Load metadata like location, area, orientation
         for all IDs of pvdaq systems"""
-        metadata_path = Path("pvdata") / Path("metadata.csv")
-        if metadata_path.exists():
-            meta_df = pd.read_csv(metadata_path, index_col = F.SYSTEM_ID.name)
-            cls.SYSTEM_IDS = [id for id in meta_df.index.tolist() if id !=4901]
+        if cls._metadata is not None:
+            return cls._metadata
+        if cls.METADATA_FILE.exists():
+            meta_df = pd.read_csv(cls.METADATA_FILE, index_col = F.SYSTEM_ID.name)
             meta_df = meta_df.ftr.get()
+            cls._metadata = meta_df
             return meta_df
 
         prefix = cls.url + "/parquet/"
@@ -73,43 +81,61 @@ class Pvdaq:
         metadata_df = metadata_df.ftr.get()
 
         # System no. 4901 has two different sets of recorded metadata, hence we prefer to exclude it for now.
-        cls.SYSTEM_IDS = [id for id in metadata_df.index.tolist() if id != 4901]
+        cls._system_ids = tuple(id for id in metadata_df.index if id != 4901)
 
         new_columns = metadata_df.columns.tolist() + [ftr.name for ftr in cls.DATA_COLUMNS]
         metadata_df = metadata_df.reindex(columns=new_columns, fill_value="")
 
-        for id in cls.SYSTEM_IDS:
+        for id in cls._system_ids:
             for ftr in (F.LATITUDE, F.LONGITUDE): # For some systems the GPS coordinates are off by a factor 1000
                 val = metadata_df.loc[id, ftr.name]
                 if pd.notna(val) and abs(float(val)) >= 1000:
                     metadata_df.loc[id, ftr.name] = float(val) / 1000
-        metric_df = cls.load_metric_names()
-        for id in cls.SYSTEM_IDS:
+        metric_df = cls.get_metrics()
+        for id in cls._system_ids:
             for prefix in cls.DATA_COLUMN_PREFIXES:
                 metadata_df.at[id, cls.DATA_COLUMN_PREFIX_MAP[prefix].name] = cls._first_with(
                     prefix, metric_df[metric_df["system_id"]==id]["standard_name"]
                 )        
-        metadata_df.ftr.to_csv(metadata_path)
+        metadata_df.ftr.to_csv(cls.METADATA_FILE)
+        cls._metadata = metadata_df
         return metadata_df
+
+    @classmethod
+    def meta(cls, system_id: int) -> dict[Feature, Any]:
+        """Shortcut to obtain the metadata of a single system as a dictionary."""
+        meta_df = cls.get_metadata()
+        row = meta_df.loc[system_id]
+        return {feature: row[feature.name] for feature in meta_df.ftr.features} 
+
+    @classmethod
+    def get_system_ids(cls) -> tuple[int]:
+        if cls._system_ids is not None:
+            return cls._system_ids
+        return tuple(cls.get_metadata().index)
     
     @classmethod
-    def load_metric_names(cls) -> pd.DataFrame:
+    def get_good_data_system_ids(cls) -> tuple[int]:
+        return tuple(id for id in cls.get_system_ids() if not id in (4901, 1200, 1201, 1202, 1203, 1204, 1283) and id < 1422)
+
+    @classmethod
+    def get_metrics(cls) -> pd.DataFrame:
         """Names, description, units and comments on the metrics recorded by PVDAQ pv systems"""
         return fu.concat_files(
             directory = cls.url + "/parquet/metrics",
             file_format ="parquet",
-            cache_directory = "pvdata"
+            cache_directory = cls.LOCAL_DIR
         )
 
     @staticmethod
-    def _first_with(prefix: str, string_list: list[str]):
+    def _first_with(prefix: str, string_list: list[str]) -> str:
         all_with = [s for s in string_list if s.lower().startswith(prefix)]
         if all_with:
             return all_with[0]
         return None
 
     @classmethod
-    def metric_ids(cls) -> pd.DataFrame:
+    def get_metric_ids(cls) -> pd.DataFrame:
         """
         Translate the standard column names in PVDAQ csv files
         to their ids at their end, as they are used as
@@ -117,7 +143,7 @@ class Pvdaq:
         """
         file = Path("pvdata") / Path("metric_ids.csv")
         if not file.exists():
-            meta = cls.load_metadata()
+            meta = cls.get_metadata()
             metric_ids = pd.DataFrame(index = meta.index)
             for ftr in cls.DATA_COLUMNS:
                 metric_ids[ftr.name] = meta[ftr.name].str.extract(r"(\d+)$", expand = False)
@@ -126,31 +152,26 @@ class Pvdaq:
         return metric_ids
 
     @classmethod
-    def meta(cls, system_id: int) -> dict[Feature, Any]:
-        """Shortcut to obtain the metadata of a single system as a dictionary."""
-        meta_df = cls.load_metadata()
-        row = meta_df.loc[system_id]
-        return {feature: row[feature.name] for feature in meta_df.ftr.features}
-
-    @classmethod
     def filter_systems(cls, metacols: FeatureList = None) -> list[int]:
         """
         Filter pvdaq systems based on metadata criteria.
         Returns a list of system IDs that meet the criteria.
         """
-        df = cls.load_metadata()
+        df = cls.get_metadata()
         df = df.ftr.dropna(metacols, how="any")
         return list(df.index)
     
     @classmethod
-    def load_raw_data(cls, system_id: int,
-                    file_format: str = "parquet",
-                    cache_directory: str | None = "pvdata",
-                    cache_single_files: bool = False,
-                    use_columns: list | None = None,
-                    parquet_filter: list[tuple] | None = None,
-                    file_limit: int | None = None,
-                    mute_tqdm: bool = False) -> pd.DataFrame:
+    def load_raw_data(cls,
+        system_id: int,
+        file_format: str = "parquet",
+        cache_directory: str | None = LOCAL_DIR,
+        cache_single_files: bool = False,
+        use_columns: list | None = None,
+        parquet_filter: list[tuple] | None = None,
+        file_limit: int | None = None,
+        mute_tqdm: bool = False
+    ) -> pd.DataFrame:
         """
         Load raw dataset of a pvdaq pv system with a given id for all recorded times.
         number of downloaded files and the set of used columns can be restricted.
@@ -169,12 +190,14 @@ class Pvdaq:
         return df
     
     @classmethod
-    def load_measured_features(cls, system_id: int,
-                            file_format: str = "parquet",
-                            cache_directory: str | None = "pvdata",
-                            cache_single_files: bool = False,
-                            file_limit: int | None = None,
-                            mute_tqdm: bool = False) -> pd.DataFrame:
+    def load_measured_features(cls,
+        system_id: int,
+        file_format: str = "parquet",
+        cache_directory: str | None = LOCAL_DIR,
+        cache_single_files: bool = False,
+        file_limit: int | None = None,
+        mute_tqdm: bool = False
+    ) -> pd.DataFrame:
         """
         Load dataset of a pvdaq pv system with a given id
         containing DC power data for all recorded times.
@@ -221,29 +244,36 @@ class Nsrdb:
         "Wind Direction": F.WIND_DIRECTION.name,
         "time": F.TIME.name
     }
+    LOCAL_DIR = Path("weatherdata")
     
     @classmethod
-    def load_year(cls, latitude: float, longitude: float,
-                        year: int, save_result: bool = True, overwrite_result: bool = False) -> pd.DataFrame:
+    def load_year(cls,
+        latitude: float,
+        longitude: float,
+        year: int,
+        save_result: bool = True
+    ) -> pd.DataFrame:
         """Download NSRDB weather data for given GPS location and year.
         Saves data in weaterdata/ which gets loaded if the data is
-        requested again (except when overwrite_result is True)."""
+        requested again."""
 
         output_root = Path("weatherdata")
         output_file = output_root / f"data_lat={latitude},lon={longitude},y={year}.csv"
 
         # Request data only if not already downloaded
-        if not overwrite_result and output_file.exists():
+        if output_file.exists():
             df = pd.read_csv(output_file, parse_dates = [F.TIME.name], index_col = F.TIME.name)
             return df.rename(columns = cls.COLUMN_NAME_MAP)
 
-        output_metafile = output_root / f"meta_lat={latitude},lon={longitude},y={year}.csv"
+        #output_metafile = output_root / f"meta_lat={latitude},lon={longitude},y={year}.csv"
 
         # Load all attributes that are relevant to calculate POA irridiance and temperature of a PV system
         attributes = ["air_temperature", "clearsky_dhi", "clearsky_dni", "clearsky_ghi",
                     "dhi", "dni", "ghi", "surface_albedo",                    
                     "wind_direction", "wind_speed"]
-        #["cloud_fill_flag", "cloud_type", "dew_point","ozone", "relative_humidity","solar_zenith_angle", "ssa","surface_pressure", "total_precipitable_water"]
+        # Other available attributes, less interesting for us:
+        #["cloud_fill_flag", "cloud_type", "dew_point","ozone", "relative_humidity","solar_zenith_angle",
+        # "ssa","surface_pressure", "total_precipitable_water"]
 
         url = "https://developer.nrel.gov/api/nsrdb/v2/solar/nsrdb-GOES-aggregated-v4-0-0-download.csv"
         params = {
@@ -264,32 +294,40 @@ class Nsrdb:
             #raise ValueError("API request failed")
 
         # NSRDB metadata is so far unused
-        meta = pd.read_csv(StringIO(response.text), nrows = 1)
-        data = pd.read_csv(StringIO(response.text), skiprows = 2)#.dropna(axis = 1, how = "all")
-
-        data.insert(0, F.TIME.name, pd.to_datetime(dict(
+        #meta = pd.read_csv(StringIO(response.text), nrows = 1)
+        data = pd.read_csv(StringIO(response.text), skiprows = 2)
+        data.insert(0,
+            F.TIME.name,
+            pd.to_datetime(
+                dict(
                     year=data['Year'],
                     month=data['Month'],
                     day=data['Day'],
                     hour=data['Hour'],
                     minute=data['Minute']
-        )))
+                )
+            )
+        )
         data = data.drop(columns=['Year','Month','Day','Hour','Minute'])
         data = data.rename(columns = cls.COLUMN_NAME_MAP)
         data = data.set_index(F.TIME.name)
         data.ftr.set_const({F.LATITUDE: latitude, F.LONGITUDE: longitude})
 
         if save_result:
-            meta.to_csv(output_metafile, index = True)
+            #meta.to_csv(output_metafile, index = True)
             data.to_csv(output_file, index = True)
  
         return data
 
     @classmethod
-    def load_time_range(cls, latitude: float, longitude: float,
-                        start_date: pd.Timestamp, end_date: pd.Timestamp,
-                        save_result: bool = False,
-                        mute_tqdm: bool = False) -> pd.DataFrame:
+    def load_time_range(cls,
+        latitude: float,
+        longitude: float,
+        start_date: pd.Timestamp,
+        end_date: pd.Timestamp,
+        cache_single_files: bool = False,
+        mute_tqdm: bool = False
+    ) -> pd.DataFrame:
         """Load several years at once and restrict the data to a given time range."""
         start_year = start_date.year
         end_year = end_date.year
@@ -298,7 +336,7 @@ class Nsrdb:
         for year in years if mute_tqdm else tqdm(years, desc=f"Loading weather data from {start_date}-{end_date} - CSVs"):
             if not mute_tqdm:
                 tqdm.write(f"Loading weather data from year {year}")
-            dfs.append(cls.load_year(latitude, longitude, year, save_result = save_result))
+            dfs.append(cls.load_year(latitude, longitude, year, save_result = cache_single_files))
         
         dfs[0] = dfs[0][dfs[0].index >= start_date]
         dfs[-1] = dfs[-1][dfs[-1].index <= end_date]
@@ -308,26 +346,41 @@ class Nsrdb:
         return df
 
     @classmethod
-    def load_system(cls, api: FeatureAccessor, save_result: bool = True, mute_tqdm = False) -> pd.DataFrame:
+    def load_system(cls,
+        api: FeatureAccessor,
+        cache_directory: str | None = LOCAL_DIR,
+        cache_single_files: bool = False,
+        mute_tqdm = False
+    ) -> pd.DataFrame:
         """Load weather data with calculated global poa for pv system with given system id."""
         id = api.get_const(F.SYSTEM_ID)
-        cache_dir = Path("weatherdata")
-        cache_dir.mkdir(parents = True, exist_ok = True)
-        cache_path = Path("weatherdata") / f"weather_system_id={id}.parquet"
+        if cache_directory is not None:
+            cache_directory.mkdir(parents = True, exist_ok = True)
+            cache_path = cls.LOCAL_DIR / f"weather_system_id={id}.parquet"
         if cache_path.exists():
             return pd.read_parquet(cache_path)
         start = api._df.index[api._df.index.year >= 1998].min()
         end = api._df.index[-1]
         data = Nsrdb.load_time_range(
-            api.get_const(F.LATITUDE), api.get_const(F.LONGITUDE), start, end, save_result = True, mute_tqdm = mute_tqdm
+            api.get_const(F.LATITUDE),
+            api.get_const(F.LONGITUDE),
+            start,
+            end,
+            cache_single_files = cache_single_files,
+            mute_tqdm = mute_tqdm
         )
-        if save_result:
+        if cache_directory is not None:
             data.to_parquet(cache_path, index = True)
 
         data.ftr.set_const(api.get_const())
         return data
 
-def request_data(system_id: int, file_limit: int | None = None, output_dir: str | None = "requested_data", mute_tqdm = False) -> pd.DataFrame:
+def request_data(
+    system_id: int,
+    file_limit: int | None = None,
+    output_dir: str | None = "requested_data",
+    mute_tqdm = False
+) -> pd.DataFrame:
     """Requests features from PVDAQ and NSRDB for system with given ID."""
     cache = Path(output_dir) / f"pv_and_weather_system_id={system_id}.parquet"
     if cache.exists():
@@ -344,16 +397,18 @@ def request_data(system_id: int, file_limit: int | None = None, output_dir: str 
     ).interpolate(
         method="time", limit = 1, limit_area = "inside"
     ).join(weather_data, how='inner')
-    if output_dir is not None:
+    if output_dir is not None and file_limit is None:
         #df.to_csv(Path(output_dir) / f"{system_id}.csv", index = True)
         pv_data.to_parquet(cache, index = True)
     pv_data.ftr.set_const(meta)
     return pv_data
 
-def get_features(system_id: int,
-                features: FeatureList = None,
-                file_limit: int | None = None,
-                mute_tqdm = False) -> pd.DataFrame:
+def get_features(
+        system_id: int,
+        features: FeatureList = None,
+        file_limit: int | None = None,
+        mute_tqdm = False
+    ) -> pd.DataFrame:
     """
     Download PVDAQ and NSRDB data for a given system id and calculate a list of given features.
     (Method could later be expanded to automatically adapt data requests precisely to
@@ -367,4 +422,5 @@ def get_features(system_id: int,
         return
     return df.ftr.get(features)
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
+    print(request_data(2))

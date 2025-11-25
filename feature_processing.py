@@ -157,25 +157,21 @@ class FeatureProcessing:
                 return api.get(F.WIND_DIRECTION) - api.get_const(F.AZIMUTH)
             case F.WIND_NORMAL_COMPONENT:
                 return api.get(F.WIND_SPEED) * np.cos(np.deg2rad(api.get(F.RELATIVE_WIND_DIRECTION))) * np.sin(np.deg2rad(api.get_const(F.TILT)))
-
-            #new composed features
             case F.POA_COS_AOI:
                 return api.get(F.PVLIB_POA_IRRADIANCE) * api.get(F.COS_AOI)
             case F.POA_WIND_SPEED:
                 return api.get(F.PVLIB_POA_IRRADIANCE) * api.get(F.WIND_SPEED)
             case F.DCP_PER_AREA:
-                return api.get(F.PVLIB_DC_POWER) / api.get(F.AREA)
+                return api.get(F.PVLIB_DC_POWER) / api.get_const(F.AREA)
             case F.DHI_PER_GHI:
                 return api.get(F.DHI) / api.get(F.GHI)
             case F.GAMMA_TEMP_DIFFERENCE:
-                return api.get(F.GAMMA) * (api.get(F.AIR_TEMP) - api.get(F.FAIMAN_MODULE_TEMP))
+                return api.get_const(F.GAMMA) * (api.get(F.AIR_TEMP) - api.get(F.FAIMAN_MODULE_TEMP))
             case F.GAMMA_POA:
-                return api.get(F.GAMMA) * api.get(F.PVLIB_POA_IRRADIANCE)
+                return api.get_const(F.GAMMA) * api.get(F.PVLIB_POA_IRRADIANCE)
             case F.RELATIVE_AZIMUTH:
-                return api.get(F.AZIMUTH) - api.get(F.SOLAR_AZIMUTH)
+                return api.get_const(F.AZIMUTH) - api.get(F.SOLAR_AZIMUTH)
             
-
-
             case _:
                 raise NotImplementedError
 
