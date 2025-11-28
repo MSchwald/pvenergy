@@ -11,7 +11,6 @@ from importlib_metadata import metadata
 from pyarrow.dataset import FileSystemDatasetFactory
 import pyarrow.dataset as ds
 
-
 from feature_catalog import FeatureCatalog as F
 from feature_catalog import Feature
 
@@ -19,11 +18,14 @@ import pandas as pd
 from typing import Any, Union
 import file_utilities as fu
 import re
+from dataclasses import dataclass
 
 from timeit import timeit
+from timezonefinder import TimezoneFinder
+import pytz
 
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
-    
+
 class Pvdaq:
     """Request pv data and metadata of PVDAQ systems."""
 
@@ -116,7 +118,7 @@ class Pvdaq:
     
     @classmethod
     def get_good_data_system_ids(cls) -> tuple[int]:
-        return tuple(id for id in cls.get_system_ids() if not id in (4901, 1200, 1201, 1202, 1203, 1204, 1283) and id < 1422)
+        return tuple(id for id in cls.get_system_ids() if not id in (50, 51, 1200, 1201, 1202, 1203, 1204, 1283, 1403, 1420, 4901) and id < 1422)
 
     @classmethod
     def get_metrics(cls) -> pd.DataFrame:
@@ -375,6 +377,71 @@ class Nsrdb:
         data.ftr.set_const(api.get_const())
         return data
 
+class OpenMeteo:
+    """Request live / forecast weather data"""
+    url = "https://api.open-meteo.com/v1/forecast"
+    COLUMN_NAME_MAP = {
+        "time": F.UTC_TIME.name,
+        "temperature_2m": F.AIR_TEMP.name,
+        "shortwave_radiation": F.GHI.name,
+        "diffuse_radiation": F.DHI.name,
+        "direct_normal_irradiance": F.DNI.name,
+        "wind_speed_10m": F.WIND_SPEED.name,
+        "wind_direction_10m": F.WIND_DIRECTION.name,
+    }
+    LOCAL_DIR = Path("live_weatherdata")
+    tf = TimezoneFinder()
+
+    @classmethod
+    def get_forecast(cls,
+        latitude: float,
+        longitude: float,
+        save_result: bool = True
+    ) -> pd.DataFrame:
+        """Get hourly weather forecast for given location for the next day."""            
+        params = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "hourly": [
+                "shortwave_radiation", "diffuse_radiation", "direct_normal_irradiance",
+                "temperature_2m", "wind_speed_10m", "wind_direction_10m"
+            ],
+            "models": "gfs_seamless",
+            "current_weather": True,
+            "forecast_hours": 24
+        }
+        response = requests.get(cls.url, params=params, timeout=30)
+        response.raise_for_status()
+
+        # Stundenweise Daten
+        df = pd.DataFrame(data = response.json()["hourly"]).rename(columns=cls.COLUMN_NAME_MAP).set_index(F.UTC_TIME.name)
+        df.index = pd.to_datetime(df.index)
+        
+        if save_result:
+            cls.LOCAL_DIR.mkdir(exist_ok=True)
+            output_file = cls.LOCAL_DIR / f"openmeteo_lat={latitude}_lon={longitude}.csv"
+            df.to_csv(output_file)
+
+        return df
+    
+    @classmethod
+    def system_forecast(cls, system_id: int) -> pd.DataFrame:
+        meta = Pvdaq.meta(system_id)
+        df = pd.read_csv(
+            "live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv", parse_dates=[F.UTC_TIME.name]
+        )#.set_index(F.UTC_TIME.name)
+        #df = cls.get_forecast(meta[F.LATITUDE], meta[F.LONGITUDE])
+        tz = pytz.timezone(cls.tf.timezone_at(lat = meta[F.LATITUDE], lng = meta[F.LONGITUDE]))
+        winter_offset = tz.utcoffset(pd.Timestamp("2025-01-01")).total_seconds() / 3600
+        df.insert(0,
+            F.TIME.name,
+            (df[F.UTC_TIME.name] + pd.Timedelta(hours=winter_offset)).dt.tz_localize(None)
+        )
+        df = df.set_index(F.TIME.name)
+        #data = data.drop(columns=[F.UTC_TIME])
+        df.ftr.set_const({ftr: val for (ftr, val) in meta.items() if ftr not in Pvdaq.DATA_COLUMNS})
+        return df
+
 def request_data(
     system_id: int,
     file_limit: int | None = None,
@@ -423,4 +490,10 @@ def get_features(
     return df.ftr.get(features)
 
 if __name__ == "__main__":
-    print(request_data(2))
+    #df = pd.read_csv("live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv")
+    #print(df.info())
+    #print(df.ftr.features)
+    #meta = Pvdaq.meta(2)
+    #lat, lon = meta[F.LATITUDE], meta[F.LONGITUDE]
+    #print(OpenMeteo.get_forecast(lat, lon))
+    print(OpenMeteo.system_forecast(2))
