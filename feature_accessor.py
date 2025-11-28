@@ -81,20 +81,22 @@ class FeatureAccessor:
     def _calculate(self, feature: Feature) -> Union[pd.Series, np.dtype]:
         """Wrapper method for error handling and potential type casting when calculating missing features"""
         if feature.source != Source.CALCULATED:
-            print(f"Error: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
+            print(f"Warning: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
             if feature.is_constant:
                 return np.nan
             return pd.Series(np.nan, index=self._df.index)
         if feature.required_features is not None:
-            df = self.get(feature.required_features)
+            const_list = self.get_const([ftr for ftr in feature.required_features if ftr.is_constant])
+            df = self.get([ftr for ftr in feature.required_features if not ftr.is_constant])
             nan_cols = [col for col in df.columns if df[col].isna().all().any()]
-            if nan_cols:
-                print(f"Warning: {nan_cols} is missing to calculate feature {feature}.")
+            nan_consts = [const for const in const_list if pd.isna(const)]
+            if nan_cols or nan_consts:
+                print(f"Warning: {nan_cols + nan_consts} is missing to calculate feature {feature}.")
                 if feature.is_constant:
                     return np.nan
                 return pd.Series(np.nan, index=self._df.index, dtype=feature.data_type)
         try:
-            result = fp.calculate(feature = feature, api = self) 
+            result = fp.calculate(feature = feature, api = self)
         except NotImplementedError:
             print(f"Error: Calculation of feature {feature.name} is not implemented.")
             if feature.is_constant:
