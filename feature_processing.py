@@ -24,7 +24,7 @@ class FeatureProcessing:
     tf = TimezoneFinder()
 
     @classmethod
-    def calculate(cls, feature: Feature, api: FeatureAccessor) -> Union[pd.Series, np.float32]:
+    def calculate(cls, feature: Feature, api: FeatureAccessor) -> Union[pd.Series, float]:
         """Defining formulas for calculating derived features."""
         match feature:
             # Features of the Faiman model to calculate the module's temperature
@@ -81,18 +81,31 @@ class FeatureProcessing:
                 api.set(F.PVLIB_CLEAR_SKY_DNI, result["dni"])
                 return api.get(feature)
             case F.PVLIB_POA_IRRADIANCE | F.PVLIB_CLEAR_SKY_POA | F.NSRDB_CLEAR_SKY_POA:
+                albedo = api.get(F.SURFACE_ALBEDO)
+                if albedo.isna().all:
+                    albedo = 0.25
                 if feature == F.PVLIB_POA_IRRADIANCE:
-                    dni, ghi, dhi, albedo = api.get(F.DNI), api.get(F.GHI), api.get(F.DHI), api.get(F.SURFACE_ALBEDO)
+                    dni, ghi, dhi = api.get(F.DNI), api.get(F.GHI), api.get(F.DHI)
                 elif feature == F.PVLIB_CLEAR_SKY_POA:
-                    dni, ghi, dhi, albedo = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI), 0.25
+                    dni, ghi, dhi = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI)
                 else:
-                    dni, ghi, dhi, albedo = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI), 0.25
+                    dni, ghi, dhi = api.get(F.PVLIB_CLEAR_SKY_DNI), api.get(F.PVLIB_CLEAR_SKY_GHI), api.get(F.PVLIB_CLEAR_SKY_DHI)
                 poa = pvlib.irradiance.get_total_irradiance(surface_tilt = api.get_const(F.TILT),
                                                             surface_azimuth = api.get_const(F.AZIMUTH),
                                                             solar_zenith = api.get(F.SOLAR_ZENITH),
                                                             solar_azimuth = api.get(F.SOLAR_AZIMUTH),
                                                             dni = dni, ghi = ghi, dhi = dhi, albedo = albedo)
                 return poa["poa_global"]
+            case F.CLEAR_SKY_POA:
+                poa = api.get(F.NSRDB_CLEAR_SKY_POA)
+                if poa.isna().all():
+                    return api.get(F.PVLIB_CLEAR_SKY_POA)
+                return poa
+            case F.CLEAR_SKY_RATIO:
+                ratio = api.get(F.NSRDB_CLEAR_SKY_RATIO)
+                if ratio.isna().all():
+                    return api.get(F.PVLIB_CLEAR_SKY_RATIO)
+                return ratio
             case F.NSRDB_CLEAR_SKY_RATIO | F.PVLIB_CLEAR_SKY_RATIO:
                 if feature == F.PVLIB_CLEAR_SKY_RATIO:
                     clear_sky_poa = F.PVLIB_CLEAR_SKY_POA
@@ -136,7 +149,6 @@ class FeatureProcessing:
                 year_fraction = seconds / (days_in_year * 24 * 3600)
                 return np.cos(2 * np.pi * year_fraction)
 
-             
             # Other derived features
             case F.POWER_RATIO:
                 return api.get(F.PVLIB_DC_POWER) / api.get_const(F.DCP0)
@@ -164,7 +176,7 @@ class FeatureProcessing:
             case F.DCP_PER_AREA:
                 return api.get(F.PVLIB_DC_POWER) / api.get_const(F.AREA)
             case F.DHI_PER_GHI:
-                return api.get(F.DHI) / api.get(F.GHI)
+                return (api.get(F.DHI) / api.get(F.GHI)).clip(upper=1)
             case F.GAMMA_TEMP_DIFFERENCE:
                 return api.get_const(F.GAMMA) * (api.get(F.AIR_TEMP) - api.get(F.FAIMAN_MODULE_TEMP))
             case F.GAMMA_POA:
