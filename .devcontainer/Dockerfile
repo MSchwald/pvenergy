@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir \
     tqdm \
     pyarrow \
     natsort \
-    xgboost lightgbm
+    xgboost lightgbm \
+    djangorestframework
 
 USER root
