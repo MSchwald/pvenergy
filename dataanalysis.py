@@ -13,7 +13,7 @@ import lightgbm as lgb
 
 # modules for working with features
 import data_request
-from data_request import request_data, Pvdaq
+from data_request import request_data, Pvdaq, OpenMeteo
 from feature_catalog import FeatureCatalog as F
 from feature_catalog import Feature
 from feature_processing import FeatureProcessing as fp
@@ -55,20 +55,27 @@ class EvaluationMethod:
         
 class EVALUATIONS:
     """Methods to analyze the performance of trained ML models"""
-    RMSE = EvaluationMethod(
-        name = "rmse",
-        method = lambda model, X_test, y_test, y_pred: np.sqrt(mean_squared_error(y_test, y_pred)),       
-    )
-    R2 = EvaluationMethod(
-        name = "r2",
-        method = lambda model, X_test, y_test, y_pred: r2_score(y_test, y_pred),   
-    )
+    def rmse_method(model, X_test, y_test, y_pred) -> pd.Series:
+        return np.sqrt(mean_squared_error(y_test, y_pred))
+                       
+    def r2_method(model, X_test, y_test, y_pred) -> pd.Series:
+        return r2_score(y_test, y_pred)
+        
     def feature_importance_method(model, X_test, y_test, y_pred) -> pd.Series:
         df = pd.DataFrame({
             'Feature': X_test.columns.tolist(),
             'Importance': model.feature_importances_
         }).sort_values(by = 'Importance', ascending = False)
         return pd.Series(df['Importance'].values, index = df['Feature']) 
+
+    RMSE = EvaluationMethod(
+        name = "rmse",
+        method = rmse_method     
+    )
+    R2 = EvaluationMethod(
+        name = "r2",
+        method = r2_method
+    )
     FEATURE_IMPORTANCE = EvaluationMethod(
         name = "feature_importance",
         method = feature_importance_method
@@ -78,17 +85,18 @@ class EVALUATIONS:
 class Model:
     """Defining properties of ML models"""
     name: str
-    estimator: Callable
+    estimator: object
     scaler: Scaler | None = None
     evaluation_methods: tuple[EvaluationMethod] | None = (EVALUATIONS.RMSE, EVALUATIONS.R2, EVALUATIONS.FEATURE_IMPORTANCE)
     # search for best hyperparmeters with RandomizedSearchCV
     hyperparam_grid: dict | None = None # possible hyperparam combinations to choose from
-    n_iter_search: int = 10 # amount of random combinations to compare
+    n_iter_search: int = 15 # amount of random combinations to compare
     # trained model gets saved here for further use
     _trained_model: object | None = None
     _fitted_scaler: object | None = None
     _training_features: list[Feature] | None = None
     _target_feature: Feature | None = None
+    _evaluation_results: pd.Series | None = None
     
     def __str__(self):
         return self.name
@@ -113,7 +121,7 @@ class Model:
     def train(self, X_train: pd.DataFrame, y_train: pd.Series, hyper_parameter_search: bool = True) -> None:
         # For some models specific rescaling of the training data is important for their performance
         X_train_scaled = self.apply_scaler(X_train, train = True)
-        model = self.estimator()
+        model = self.estimator
 
         if hyper_parameter_search and self.hyperparam_grid is not None:
             print(f"Search for best hyperparameters for {self.name}...")
@@ -133,10 +141,11 @@ class Model:
         else:
             # Standard training
             model.n_jobs = -1
+            model.random_state = 42
             model.fit(X_train_scaled, y_train)
             self._trained_model = model
         self._training_features = X_train.ftr.features
-        self.training_feature = fp.FEATURE_FROM_NAME[y_train.name]
+        self._target_feature = fp.FEATURE_FROM_NAME[y_train.name]
         return self._trained_model
     
     def predict(self, X_test: pd.DataFrame) -> pd.Series:
@@ -146,79 +155,96 @@ class Model:
         return self._trained_model.predict(X_test_scaled)
 
     def evaluate(self, X_test, y_test, y_pred):
-        results = []
+        result_list = []
         for method in self.evaluation_methods:
             method.evaluate(self._trained_model, X_test, y_test, y_pred)
-            results.append(method._result)
-        return pd.concat(results)
+            result_list.append(method._result)
+        results = pd.concat(result_list)
+        self._evaluation_results = results
+        return results
 
     def save(self, file_name: str):
-        path = Path("trained_models") / Path(file_name)
+        path = Path("trained_models") / Path(file_name + ".joblib")
         path.parent.mkdir(parents = True, exist_ok = True)
-        joblib.dump(self, path)
+        joblib.dump(self, path, compress = 3)
 
     @classmethod
     def load(cls, file_name: str):
-        path = Path("trained_models") / Path(file_name)
+        path = Path("trained_models") / Path(file_name + ".joblib")
         return joblib.load(path)
 
 class ML_MODELS:
     """Collection ML models suitable for analyzing PVDAQ data"""
     RANDOM_FOREST = Model(
         name = "random_forest",
-        estimator = lambda: RandomForestRegressor(n_estimators=200,
-                                                random_state=42),
+        estimator = RandomForestRegressor(
+            n_estimators=200,
+            min_samples_split=10,
+            min_samples_leaf=2,
+            max_features=0.5,
+            max_depth=20
+        ),
         hyperparam_grid = {
             'n_estimators': [100, 200, 300],
             'max_depth': [None, 10, 20],
             'min_samples_split': [2, 5, 10],
             'min_samples_leaf': [1, 2, 4],
             'max_features': ['sqrt', 'log2', 0.5]
-        }
+        },
+        n_iter_search = 8
     )
     XGBOOST = Model(
         name = "xgboost",
-        estimator = lambda: XGBRegressor(
-            n_estimators=500,
-            max_depth=6,
-            learning_rate=0.05,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            random_state=42
+        estimator = XGBRegressor(
+            n_estimators=800,
+            max_depth=11,
+            min_child_weight=3,
+            learning_rate=0.12,
+            subsample=0.875,
+            colsample_bytree=0.96,
+            gamma=1.3,
+            reg_lambda=0.9,
+            reg_alpha=0.1
+            #objective='reg:tweedie',
+            #tweedie_variance_power=1.5
         ),
         hyperparam_grid = {
-            'n_estimators': [100, 200, 300],
-            'learning_rate': [0.01, 0.05, 0.1, 0.2],
-            'max_depth': [3, 5, 7, 10],
-            'subsample': [0.6, 0.8, 1.0],
-            'colsample_bytree': [0.6, 0.8, 1.0],
-            'gamma': [0, 1, 2, 5],
-            'reg_alpha': [0, 0.1, 0.5, 1],
-            'reg_lambda': [0.5, 1, 1.5, 2]
+            'n_estimators': [700, 800, 900],
+            'learning_rate': [0.11, 0.12, 0.13],
+            'max_depth': [10, 11, 12],
+            'min_child_weight': [3, 4, 5],
+            'subsample': [0.825, 0.85, 0.875],
+            'colsample_bytree': [0.96, 0.98, 1.0],
+            'gamma': [1.1, 1.2, 1.3],
+            'reg_alpha': [0.05, 0.1, 0.15],
+            'reg_lambda': [0.7, 0.8, 0.9]
+            #'tweedie_variance_power': [1.2, 1.5, 1.8]
         }
     )
     LIGHTGBM = Model(
         name = "lightgbm",
-        estimator = lambda: lgb.LGBMRegressor(
-            n_estimators=500,
-            max_depth=1,
-            learning_rate=0.05,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            num_leaves = 50,
-            random_state=42
+        estimator = lgb.LGBMRegressor(
+            n_estimators=400,
+            max_depth=12,
+            learning_rate=0.35,
+            subsample=0.95,
+            colsample_bytree=1.0,
+            num_leaves = 70,
         ),
-        hyperparam_grid={
-            'n_estimators': [100, 200, 300],
-            'max_depth': [5, 10, 15],
-            'learning_rate': [0.01, 0.05, 0.1, 0.2],
-            'subsample': [0.6, 0.8, 1.0],
-            'colsample_bytree': [0.6, 0.8, 1.0],
-            'num_leaves': [31, 50, 70],
+        hyperparam_grid = {
+            'n_estimators': [350, 400, 450],
+            'max_depth': [12, 14, 16],
+            'learning_rate': [0.3, 0.35, 0.4],
+            'subsample': [0.85, 0.9, 0.95],
+            'colsample_bytree': [0.85, 0.9, 0.95, 1.0],
+            'num_leaves': [65, 70, 75]
         }
+
     )
 
 class Pipeline:
+    _system_constants: pd.DataFrame | None = None
+
     @classmethod
     def get_training_data(cls,
         system_ids: list[int],
@@ -249,8 +275,10 @@ class Pipeline:
                         df.ftr.set_const({ftr: system_constants.loc[system_id, ftr.name]})
                 df = df.ftr.get(features)
                 # Clean up data for each system individually
+                df.ftr.get([F.LOCALIZED_TIME, F.PVLIB_CLEAR_SKY_POA, F.PVLIB_POA_IRRADIANCE]).to_csv("test.csv")
                 df = df.ftr.clip(clip_features)
-                df = df.ftr.filter(filter_features) # also drops rows with NaNs
+                df = df.ftr.filter(filter_features)
+                df = df.ftr.dropna(features)
                 if not df.empty:
                     dfs.append(df)
             df_full: pd.DataFrame = pd.concat(dfs)
@@ -262,9 +290,14 @@ class Pipeline:
     @classmethod
     def get_system_constants(cls) -> pd.DataFrame:
         """Calculate relevant system constants and cache the result to save time."""
+        if cls._system_constants is not None:
+            return cls._system_constants
         constant_file = Path("system_constants.csv")
         if constant_file.exists():
-            return pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
+            df = pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
+            cls._system_constants = df
+            return df
+        
         good_ids = Pvdaq.get_good_data_system_ids()
         ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
         constant_features = [F.DCP0, F.GAMMA, F.FAIMAN_U0, F.FAIMAN_U1]
@@ -274,8 +307,10 @@ class Pipeline:
             tqdm.write(f"for system {id}")
             df = request_data(id)
             for ftr in constant_features:
-                system_constants.loc[id, ftr.name] = df.ftr.get_const(ftr)
+                system_constants.loc[id, ftr.name] = df.ftr.get_const(ftr)     
+
         system_constants.to_csv(constant_file, index = True)
+        cls._system_constants = system_constants
         return system_constants
 
     @staticmethod
@@ -348,6 +383,7 @@ class Pipeline:
         print(results)
         
         if save_model_name is not None:
+            print(f"\nSaving trained model as 'trained_models/{save_model_name}.joblib'...")
             ml_model.save(save_model_name)
 
         return results
@@ -371,9 +407,27 @@ class Pipeline:
         df.index.name = F.SYSTEM_ID.name
         return df
 
+    @classmethod
+    def forecast(cls, model: Model, system_id: int):
+        if model._trained_model is None:
+            raise RuntimeError(f"Model {model.name} has not been trained yet.")
+        cf = cls.get_system_constants()
+        system_constants = {fp.FEATURE_FROM_NAME[col]: cf.loc[system_id, col] for col in cf.columns}
+        
+        df = OpenMeteo.system_forecast(system_id)        
+        df.ftr.set_const(system_constants)
+
+        X = df.ftr.get([ftr for ftr in model._training_features if ftr != F.TIME])
+        # Use the ML model to predict when sunny, else return 0
+        sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
+        y = pd.Series(0, index=X.index, dtype=float)
+        y.loc[sunny] = model.predict(X.loc[sunny])
+        y = pd.DataFrame(data=y, columns=[model._target_feature], index=X.index)
+        return pd.concat([X,y], axis = 1)
+
 if __name__ == "__main__":
     """Testing space for the pipeline"""
-
+    #print(Pipeline.get_system_constants())
     # Chooses all system ids where all important features are recorded to predict the default target feature PVDAQ_DC_POWER
     good_ids = Pvdaq.get_good_data_system_ids()
     ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
@@ -381,25 +435,48 @@ if __name__ == "__main__":
     features: list[Feature] = [
         F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
         F.DAY_OF_YEAR, F.TIME_SINCE_SUNLIGHT,
-        F.NSRDB_CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
+        F.CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
         F.POA_COS_AOI, F.POA_WIND_SPEED, F.DHI_PER_GHI,
         F.DCP_PER_AREA, F.GAMMA_TEMP_DIFFERENCE, F.RELATIVE_AZIMUTH
     ]
     
     # Choice of model to train
-    ml_model = ML_MODELS.RANDOM_FOREST
+    ml_model = ML_MODELS.XGBOOST
     #RANDOM_FOREST, XGBOOST, LIGHTGBM
-    res = Pipeline.individual_analysis(
-        system_ids = [2,3],
+
+    res = Pipeline.fleet_analysis(
+        system_ids = ids,
         training_features = features,
         target_feature = F.PVDAQ_DC_POWER,
         clip_features = {F.PVDAQ_DC_POWER: (0, None)},
-        filter_features = {F.PVDAQ_DC_POWER: (0, 3000)},
+        filter_features = {F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)},
         ml_model = ml_model,
         file_limit = None,
         mute_tqdm = False,
-        training_data_cache_dir = None,
+        training_data_cache = "training_data/full_training_data.parquet",
         hyper_parameter_search = False,
-        use_cached_training_data = False
+        use_cached_training_data = True,
+        save_model_name = f"{ml_model.name}_all_ids"
     )
-    print(res)
+
+    """res = Pipeline.individual_analysis(
+        system_ids = ids,
+        training_features = features,
+        target_feature = F.PVDAQ_DC_POWER,
+        clip_features = {F.PVDAQ_DC_POWER: (0, None)},
+        filter_features = {F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)},
+        ml_model = ml_model,
+        file_limit = None,
+        mute_tqdm = False,
+        training_data_cache_dir = "training_data",
+        hyper_parameter_search = False,
+        use_cached_training_data = True,
+        save_model_name = None
+    )"""
+    #print(res)
+    m = Model.load("xgboost_all_ids")
+    print(Pipeline.forecast(m, 2))
+    #df = pd.read_parquet("training_data/full_training_data.parquet")
+    #print(df.info())
+    #df = df.ftr.filter({F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)})
+    #df.to_csv("training2.csv")
