@@ -16,7 +16,7 @@ class Source(Enum):
 class Feature:
     name: str
     source: Source
-    data_type: Any = np.float32
+    data_type: Any = float
     is_constant: bool = False
     unit: str = ""
     required_features: tuple[Feature] = tuple()
@@ -51,6 +51,7 @@ class FeatureCatalog:
     # Time features
     # All dataframes get indexed by time series read from PVDAQ data. Other sources for TIME could also be allowed.
     # Localized time is relevant for pvlib functions
+    UTC_TIME = Feature("utc_time", Source.CALCULATED, data_type=pd.DatetimeIndex)
     TIME = Feature("time", Source.PVDAQ, data_type=pd.DatetimeIndex, required_features=(SYSTEM_ID,))
     YEAR = Feature("year", Source.CALCULATED, data_type=int, required_features=(TIME,))
     DAY = Feature("day", Source.CALCULATED, data_type=int, required_features=(TIME,))
@@ -60,7 +61,7 @@ class FeatureCatalog:
     # Time features to model degradation, seasonal soiling and daily heat inertia 
     DAYS_SINCE_START = Feature("days_since_start", Source.CALCULATED, unit="d", required_features=(TIME,))
     DAY_OF_YEAR = Feature("day_of_year", Source.CALCULATED, data_type=int, unit="d", required_features=(TIME,))
-    ANNUAL_COSINUS = Feature("annual_sinus", Source.CALCULATED, data_type=float, unit="", required_features=(DAY_OF_YEAR,))
+    ANNUAL_COSINUS = Feature("annual_sinus", Source.CALCULATED, unit="", required_features=(DAY_OF_YEAR,))
 
     # NSRDB features from measured weather data
     AIR_TEMP = Feature("air_temperature", Source.NSRDB, unit="°C", required_features=(TIME, LATITUDE, LONGITUDE))
@@ -80,16 +81,16 @@ class FeatureCatalog:
     SOLAR_AZIMUTH = Feature("solar_azimuth", Source.CALCULATED, unit="°", required_features=(LOCALIZED_TIME, LATITUDE, LONGITUDE, ELEVATION))
     SOLAR_UNCORRECTED_ZENITH = Feature("solar_uncorrected_zenith", Source.CALCULATED, unit="°", required_features=(LOCALIZED_TIME, LATITUDE, LONGITUDE, ELEVATION))
     SOLAR_ELEVATION = Feature("solar_elevantion", Source.CALCULATED, unit="°", required_features=(LOCALIZED_TIME, LATITUDE, LONGITUDE, ELEVATION))
-    PVLIB_POA_IRRADIANCE = Feature("poa_irradiance_calculated", Source.CALCULATED, unit="W/m^2", required_features=(TILT, AZIMUTH, SOLAR_ZENITH, SOLAR_AZIMUTH, DNI, GHI, DHI, SURFACE_ALBEDO))
+    PVLIB_POA_IRRADIANCE = Feature("poa_irradiance_calculated", Source.CALCULATED, unit="W/m^2", required_features=(TILT, AZIMUTH, SOLAR_ZENITH, SOLAR_AZIMUTH, DNI, GHI, DHI), optional_features=(SURFACE_ALBEDO,))
     AOI = Feature("aoi_calculated", Source.CALCULATED, unit="°", required_features=(TILT, AZIMUTH, SOLAR_ZENITH, SOLAR_AZIMUTH))
     # Features of the Faiman model to calculate the module's temperature; if no module temperature is measured, model uses pvlib default values for u0, u1
     # faiman_module_temperature = air_temperature + (alpha * poa_irridiance) / (u0 + u1 * wind_speed)
     TEMP_DIFFERENCE_MEASURED = Feature("temp_difference_measured", Source.CALCULATED, unit="K", required_features=(AIR_TEMP, PVDAQ_MODULE_TEMP)) # difference between measured module and air temperature
-    FAIMAN_U0 = Feature("faiman_u0", Source.CALCULATED, unit="W/(m^2*K)", optional_features=(WIND_SPEED, PVLIB_POA_IRRADIANCE, TEMP_DIFFERENCE_MEASURED)) # General Heat Loss Coefficient ("Convective Heat Loss Coefficient at Zero Wind Speed")
-    FAIMAN_U1 = Feature("faiman_u1", Source.CALCULATED, unit="W*s/(m^3*K)", optional_features=(WIND_SPEED, PVLIB_POA_IRRADIANCE, TEMP_DIFFERENCE_MEASURED)) # Wind-Dependent Heat Loss Coefficient ("Wind Speed Coefficient")
+    FAIMAN_U0 = Feature("faiman_u0", Source.CALCULATED, unit="W/(m^2*K)", is_constant = True, optional_features=(WIND_SPEED, PVLIB_POA_IRRADIANCE, TEMP_DIFFERENCE_MEASURED)) # General Heat Loss Coefficient ("Convective Heat Loss Coefficient at Zero Wind Speed")
+    FAIMAN_U1 = Feature("faiman_u1", Source.CALCULATED, unit="W*s/(m^3*K)", is_constant = True, optional_features=(WIND_SPEED, PVLIB_POA_IRRADIANCE, TEMP_DIFFERENCE_MEASURED)) # Wind-Dependent Heat Loss Coefficient ("Wind Speed Coefficient")
     FAIMAN_MODULE_TEMP = Feature("module_temp_calculated", Source.CALCULATED, unit="°C", required_features=(PVLIB_POA_IRRADIANCE, WIND_SPEED, FAIMAN_U0, FAIMAN_U1))
-    DCP0 = Feature("dcp0", Source.CALCULATED, unit="W", required_features=(YEAR, FAIMAN_MODULE_TEMP, PVLIB_POA_IRRADIANCE, PVDAQ_DC_POWER), optional_features=(AREA,))
-    GAMMA = Feature("gamma", Source.CALCULATED, unit="1/K", required_features=(YEAR, FAIMAN_MODULE_TEMP, PVLIB_POA_IRRADIANCE, PVDAQ_DC_POWER), optional_features=(AREA,))
+    DCP0 = Feature("dcp0", Source.CALCULATED, unit="W", is_constant = True, required_features=(YEAR, FAIMAN_MODULE_TEMP, PVLIB_POA_IRRADIANCE, PVDAQ_DC_POWER), optional_features=(AREA,))
+    GAMMA = Feature("gamma", Source.CALCULATED, unit="1/K", is_constant = True, required_features=(YEAR, FAIMAN_MODULE_TEMP, PVLIB_POA_IRRADIANCE, PVDAQ_DC_POWER), optional_features=(AREA,))
     # DC_POWER = POA / 1000 * DCP0 * (1 + GAMMA * (TEMP_DIFFERENCE))
     PVLIB_DC_POWER = Feature("dc_power_calculated", Source.CALCULATED, unit="W", required_features=(PVLIB_POA_IRRADIANCE, DCP0, GAMMA, FAIMAN_MODULE_TEMP))
 
@@ -101,6 +102,10 @@ class FeatureCatalog:
     PVLIB_CLEAR_SKY_RATIO = Feature("Pvlib_clear_sky_ratio", Source.CALCULATED, required_features=(PVLIB_POA_IRRADIANCE, PVLIB_CLEAR_SKY_POA))
     NSRDB_CLEAR_SKY_POA = Feature("Nsrdb_clear_sky_poa", Source.CALCULATED, required_features=(LATITUDE, LONGITUDE, TIME_ZONE, ELEVATION, NSRDB_CLEAR_SKY_GHI, NSRDB_CLEAR_SKY_DHI, NSRDB_CLEAR_SKY_DNI, TILT, AZIMUTH))
     NSRDB_CLEAR_SKY_RATIO = Feature("Nsrdb_clear_sky_ratio", Source.CALCULATED, required_features=(PVLIB_POA_IRRADIANCE, NSRDB_CLEAR_SKY_POA))
+    # The following features use Nsrdb data if available, otherwise they use pvlib estimates as fallback options
+    CLEAR_SKY_POA = Feature("Clear_sky_poa", Source.CALCULATED, required_features=(LATITUDE, LONGITUDE, TIME_ZONE, ELEVATION, TILT, AZIMUTH), optional_features=(NSRDB_CLEAR_SKY_GHI, NSRDB_CLEAR_SKY_DHI, NSRDB_CLEAR_SKY_DNI))
+    CLEAR_SKY_RATIO = Feature("Clear_sky_ratio", Source.CALCULATED, required_features=(PVLIB_POA_IRRADIANCE, CLEAR_SKY_POA))
+
 
     # Time feature to model thermal inertia
     TIME_SINCE_SUNLIGHT = Feature("time_since_sunrise", Source.CALCULATED, required_features=(TIME, DAY, PVLIB_POA_IRRADIANCE))
