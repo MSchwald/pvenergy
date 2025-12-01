@@ -22,9 +22,11 @@ from dataclasses import dataclass
 
 from timeit import timeit
 from timezonefinder import TimezoneFinder
-import pytz
+from datetime import datetime, timedelta
 
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
+
+BASE_DIR = Path(__file__).resolve().parent
 
 class Pvdaq:
     """Request pv data and metadata of PVDAQ systems."""
@@ -46,8 +48,8 @@ class Pvdaq:
     DATA_COLUMN_PREFIXES = list(DATA_COLUMN_PREFIX_MAP.keys())
     DATA_COLUMNS = list(DATA_COLUMN_PREFIX_MAP.values())
 
-    LOCAL_DIR = Path("pvdata")
-    METADATA_FILE = LOCAL_DIR / Path("metadata.csv")
+    LOCAL_DIR = BASE_DIR / "pvdata"
+    METADATA_FILE = LOCAL_DIR / "metadata.csv"
 
     _metadata = None
     _system_ids = None
@@ -118,7 +120,7 @@ class Pvdaq:
     
     @classmethod
     def get_good_data_system_ids(cls) -> tuple[int]:
-        return tuple(id for id in cls.get_system_ids() if not id in (50, 51, 1200, 1201, 1202, 1203, 1204, 1283, 1403, 1420, 4901) and id < 1422)
+        return tuple(id for id in cls.get_system_ids() if id != 4901)
 
     @classmethod
     def get_metrics(cls) -> pd.DataFrame:
@@ -143,7 +145,7 @@ class Pvdaq:
         to their ids at their end, as they are used as
         column names in PVDAQ parquet format.
         """
-        file = Path("pvdata") / Path("metric_ids.csv")
+        file = cls.LOCAL_DIR / "metric_ids.csv"
         if not file.exists():
             meta = cls.get_metadata()
             metric_ids = pd.DataFrame(index = meta.index)
@@ -246,7 +248,7 @@ class Nsrdb:
         "Wind Direction": F.WIND_DIRECTION.name,
         "time": F.TIME.name
     }
-    LOCAL_DIR = Path("weatherdata")
+    LOCAL_DIR = BASE_DIR / "weatherdata"
     
     @classmethod
     def load_year(cls,
@@ -259,15 +261,14 @@ class Nsrdb:
         Saves data in weaterdata/ which gets loaded if the data is
         requested again."""
 
-        output_root = Path("weatherdata")
-        output_file = output_root / f"data_lat={latitude},lon={longitude},y={year}.csv"
+        output_file = cls.LOCAL_DIR / f"data_lat={latitude},lon={longitude},y={year}.csv"
 
         # Request data only if not already downloaded
         if output_file.exists():
             df = pd.read_csv(output_file, parse_dates = [F.TIME.name], index_col = F.TIME.name)
             return df.rename(columns = cls.COLUMN_NAME_MAP)
 
-        #output_metafile = output_root / f"meta_lat={latitude},lon={longitude},y={year}.csv"
+        #output_metafile = cls.LOCAL_DIR / f"meta_lat={latitude},lon={longitude},y={year}.csv"
 
         # Load all attributes that are relevant to calculate POA irridiance and temperature of a PV system
         attributes = ["air_temperature", "clearsky_dhi", "clearsky_dni", "clearsky_ghi",
@@ -389,7 +390,7 @@ class OpenMeteo:
         "wind_speed_10m": F.WIND_SPEED.name,
         "wind_direction_10m": F.WIND_DIRECTION.name,
     }
-    LOCAL_DIR = Path("live_weatherdata")
+    LOCAL_DIR = BASE_DIR / "live_weatherdata"
     tf = TimezoneFinder()
 
     @classmethod
@@ -398,7 +399,21 @@ class OpenMeteo:
         longitude: float,
         save_result: bool = True
     ) -> pd.DataFrame:
-        """Get hourly weather forecast for given location for the next day."""            
+        """
+        Get hourly weather forecast for given location for the next day.
+        Caching is used for multiple requests in the same hour of the day.
+        """
+        cls.LOCAL_DIR.mkdir(parents = True, exist_ok = True)
+        file = cls.LOCAL_DIR / f"openmeteo_lat={latitude}_lon={longitude}.csv"
+        if file.exists():
+            mtime = datetime.fromtimestamp(file.stat().st_mtime)
+            time_now = datetime.now()
+            if time_now - mtime < timedelta(hours = 1) and time_now.hour == mtime.hour:
+                df = pd.read_csv(file, index_col = F.UTC_TIME.name)
+                df.index = pd.to_datetime(df.index)
+                print("Cached version of OpenMeteo data")
+                return df
+        print("request new version from OpenMeteo")
         params = {
             "latitude": latitude,
             "longitude": longitude,
@@ -418,28 +433,8 @@ class OpenMeteo:
         df.index = pd.to_datetime(df.index)
         
         if save_result:
-            cls.LOCAL_DIR.mkdir(exist_ok=True)
-            output_file = cls.LOCAL_DIR / f"openmeteo_lat={latitude}_lon={longitude}.csv"
-            df.to_csv(output_file)
+            df.to_csv(file, index = True)
 
-        return df
-    
-    @classmethod
-    def system_forecast(cls, system_id: int) -> pd.DataFrame:
-        meta = Pvdaq.meta(system_id)
-        df = pd.read_csv(
-            "live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv", parse_dates=[F.UTC_TIME.name]
-        )#.set_index(F.UTC_TIME.name)
-        #df = cls.get_forecast(meta[F.LATITUDE], meta[F.LONGITUDE])
-        tz = pytz.timezone(cls.tf.timezone_at(lat = meta[F.LATITUDE], lng = meta[F.LONGITUDE]))
-        winter_offset = tz.utcoffset(pd.Timestamp("2025-01-01")).total_seconds() / 3600
-        df.insert(0,
-            F.TIME.name,
-            (df[F.UTC_TIME.name] + pd.Timedelta(hours=winter_offset)).dt.tz_localize(None)
-        )
-        df = df.set_index(F.TIME.name)
-        #data = data.drop(columns=[F.UTC_TIME])
-        df.ftr.set_const({ftr: val for (ftr, val) in meta.items() if ftr not in Pvdaq.DATA_COLUMNS})
         return df
 
 def request_data(
@@ -449,7 +444,8 @@ def request_data(
     mute_tqdm = False
 ) -> pd.DataFrame:
     """Requests features from PVDAQ and NSRDB for system with given ID."""
-    cache = Path(output_dir) / f"pv_and_weather_system_id={system_id}.parquet"
+    cache_dir = fu.absolute_path(output_dir)
+    cache = cache_dir / f"pv_and_weather_system_id={system_id}.parquet"
     if cache.exists():
         df = fu.get_file(cache)
         df.ftr.set_const({ftr: val for (ftr, val) in Pvdaq.meta(system_id).items() if ftr not in Pvdaq.DATA_COLUMNS})
@@ -490,6 +486,7 @@ def get_features(
     return df.ftr.get(features)
 
 if __name__ == "__main__":
+    """Testing space for data requests"""
     #df = pd.read_csv("live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv")
     #print(df.info())
     #print(df.ftr.features)
