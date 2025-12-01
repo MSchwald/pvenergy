@@ -8,7 +8,17 @@ import pandas as pd
 import re
 from natsort import natsorted
 
+
+BASE_DIR = Path(__file__).resolve().parent
+
 s3_fs = s3fs.S3FileSystem(anon=True)
+
+def absolute_path(path: str | Path) -> Path:
+    if isinstance(path, str):
+        p = Path(path)
+    if not p.is_absolute():
+        p = BASE_DIR / p
+    return p.resolve()
 
 def fs_from_path(path: str) -> object:
     """
@@ -16,10 +26,11 @@ def fs_from_path(path: str) -> object:
     where fs is either a local Path or an s3 fileserver.
     Could also be extended to http or others.
     """
-    if Path(path).exists():
-        return Path(path)
     if path.startswith("s3://"):
         return s3_fs
+    p = absolute_path(path)
+    if p.exists():
+        return p
     raise ValueError(f"Unknown path type: {path}")
 
 def read_csv_or_parquet(file: str) -> pd.DataFrame:
@@ -42,19 +53,20 @@ def get_file(file: str, cache: str | None = None) -> pd.DataFrame:
     If a cache path is provided, remote files are
     only requested if not already cached.
     """
-    if Path(file).exists():
-        return read_csv_or_parquet(file)
+    path = absolute_path(file)
+    if path.exists():
+        return read_csv_or_parquet(path)
     if cache is not None:
-        local_path = Path(cache)
+        local_path = absolute_path(cache)
         if local_path.exists():
             return read_csv_or_parquet(cache)
         else:
             local_path.parent.mkdir(parents = True, exist_ok = True)
     df = read_csv_or_parquet(file)
     if cache is not None:
-        if Path(cache).suffix == ".csv":
+        if local_path.suffix == ".csv":
             df.to_csv(cache, index = False)
-        elif Path(cache).suffix == ".parquet":
+        elif local_path.suffix == ".parquet":
             df.to_parquet(cache, index = False)
     return df
 
