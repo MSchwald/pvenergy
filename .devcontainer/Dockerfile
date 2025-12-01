@@ -7,8 +7,9 @@ ARG NB_GID=1000
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         sudo \
-        libgomp1 && \
-    apt-get clean && \
+        tree \
+        libgomp1 \
+    && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${NB_GID} ${NB_USER} || true && \
