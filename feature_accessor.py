@@ -5,10 +5,12 @@ from typing import Dict, Any, Union
 from feature_catalog import Feature, Source
 from feature_processing import FeatureProcessing as fp
 from pathlib import Path
+import file_utilities as fu
 
 # alias for typing, allowing a single or a list of features
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
+BASE_DIR = Path(__file__).resolve().parent
 
 @register_dataframe_accessor("ftr")
 class FeatureAccessor:
@@ -123,6 +125,7 @@ class FeatureAccessor:
         return df
 
     def to_csv(self, path: Path, feature: FeatureList | None = None, index = True):
+        path = fu.absolute_path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         if feature is None:
             feature = [ftr for ftr in self.features if ftr.name != self._df.index.name]
