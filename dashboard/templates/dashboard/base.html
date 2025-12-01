@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}PV Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}">
+</head>
+<body>
+    <h1>PV Dashboard</h1>
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="{% static 'dashboard/dashboard_api.js' %}"></script>
+</body>
+</html>

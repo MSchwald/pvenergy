@@ -1,0 +1,7 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+    {% for id, data in results.items %}
+        {% include "dashboard/_system_block.html" with id=id data=data %}
+    {% endfor %}
+{% endblock %}
