@@ -11,6 +11,8 @@ import pytz
 from timezonefinder import TimezoneFinder
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+
 class FeatureProcessing:
     ALL_FEATURES: tuple[Feature] = tuple(
         feature for feature in vars(F).values() if isinstance(feature, Feature)
@@ -123,6 +125,8 @@ class FeatureProcessing:
                 tz = cls.tf.timezone_at(lat = api.get_const(F.LATITUDE),
                                           lng = api.get_const(F.LONGITUDE))    
                 return tz    
+            case F.UTC_OFFSET:
+                return pytz.timezone(api.get_const(F.TIME_ZONE)).utcoffset(pd.Timestamp("2025-01-01")).total_seconds() / 3600
             case F.LOCALIZED_TIME:
                 tz = pytz.timezone(api.get_const(F.TIME_ZONE))
                 time_series = pd.to_datetime(api.get(F.TIME))
@@ -244,7 +248,10 @@ class FeatureProcessing:
         if not results:
             return np.nan, np.nan
         results_df = pd.DataFrame(results).set_index(F.YEAR.name).sort_index()
-        results_df.ftr.to_csv(Path("parameter") / "dcp0_gamma_per_year" / f"{api.get_const(F.SYSTEM_ID)}.csv")
+        
+        # saving is still bugged (only saves index)
+        # results_df.ftr.to_csv(BASE_DIR / "parameter" / "dcp0_gamma_per_year" / f"{api.get_const(F.SYSTEM_ID)}.csv")
+        
         dcp0 = results_df['annual_dcp0'].mean()
         gamma = results_df['annual_gamma'].mean()
         return dcp0, gamma
