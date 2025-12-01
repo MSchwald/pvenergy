@@ -1,7 +1,6 @@
 # data analysis
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # machine learning
 import sklearn
@@ -19,13 +18,17 @@ from feature_catalog import Feature
 from feature_processing import FeatureProcessing as fp
 
 # python basics
+import sys
 from pathlib import Path
 from typing import Union, Callable
 from tqdm import tqdm
 from dataclasses import dataclass
 import joblib
+import file_utilities as fu
 
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
+
+BASE_DIR = Path(__file__).resolve().parent
 
 class Scaler:
     STANDARD = sklearn.preprocessing.StandardScaler
@@ -49,7 +52,7 @@ class EvaluationMethod:
         return self._result
     def print_result(self):
         if self._result is None:
-            print("Method {self.name} has not been evaluated on test data yet.")
+            print(f"Method {self.name} has not been evaluated on test data yet.")
             return 
         print(self.name, self._result)
         
@@ -152,7 +155,7 @@ class Model:
         if self._trained_model is None:
             raise RuntimeError(f"Model {self.name} has not been trained yet.")
         X_test_scaled = self.apply_scaler(X_test)
-        return self._trained_model.predict(X_test_scaled)
+        return pd.Series(self._trained_model.predict(X_test_scaled), index = X_test.index)
 
     def evaluate(self, X_test, y_test, y_pred):
         result_list = []
@@ -164,13 +167,17 @@ class Model:
         return results
 
     def save(self, file_name: str):
-        path = Path("trained_models") / Path(file_name + ".joblib")
+        path = BASE_DIR / "trained_models" / f"{file_name}.joblib"
         path.parent.mkdir(parents = True, exist_ok = True)
         joblib.dump(self, path, compress = 3)
 
     @classmethod
     def load(cls, file_name: str):
-        path = Path("trained_models") / Path(file_name + ".joblib")
+        if '__main__' in sys.modules:
+            sys.modules['__main__'].Model = cls
+            sys.modules['__main__'].EvaluationMethod = EvaluationMethod
+            sys.modules['__main__'].EVALUATIONS = EVALUATIONS
+        path = BASE_DIR / "trained_models" / f"{file_name}.joblib"
         return joblib.load(path)
 
 class ML_MODELS:
@@ -243,7 +250,13 @@ class ML_MODELS:
     )
 
 class Pipeline:
+
     _system_constants: pd.DataFrame | None = None
+    TRAINING_IDS = [
+        id for id in Pvdaq.filter_systems(
+            metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]
+        ) if id in Pvdaq.get_good_data_system_ids() and not id in (50, 51, 1200, 1201, 1202, 1203, 1204, 1283, 1403, 1420) and id < 1422
+    ]
 
     @classmethod
     def get_training_data(cls,
@@ -257,8 +270,10 @@ class Pipeline:
         use_cached_training_data: bool = True
     ) -> pd.DataFrame:
 
-        if training_data_cache is not None and Path(training_data_cache).exists() and use_cached_training_data:
-            return pd.read_parquet(training_data_cache)
+        if training_data_cache is not None and use_cached_training_data:
+            training_data_cache = fu.absolute_path(training_data_cache)
+            if training_data_cache.exists():
+                return pd.read_parquet(training_data_cache)
             #df_full.set_index(F.TIME.name)
         else:
             # Use some already calculated constant features to save time
@@ -275,7 +290,6 @@ class Pipeline:
                         df.ftr.set_const({ftr: system_constants.loc[system_id, ftr.name]})
                 df = df.ftr.get(features)
                 # Clean up data for each system individually
-                df.ftr.get([F.LOCALIZED_TIME, F.PVLIB_CLEAR_SKY_POA, F.PVLIB_POA_IRRADIANCE]).to_csv("test.csv")
                 df = df.ftr.clip(clip_features)
                 df = df.ftr.filter(filter_features)
                 df = df.ftr.dropna(features)
@@ -292,13 +306,13 @@ class Pipeline:
         """Calculate relevant system constants and cache the result to save time."""
         if cls._system_constants is not None:
             return cls._system_constants
-        constant_file = Path("system_constants.csv")
+        constant_file = BASE_DIR / "system_constants.csv"
         if constant_file.exists():
             df = pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
             cls._system_constants = df
             return df
         
-        good_ids = Pvdaq.get_good_data_system_ids()
+        good_ids = cls.TRAINING_IDS
         ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
         constant_features = [F.DCP0, F.GAMMA, F.FAIMAN_U0, F.FAIMAN_U1]
         system_constants = pd.DataFrame(data = np.nan, index = ids, columns = [ftr.name for ftr in constant_features])
@@ -329,6 +343,43 @@ class Pipeline:
         print(f"  {X_test.shape[0]} samples to testing data.")
         return X_train, X_test, y_train, y_test
 
+    @classmethod
+    def weather_forecast(cls, system_id: int) -> pd.DataFrame:
+        meta = {ftr: val for (ftr, val) in Pvdaq.meta(system_id).items() if ftr not in Pvdaq.DATA_COLUMNS}
+        df = OpenMeteo.get_forecast(meta[F.LATITUDE], meta[F.LONGITUDE])
+        df.reset_index()
+        df.ftr.set_const(meta)
+        df.insert(
+            0,
+            F.TIME.name,
+            (df.ftr.get(F.UTC_TIME) + pd.Timedelta(
+                    hours = df.ftr.get_const(F.UTC_OFFSET)
+                )
+            ).dt.tz_localize(None)
+        )
+        df = df.set_index(F.TIME.name)
+        system_constants = {fp.FEATURE_FROM_NAME[name]: val for name,val in cls.get_system_constants().loc[system_id].to_dict().items()}
+        meta.update(system_constants)
+        df.ftr.set_const(meta)
+        return df
+
+    @classmethod
+    def predict(cls, model: Model | list[Model], df: pd.DataFrame) -> pd.DataFrame:
+        if isinstance(model, Model):
+            model = [model]
+        untrained = [m for m in model if m._trained_model is None]
+        if untrained:
+            raise RuntimeError(f"Models {untrained} have not been trained yet.")
+        results = []
+        for m in model:
+            X = df.ftr.get([ftr for ftr in m._training_features if ftr != F.TIME])
+            sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
+            y = pd.Series(0, index=X.index, dtype=float)
+            # Use the ML model to predict when sunny, else return 0
+            y.loc[sunny] = m.predict(X.loc[sunny])
+            y = pd.Series(data=y, index=X.index, name = m.name)
+            results.append(y)        
+        return pd.concat(results, axis = 1)
 
     @classmethod
     def fleet_analysis(cls,
@@ -391,7 +442,7 @@ class Pipeline:
     @classmethod
     def individual_analysis(cls, system_ids: list[int],  *args, training_data_cache_dir: str | None = None, **kwargs):
         if training_data_cache_dir is not None:
-            local_dir = Path(training_data_cache_dir)
+            local_dir = fu.absolute_path(training_data_cache_dir)
             local_dir.mkdir(exist_ok = True)
         results = []
         for id in system_ids:
@@ -407,30 +458,12 @@ class Pipeline:
         df.index.name = F.SYSTEM_ID.name
         return df
 
-    @classmethod
-    def forecast(cls, model: Model, system_id: int):
-        if model._trained_model is None:
-            raise RuntimeError(f"Model {model.name} has not been trained yet.")
-        cf = cls.get_system_constants()
-        system_constants = {fp.FEATURE_FROM_NAME[col]: cf.loc[system_id, col] for col in cf.columns}
-        
-        df = OpenMeteo.system_forecast(system_id)        
-        df.ftr.set_const(system_constants)
-
-        X = df.ftr.get([ftr for ftr in model._training_features if ftr != F.TIME])
-        # Use the ML model to predict when sunny, else return 0
-        sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
-        y = pd.Series(0, index=X.index, dtype=float)
-        y.loc[sunny] = model.predict(X.loc[sunny])
-        y = pd.DataFrame(data=y, columns=[model._target_feature], index=X.index)
-        return pd.concat([X,y], axis = 1)
-
 if __name__ == "__main__":
     """Testing space for the pipeline"""
+
     #print(Pipeline.get_system_constants())
     # Chooses all system ids where all important features are recorded to predict the default target feature PVDAQ_DC_POWER
-    good_ids = Pvdaq.get_good_data_system_ids()
-    ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
+
     # Current Training features for the ML models
     features: list[Feature] = [
         F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
@@ -441,23 +474,23 @@ if __name__ == "__main__":
     ]
     
     # Choice of model to train
-    ml_model = ML_MODELS.XGBOOST
+    for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]:
+    #ml_model = ML_MODELS.XGBOOST
     #RANDOM_FOREST, XGBOOST, LIGHTGBM
-
-    res = Pipeline.fleet_analysis(
-        system_ids = ids,
-        training_features = features,
-        target_feature = F.PVDAQ_DC_POWER,
-        clip_features = {F.PVDAQ_DC_POWER: (0, None)},
-        filter_features = {F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)},
-        ml_model = ml_model,
-        file_limit = None,
-        mute_tqdm = False,
-        training_data_cache = "training_data/full_training_data.parquet",
-        hyper_parameter_search = False,
-        use_cached_training_data = True,
-        save_model_name = f"{ml_model.name}_all_ids"
-    )
+        """Pipeline.fleet_analysis(
+            system_ids = Pipeline.TRAINING_IDS,
+            training_features = features,
+            target_feature = F.PVDAQ_DC_POWER,
+            clip_features = {F.PVDAQ_DC_POWER: (0, None)},
+            filter_features = {F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)},
+            ml_model = ml_model,
+            file_limit = None,
+            mute_tqdm = False,
+            training_data_cache = "training_data/full_training_data.parquet",
+            hyper_parameter_search = False,
+            use_cached_training_data = True,
+            save_model_name = ml_model.name
+        )"""
 
     """res = Pipeline.individual_analysis(
         system_ids = ids,
@@ -473,9 +506,20 @@ if __name__ == "__main__":
         use_cached_training_data = True,
         save_model_name = None
     )"""
+    df = Pipeline.weather_forecast(2)
+    
     #print(res)
-    m = Model.load("xgboost_all_ids")
-    print(Pipeline.forecast(m, 2))
+    
+    m = Model.load(ML_MODELS.XGBOOST.name)
+    #m._training_features = features
+    #print([ftr.is_constant for ftr in m._training_features if ftr != F.TIME])
+    #print(df.ftr.get_const(F.TIME_ZONE))
+    #print(df.ftr.get(lst))
+    #print(df.ftr.get([ftr for ftr in m._training_features if ftr != F.TIME]))
+    #print(df.ftr.get_const())
+    print(Pipeline.predict(m, df))
+
+    #print(m._evaluation_results)
     #df = pd.read_parquet("training_data/full_training_data.parquet")
     #print(df.info())
     #df = df.ftr.filter({F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)})
