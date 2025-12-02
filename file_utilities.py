@@ -1,7 +1,6 @@
 from __future__ import annotations
 from pathlib import Path
 from tqdm import tqdm
-from importlib_metadata import metadata
 import s3fs
 import pyarrow.dataset as ds
 import pandas as pd

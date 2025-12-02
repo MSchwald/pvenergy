@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Any
 import pandas as pd
 from enum import Enum
-import numpy as np
 
 class Source(Enum):
     """Indicates if a feature gets calculated or requested from an external source"""

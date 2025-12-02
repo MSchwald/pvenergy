@@ -6,9 +6,7 @@ import requests
 from apidata import NSRDB_API_KEY, EMAIL # personal data not to be shared in repository
 from io import StringIO
 from tqdm import tqdm
-from importlib_metadata import metadata
 
-from pyarrow.dataset import FileSystemDatasetFactory
 import pyarrow.dataset as ds
 
 from feature_catalog import FeatureCatalog as F
@@ -18,9 +16,7 @@ import pandas as pd
 from typing import Any, Union
 import file_utilities as fu
 import re
-from dataclasses import dataclass
 
-from timeit import timeit
 from timezonefinder import TimezoneFinder
 from datetime import datetime, timedelta
 
