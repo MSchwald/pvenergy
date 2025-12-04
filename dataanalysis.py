@@ -345,7 +345,7 @@ class Pipeline:
 
     @classmethod
     def weather_forecast(cls, system_id: int) -> pd.DataFrame:
-        meta = {ftr: val for (ftr, val) in Pvdaq.meta(system_id).items() if ftr not in Pvdaq.DATA_COLUMNS}
+        meta = Pvdaq.meta(system_id)
         df = OpenMeteo.get_forecast(meta[F.LATITUDE], meta[F.LONGITUDE])
         df.reset_index()
         df.ftr.set_const(meta)

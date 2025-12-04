@@ -43,10 +43,13 @@ class Pvdaq:
     }
     DATA_COLUMN_PREFIXES = list(DATA_COLUMN_PREFIX_MAP.keys())
     DATA_COLUMNS = list(DATA_COLUMN_PREFIX_MAP.values())
+    DATA_COLUMNS_NAMES = [ftr.name for ftr in DATA_COLUMNS]
 
     LOCAL_DIR = BASE_DIR / "pvdata"
     METADATA_FILE = LOCAL_DIR / "metadata.csv"
+    METRIC_FILE = LOCAL_DIR / "metric_ids.csv"
 
+    #Cache for PVDAQ metadata and system constants
     _metadata = None
     _system_ids = None
     _metrics = None
@@ -59,16 +62,17 @@ class Pvdaq:
         if cls._metadata is not None:
             return cls._metadata
         if cls.METADATA_FILE.exists():
-            meta_df = pd.read_csv(cls.METADATA_FILE, index_col = F.SYSTEM_ID.name)
-            meta_df = meta_df.ftr.get()
-            cls._metadata = meta_df
-            return meta_df
+            metadata_df = pd.read_csv(cls.METADATA_FILE, index_col = F.SYSTEM_ID.name)
+            metadata_df = metadata_df.ftr.get()
+            cls._metadata = metadata_df
+            return metadata_df
 
+        print("Loading PVDAQ metadata")
         prefix = cls.url + "/parquet/"
         data = {}
         #load metadata files
         for directory in ("mount", "site", "system"):
-            data[directory] = fu.concat_files(prefix + directory, "parquet")
+            data[directory] = fu.concat_files(prefix + directory, "parquet", mute_tqdm = True)
 
         # merge metadata files
         metadata_df = (
@@ -78,28 +82,16 @@ class Pvdaq:
         )
         metadata_df = metadata_df.rename(columns = cls.META_COLUMN_NAME_MAP)
         metadata_df = metadata_df.set_index(F.SYSTEM_ID.name)
-        metadata_df = metadata_df.ftr.get()
 
-        # System no. 4901 has two different sets of recorded metadata, hence we prefer to exclude it for now.
-        cls._system_ids = tuple(id for id in metadata_df.index if id != 4901)
-
-        new_columns = metadata_df.columns.tolist() + [ftr.name for ftr in cls.DATA_COLUMNS]
-        metadata_df = metadata_df.reindex(columns=new_columns, fill_value="")
-
-        for id in cls._system_ids:
+        for id in [id for id in metadata_df.index if id != 4901]: # System no. 4901 has two rows of metadata
             for ftr in (F.LATITUDE, F.LONGITUDE): # For some systems the GPS coordinates are off by a factor 1000
                 val = metadata_df.loc[id, ftr.name]
                 if pd.notna(val) and abs(float(val)) >= 1000:
                     metadata_df.loc[id, ftr.name] = float(val) / 1000
-        metric_df = cls.get_metrics()
-        for id in cls._system_ids:
-            for prefix in cls.DATA_COLUMN_PREFIXES:
-                metadata_df.at[id, cls.DATA_COLUMN_PREFIX_MAP[prefix].name] = cls._first_with(
-                    prefix, metric_df[metric_df["system_id"]==id]["standard_name"]
-                )        
-        metadata_df.ftr.to_csv(cls.METADATA_FILE)
-        cls._metadata = metadata_df
-        return metadata_df
+        metadata_df.to_csv(cls.METADATA_FILE, index = True)
+
+        cls._metadata = metadata_df.ftr.get() # delete non-feature columns
+        return cls._metadata      
 
     @classmethod
     def meta(cls, system_id: int) -> dict[Feature, Any]:
@@ -116,40 +108,42 @@ class Pvdaq:
     
     @classmethod
     def get_good_data_system_ids(cls) -> tuple[int]:
+        """System 4901 has two different sets of recorded metadata, hence we prefer to exclude it for now."""
         return tuple(id for id in cls.get_system_ids() if id != 4901)
 
     @classmethod
     def get_metrics(cls) -> pd.DataFrame:
         """Names, description, units and comments on the metrics recorded by PVDAQ pv systems"""
-        return fu.concat_files(
+        if cls._metrics is not None:
+            return cls._metrics
+        metric_df = fu.concat_files(
             directory = cls.url + "/parquet/metrics",
             file_format ="parquet",
             cache_directory = cls.LOCAL_DIR
         )
-
-    @staticmethod
-    def _first_with(prefix: str, string_list: list[str]) -> str:
-        all_with = [s for s in string_list if s.lower().startswith(prefix)]
-        if all_with:
-            return all_with[0]
-        return None
+        metric_df.to_csv(cls.METRIC_FILE, index = False)
+        ids = cls.get_metadata().index
+        cls._metrics = pd.DataFrame(index = ids, columns = cls.DATA_COLUMNS_NAMES)
+        cls._metric_ids = pd.DataFrame(index = ids, columns = cls.DATA_COLUMNS_NAMES, dtype = "Int64")
+        cls._metrics.index.name = F.SYSTEM_ID.name
+        for id in ids:
+            for prefix in cls.DATA_COLUMN_PREFIXES:
+                df = metric_df[metric_df["system_id"] == id]
+                mask = df["standard_name"].str.startswith(prefix)
+                if mask.any():
+                    row = metric_df.loc[df.index[mask][0]]
+                    cls._metrics.at[id, cls.DATA_COLUMN_PREFIX_MAP[prefix].name] = row["standard_name"]
+                    cls._metric_ids.at[id, cls.DATA_COLUMN_PREFIX_MAP[prefix].name] = int(row["metric_id"])
+        return cls._metrics
 
     @classmethod
     def get_metric_ids(cls) -> pd.DataFrame:
         """
-        Translate the standard column names in PVDAQ csv files
-        to their ids at their end, as they are used as
-        column names in PVDAQ parquet format.
+        Translate the standard column names in PVDAQ csv files to their ids at their end,
+        as they are used as column names in PVDAQ parquet format.
         """
-        file = cls.LOCAL_DIR / "metric_ids.csv"
-        if not file.exists():
-            meta = cls.get_metadata()
-            metric_ids = pd.DataFrame(index = meta.index)
-            for ftr in cls.DATA_COLUMNS:
-                metric_ids[ftr.name] = meta[ftr.name].str.extract(r"(\d+)$", expand = False)
-            metric_ids.to_csv(file, index = True)
-        metric_ids = pd.read_csv(file, dtype = "Int64", index_col = F.SYSTEM_ID.name)
-        return metric_ids
+        cls.get_metrics()
+        return cls._metric_ids
 
     @classmethod
     def filter_systems(cls, metacols: FeatureList = None) -> list[int]:
@@ -199,21 +193,20 @@ class Pvdaq:
         mute_tqdm: bool = False
     ) -> pd.DataFrame:
         """
-        Load dataset of a pvdaq pv system with a given id
-        containing DC power data for all recorded times.
+        Load dataset of a pvdaq pv system with a given id containing measured DC power data.
         """
-        meta = cls.meta(system_id)
-        use_columns = [meta[ftr] for ftr in cls.DATA_COLUMNS if not pd.isna(meta[ftr])]
-        column_rename_map = {meta[ftr]: ftr.name for ftr in cls.DATA_COLUMNS if not pd.isna(meta[ftr])}
+        metric_names = cls.get_metrics().loc[system_id].to_dict()
+        metric_ids = cls.get_metric_ids().loc[system_id].to_dict()
+        measured_features = [ftr for ftr in cls.DATA_COLUMNS if not pd.isna(metric_names[ftr.name])]
+        column_rename_map = {metric_names[ftr.name]: ftr.name for ftr in measured_features}
         column_rename_map["measured_on"] = F.TIME.name
         use_columns = list(column_rename_map.keys())
         parquet_filter = None
         if file_format == "parquet":
             # Replace all column names with the ids they end with (except for the time column)
-            column_id_dict = {col: int(re.search(r"(\d+)$", col).group(1)) for col in use_columns if col != "measured_on"}
-            ids = list(column_id_dict.values())
-            new_rename_map = {str(column_id_dict[col]): column_rename_map[col] for col in column_rename_map.keys() if col != "measured_on"}
-            new_rename_map["measured_on"] = column_rename_map["measured_on"]
+            ids = [metric_ids[ftr.name] for ftr in measured_features]
+            new_rename_map = {str(metric_ids[ftr.name]): ftr.name for ftr in measured_features}
+            new_rename_map["measured_on"] = F.TIME.name
             column_rename_map = new_rename_map
             use_columns = ['measured_on', 'metric_id', 'value']
             parquet_filter = ds.field("metric_id").isin(ids)
@@ -223,9 +216,7 @@ class Pvdaq:
         ).rename(columns = column_rename_map)
         df = df.set_index(F.TIME.name)
         df.index = pd.to_datetime(df.index)
-
-        # Keep metadata except the original column names. They are irrelevant for further data analysis.
-        df.ftr.set_const({ftr: val for (ftr, val) in meta.items() if ftr not in cls.DATA_COLUMNS})
+        df.ftr.set_const(cls.meta(system_id)) # Keep PVDAQ metadata
         return df
 
 class Nsrdb:
@@ -444,7 +435,7 @@ def request_data(
     cache = cache_dir / f"pv_and_weather_system_id={system_id}.parquet"
     if cache.exists():
         df = fu.get_file(cache)
-        df.ftr.set_const({ftr: val for (ftr, val) in Pvdaq.meta(system_id).items() if ftr not in Pvdaq.DATA_COLUMNS})
+        df.ftr.set_const(Pvdaq.meta(system_id))
         return df
     pv_data = Pvdaq.load_measured_features(system_id = system_id, file_limit = file_limit, mute_tqdm = mute_tqdm)
     meta = pv_data.ftr.get_const()
@@ -483,10 +474,12 @@ def get_features(
 
 if __name__ == "__main__":
     """Testing space for data requests"""
+    #df = Pvdaq.load_raw_data(2, file_format = "csv", file_limit = 10)
+    #print(df)
     #df = pd.read_csv("live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv")
     #print(df.info())
     #print(df.ftr.features)
     #meta = Pvdaq.meta(2)
     #lat, lon = meta[F.LATITUDE], meta[F.LONGITUDE]
     #print(OpenMeteo.get_forecast(lat, lon))
-    print(OpenMeteo.system_forecast(2))
+    #print(OpenMeteo.system_forecast(2))

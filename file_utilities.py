@@ -88,7 +88,7 @@ def concat_files(directory: str,
                 parquet_filter: list[tuple] | None = None,
                 parquet_pivot: tuple[str, str, str, str] | None = None, #index, columns, values, aggfunc
                 file_limit: int | None = None,
-                mute_tqdm: bool = True) -> pd.DataFrame:
+                mute_tqdm: bool = False) -> pd.DataFrame:
     """
     Load several csv or parquet files from a given local or remote directory,
     concat them and cache the result if a cache_directory is given.
