@@ -62,10 +62,9 @@ class Pvdaq:
         if cls._metadata is not None:
             return cls._metadata
         if cls.METADATA_FILE.exists():
-            metadata_df = pd.read_csv(cls.METADATA_FILE, index_col = F.SYSTEM_ID.name)
-            metadata_df = metadata_df.ftr.get()
-            cls._metadata = metadata_df
-            return metadata_df
+            metadata_df = pd.read_csv(cls.METADATA_FILE)
+            cls._metadata = metadata_df.ftr.get().set_index(F.SYSTEM_ID.name)
+            return cls._metadata
 
         print("Loading PVDAQ metadata")
         prefix = cls.url + "/parquet/"
@@ -81,7 +80,7 @@ class Pvdaq:
             .merge(data["mount"], on="system_id", how="outer")
         )
         metadata_df = metadata_df.rename(columns = cls.META_COLUMN_NAME_MAP)
-        metadata_df = metadata_df.set_index(F.SYSTEM_ID.name)
+        metadata_df = metadata_df.ftr.get().set_index(F.SYSTEM_ID.name)
 
         for id in [id for id in metadata_df.index if id != 4901]: # System no. 4901 has two rows of metadata
             for ftr in (F.LATITUDE, F.LONGITUDE): # For some systems the GPS coordinates are off by a factor 1000
@@ -90,7 +89,7 @@ class Pvdaq:
                     metadata_df.loc[id, ftr.name] = float(val) / 1000
         metadata_df.to_csv(cls.METADATA_FILE, index = True)
 
-        cls._metadata = metadata_df.ftr.get() # delete non-feature columns
+        cls._metadata = metadata_df
         return cls._metadata      
 
     @classmethod
@@ -98,7 +97,7 @@ class Pvdaq:
         """Shortcut to obtain the metadata of a single system as a dictionary."""
         meta_df = cls.get_metadata()
         row = meta_df.loc[system_id]
-        return {feature: row[feature.name] for feature in meta_df.ftr.features} 
+        return {feature: row[feature.name] for feature in meta_df.ftr.features if feature != F.SYSTEM_ID} 
 
     @classmethod
     def get_system_ids(cls) -> tuple[int]:
@@ -474,7 +473,5 @@ def get_features(
 
 if __name__ == "__main__":
     """Testing space for data requests"""
-    for id in Pvdaq.get_good_data_system_ids():
-        df = Pvdaq.load_measured_features(id)
-        print(df)
+
     #print(OpenMeteo.system_forecast(2))
