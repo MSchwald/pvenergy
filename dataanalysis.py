@@ -20,7 +20,7 @@ from feature_processing import FeatureProcessing as fp
 # python basics
 import sys
 from pathlib import Path
-from typing import Union, Callable
+from typing import Union, Callable, Any
 from tqdm import tqdm
 from dataclasses import dataclass
 import joblib
@@ -279,15 +279,14 @@ class Pipeline:
             # Use some already calculated constant features to save time
             system_constants = cls.get_system_constants().dropna(how = "any")
             cached_ids = system_constants.index.to_list()
-            cached_constant_features = [fp.FEATURE_FROM_NAME[col] for col in system_constants.columns]
+
             # Download pv and weather data and calculate requested features for the given pv systems
             dfs = []
             for system_id in tqdm(system_ids, desc=f"Loading PVDAQ and NSRDB data"):
                 tqdm.write(f"Loading data for system {system_id}")
                 df = data_request.request_data(system_id = system_id, file_limit = file_limit, mute_tqdm = mute_tqdm)
                 if system_id in cached_ids:
-                    for ftr in cached_constant_features:
-                        df.ftr.set_const({ftr: system_constants.loc[system_id, ftr.name]})
+                    df.ftr.set_const(cls.system_constants(system_id))
                 df = df.ftr.get(features)
                 # Clean up data for each system individually
                 df = df.ftr.clip(clip_features)
@@ -311,21 +310,26 @@ class Pipeline:
             df = pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
             cls._system_constants = df
             return df
-        
+        meta = Pvdaq.get_metadata()
+        META_COLUMNS = [fp.FEATURE_FROM_NAME[col] for col in meta.columns]
         good_ids = cls.TRAINING_IDS
         ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
-        constant_features = [F.DCP0, F.GAMMA, F.FAIMAN_U0, F.FAIMAN_U1]
+        constant_features = META_COLUMNS + [F.TIME_ZONE, F.UTC_OFFSET, F.DCP0, F.GAMMA, F.FAIMAN_U0, F.FAIMAN_U1]
         system_constants = pd.DataFrame(data = np.nan, index = ids, columns = [ftr.name for ftr in constant_features])
         system_constants.index.name = F.SYSTEM_ID.name
         for id in tqdm(ids, desc="Calculating system constants..."):
             tqdm.write(f"for system {id}")
             df = request_data(id)
             for ftr in constant_features:
-                system_constants.loc[id, ftr.name] = df.ftr.get_const(ftr)     
-
+                system_constants.loc[id, ftr.name] = df.ftr.get_const(ftr)
+            
         system_constants.to_csv(constant_file, index = True)
         cls._system_constants = system_constants
         return system_constants
+    
+    @classmethod
+    def system_constants(cls, system_id: int) -> dict[Feature, Any]:
+        return {fp.FEATURE_FROM_NAME[name]: value for name, value in cls.get_system_constants().loc[system_id].to_dict().items()}
 
     @staticmethod
     def train_test_split(
@@ -358,9 +362,7 @@ class Pipeline:
             ).dt.tz_localize(None)
         )
         df = df.set_index(F.TIME.name)
-        system_constants = {fp.FEATURE_FROM_NAME[name]: val for name,val in cls.get_system_constants().loc[system_id].to_dict().items()}
-        meta.update(system_constants)
-        df.ftr.set_const(meta)
+        df.ftr.set_const(cls.system_constants(system_id))
         return df
 
     @classmethod
@@ -460,6 +462,12 @@ class Pipeline:
 
 if __name__ == "__main__":
     """Testing space for the pipeline"""
+    print(Pipeline.get_system_constants().loc[2].to_frame().T)
+    #print(df.join(Pvdaq.get_metadata()))
+
+    """print(Pipeline.get_system_constants())
+    for id in Pipeline.TRAINING_IDS:
+        print(Pvdaq.load_measured_features(id))"""
 
     #print(Pipeline.get_system_constants())
     # Chooses all system ids where all important features are recorded to predict the default target feature PVDAQ_DC_POWER
@@ -506,18 +514,18 @@ if __name__ == "__main__":
         use_cached_training_data = True,
         save_model_name = None
     )"""
-    df = Pipeline.weather_forecast(2)
+    #df = Pipeline.weather_forecast(2)
     
     #print(res)
     
-    m = Model.load(ML_MODELS.XGBOOST.name)
+    #m = Model.load(ML_MODELS.XGBOOST.name)
     #m._training_features = features
     #print([ftr.is_constant for ftr in m._training_features if ftr != F.TIME])
     #print(df.ftr.get_const(F.TIME_ZONE))
     #print(df.ftr.get(lst))
     #print(df.ftr.get([ftr for ftr in m._training_features if ftr != F.TIME]))
     #print(df.ftr.get_const())
-    print(Pipeline.predict(m, df))
+    #print(Pipeline.predict(m, df))
 
     #print(m._evaluation_results)
     #df = pd.read_parquet("training_data/full_training_data.parquet")
