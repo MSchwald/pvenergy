@@ -14,10 +14,10 @@ s3_fs = s3fs.S3FileSystem(anon=True)
 
 def absolute_path(path: str | Path) -> Path:
     if isinstance(path, str):
-        p = Path(path)
-    if not p.is_absolute():
-        p = BASE_DIR / p
-    return p.resolve()
+        path = Path(path)
+    if not path.is_absolute():
+        path = BASE_DIR / path
+    return path.resolve()
 
 def fs_from_path(path: str) -> object:
     """
@@ -69,7 +69,7 @@ def get_file(file: str, cache: str | None = None) -> pd.DataFrame:
             df.to_parquet(cache, index = False)
     return df
 
-def files_in(directory: str, file_format: str, sorted: bool = True) -> list:
+def files_in(directory: str, file_format: str, sorted: bool = True) -> list[str]:
     """lists all files in a local or remote directory (and subdirectories) of given format"""
     fs = fs_from_path(directory)
     if isinstance(fs, s3fs.S3FileSystem):
@@ -80,56 +80,36 @@ def files_in(directory: str, file_format: str, sorted: bool = True) -> list:
         return natsorted(files, key = lambda f: str(f))
     return files
 
-def concat_files(directory: str,
-                file_format: str,
-                cache_directory: str | None = None,
-                cache_single_files: bool = False,
-                use_columns: list | None = None,
-                parquet_filter: list[tuple] | None = None,
-                parquet_pivot: tuple[str, str, str, str] | None = None, #index, columns, values, aggfunc
-                file_limit: int | None = None,
-                mute_tqdm: bool = False) -> pd.DataFrame:
+def concat_filelist(
+    files: list[str],
+    file_format: str,
+    cache_file: str | None = None,
+    single_file_cache_dir: str | None = None,
+    use_columns: list | None = None,
+    parquet_filter: list[tuple] | None = None,
+    parquet_pivot: tuple[str, str, str, str] | None = None, #index, columns, values, aggfunc
+    mute_tqdm: bool = False
+) -> pd.DataFrame:
     """
     Load several csv or parquet files from a given local or remote directory,
     concat them and cache the result if a cache_directory is given.
     For loading parquet files, filter and pivot options can be specified.
     """
     if file_format not in ("parquet", "csv"):
-        raise ValueError(f"Unknown format {file_format}.")    
-    cache_file = None
-    files = files_in(directory, file_format)
-    N_files = len(files)
-    if file_limit is not None:
-        n_files = min(file_limit, N_files)
-        files = files[:n_files]
-    else:
-        n_files = N_files
-    base = Path(directory).name
-    if cache_directory is not None:
-        Path(cache_directory).mkdir(parents = True, exist_ok = True)
-        if not cache_single_files:
-            pattern = re.compile(rf"^{re.escape(base)}_{re.escape(file_format)}_(\d+)\.parquet$")
-            candidates = []
-            for file in Path(cache_directory).glob(f"{base}_{file_format}_*.parquet"):
-                match = pattern.match(file.name)
-                if match:
-                    n = int(match.group(1))
-                    if n <= n_files:
-                        candidates.append((n, file))
-            if candidates:
-                n_caches, cache_file_path = max(candidates, key = lambda pair: pair[0])
-                files = files[n_caches:]
-                cache_file = pd.read_parquet(cache_file_path)
-                if not files:
-                    return cache_file
+        raise ValueError(f"Unknown format {file_format}.")
+    if cache_file is not None:
+        cache_file = absolute_path(cache_file)
+        if cache_file.exists():
+            return get_file(cache_file)
+        cache_file.parent.mkdir(parents = True, exist_ok = True)
+    if single_file_cache_dir is not None:
+        single_file_cache_dir = absolute_path(single_file_cache_dir)
     dfs = []
-    if file_format == "csv":
-        if cache_file is not None:
-            dfs.append(cache_file)
-        for file in files if mute_tqdm else tqdm(files, desc = f"Loading {file_format} files from {directory}"):
+    if file_format == "csv" or single_file_cache_dir is not None:
+        for file in files if mute_tqdm else tqdm(files, desc = f"Loading {len(files)} {file_format} files"):
             if not mute_tqdm:
                 tqdm.write(f"Loading file {file}")
-            file_cache = str(Path(cache_directory) / (Path(file).stem + ".parquet")) if cache_single_files else None
+            file_cache = single_file_cache_dir / f"{Path(file).stem}.parquet" if single_file_cache_dir is not None else None
             df = get_file(file, cache = file_cache)
             if use_columns is not None:
                 df = df[[col for col in df.columns if col in use_columns]]
@@ -139,11 +119,12 @@ def concat_files(directory: str,
     else:
         # For parquet format we use pyarrow for multithreading, which makes it much faster
         if not mute_tqdm:
-            tqdm.write(f"Loading {len(files)} parquet files from {directory}")
+            tqdm.write(f"Loading {len(files)} parquet files")
+        fs = fs_from_path(files[0])
         dataset = ds.dataset(
             files,
-            format="parquet",
-            filesystem = fs_from_path(directory)
+            format = "parquet",
+            filesystem = fs
         )
         table = dataset.to_table(
             columns = use_columns,
@@ -160,8 +141,77 @@ def concat_files(directory: str,
             ).reset_index()
             full_df.columns.name = None
             full_df = full_df.rename(columns = {col: str(col) for col in full_df.columns})
-        if cache_file is not None:
-            full_df = pd.concat([cache_file, full_df], ignore_index = True)
-    if not cache_single_files and cache_directory is not None:
-        full_df.to_parquet(Path(cache_directory) / f"{base}_{file_format}_{n_files}.parquet", index = False)
+    if cache_file is not None:
+        full_df.to_parquet(cache_file, index = False)
+    return full_df
+
+def concat_files(
+    directory: str,
+    file_format: str,
+    cache_directory: str | None = None,
+    cache_single_files: bool = False,
+    use_columns: list | None = None,
+    parquet_filter: list[tuple] | None = None,
+    parquet_pivot: tuple[str, str, str, str] | None = None, #index, columns, values, aggfunc
+    file_limit: int | None = None,
+    mute_tqdm: bool = False
+) -> pd.DataFrame:
+    """
+    Load several csv or parquet files from a given local or remote directory,
+    concat them and cache the result if a cache_directory is given.
+    For loading parquet files, filter and pivot options can be specified.
+    """
+    path = None
+    base = f"{Path(directory).name}_{file_format}_"
+    if cache_directory is not None:
+        path = absolute_path(cache_directory)
+        path.mkdir(parents = True, exist_ok = True)
+    if file_limit is None:
+        if cache_directory is not None:
+            if (path / f"{base}full.parquet").exists():
+                return pd.read_parquet(path / f"{base}full.parquet")
+    files = files_in(directory, file_format)
+    N_files = len(files)
+    if file_limit is not None:
+        n_files = min(file_limit, N_files)
+        files = files[:n_files]
+    else:
+        n_files = N_files
+    if cache_single_files:
+        return concat_filelist(
+            files = files, file_format = file_format, use_columns = use_columns, single_file_cache_dir = path,
+            parquet_filter = parquet_filter, parquet_pivot = parquet_pivot, mute_tqdm = mute_tqdm
+        )
+    if path is not None:  
+        output_file = path / f"{base}full.parquet" if n_files == N_files else path / f"{base}{n_files}.parquet"
+        if output_file.exists():
+            return pd.read_parquet(output_file)
+    else:
+        output_file = None
+    cache_file = None
+    if path is not None:
+        pattern = re.compile(rf"^{re.escape(base)}(\d+)\.parquet$")
+        candidates = []
+        for file in path.glob(f"{base}*.parquet"):
+            match = pattern.match(file.name)
+            if match:
+                n = int(match.group(1))
+                if n <= n_files:
+                    candidates.append((n, file))
+        if candidates:
+            n_caches, cache_file_path = max(candidates, key = lambda pair: pair[0])
+            files = files[n_caches:]
+            cache_file = pd.read_parquet(cache_file_path)
+            if not files:
+                return cache_file
+    
+    full_df = concat_filelist(
+        files = files, file_format = file_format, use_columns = use_columns,
+        parquet_filter = parquet_filter, parquet_pivot = parquet_pivot, mute_tqdm = mute_tqdm
+    )
+    if cache_file is not None:
+        full_df = pd.concat([cache_file, full_df], ignore_index = True)
+    
+    if not cache_single_files and output_file is not None:
+        full_df.to_parquet(output_file, index = False)
     return full_df

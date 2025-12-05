@@ -151,7 +151,7 @@ class Pvdaq:
         Filter pvdaq systems based on metadata criteria.
         Returns a list of system IDs that meet the criteria.
         """
-        df = cls.get_metadata()
+        df = pd.concat([cls.get_metadata(), cls.get_metrics()], axis = 1)
         df = df.ftr.dropna(metacols, how="any")
         return list(df.index)
     
@@ -474,12 +474,7 @@ def get_features(
 
 if __name__ == "__main__":
     """Testing space for data requests"""
-    #df = Pvdaq.load_raw_data(2, file_format = "csv", file_limit = 10)
-    #print(df)
-    #df = pd.read_csv("live_weatherdata/openmeteo_lat=39.7214_lon=-105.0972.csv")
-    #print(df.info())
-    #print(df.ftr.features)
-    #meta = Pvdaq.meta(2)
-    #lat, lon = meta[F.LATITUDE], meta[F.LONGITUDE]
-    #print(OpenMeteo.get_forecast(lat, lon))
+    for id in Pvdaq.get_good_data_system_ids():
+        df = Pvdaq.load_measured_features(id)
+        print(df)
     #print(OpenMeteo.system_forecast(2))
