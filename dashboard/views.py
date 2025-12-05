@@ -1,10 +1,14 @@
 import sys
 from pathlib import Path
+import pandas as pd
 
 from dataanalysis import Pipeline, Model, ML_MODELS, EVALUATIONS, EvaluationMethod
-from data_request import Pvdaq
+#from data_request import Pvdaq
 from feature_catalog import FeatureCatalog as F
+from feature_catalog import Feature
+from feature_processing import FeatureProcessing as fp
 from plotting import Plot
+from typing import Any
 
 from django.shortcuts import render
 from django.conf import settings
@@ -15,24 +19,85 @@ from django.http import JsonResponse
 #m = Model.load("xgboost")
 
 cache = {}
-SYSTEM_IDS = Pipeline.TRAINING_IDS
-ml_models = []
+SYSTEM_IDS: tuple[int] = Pipeline.TRAINING_IDS
+ml_models: tuple[Model] = tuple()
+training_features: tuple[Feature] = tuple()
+
+def number_format(number: float | int | Any) -> str | Any:
+    if isinstance(number, pd.Timestamp):
+        return number.strftime('%X')
+    if not isinstance(number, (float, int)):
+        return number
+    s = str(number)
+    if "." not in s:
+        return s
+    _, mantissa = s.split(".")
+    if len(mantissa) <= 2:
+        return s
+    return f"{round(number, 2):.2f}"
+
+def feature_format(name: str) -> str:
+    if not isinstance(name, str):
+        return name
+    if not name in fp.ALL_FEATURE_NAMES:
+        return name.replace("_", " ").title()
+    return fp.FEATURE_FROM_NAME[name].display_name()
+
+def pd_styler(data: pd.DataFrame) -> str:
+    df = data.copy()
+    df.columns = [feature_format(col) for col in df.columns]
+    df.columns.name, df.index.name = feature_format(df.index.name), None
+    return df.style.format(
+        formatter=number_format
+    ).set_table_styles([
+        # head
+        {'selector': 'th', 'props': [
+            ('background-color', '#333'),
+            ('color', 'white'),
+            ('padding', '6px'),
+            ('text-align', 'center')
+        ]},
+        # cells
+        {'selector': 'td', 'props': [
+            ('padding', '6px'),
+            ('border', '1px solid #ddd')
+        ]},
+        # boundary & layout
+        {'selector': 'table', 'props': [
+            ('border-collapse', 'collapse'),
+            ('width', '100%')
+        ]},
+        # zebra strips
+        {'selector': 'tbody tr:nth-child(even)', 'props': [
+            ('background-color', "#D4D4D4")
+        ]},
+        {'selector': 'tbody tr:nth-child(odd)', 'props': [
+            ('background-color', 'white')
+        ]},
+    ]).format_index(number_format).to_html(escape=False)
 
 def static_url(file: Path) -> str:
     rel = file.relative_to(settings.STATICFILES_DIRS[0])
     return f"{settings.STATIC_URL}{rel.as_posix()}"
     
-def index(request):
+def individual_systems(request):
     results = {}
     for system_id in SYSTEM_IDS:
-        meta = {ftr.display_name_with_unit(): value for ftr,value in Pvdaq.meta(system_id).items() if not ftr in Pvdaq.DATA_COLUMNS}
+        metadata = pd_styler(Pipeline.get_system_constants().loc[system_id].to_frame().T)
         results[system_id] = {
-            "meta": meta
+            "metadata": metadata
         }
     return render(
         request,
-        "dashboard/index.html",
-        {"results": results}
+        "dashboard/individual_systems.html",
+        {"results": results, "active_page": "individual_systems"}
+    )
+
+def all_systems(request):
+    return render(
+        request,
+        "dashboard/all_systems.html",
+        {"metadata": pd_styler(Pipeline.get_system_constants()), "active_page": "all_systems"}
     )
 
 def plot_weather(request, system_id):
@@ -40,7 +105,8 @@ def plot_weather(request, system_id):
     df = Pipeline.weather_forecast(system_id)
     cache[system_id] = df
     weather_url = static_url(Plot.weather_forecast(df, system_id))
-    return JsonResponse({"weather_plot_url": weather_url})
+    weather_title = f"Forecast, starting from {df.index[0]} local time (UTC{df.ftr.get_const(F.UTC_OFFSET)})"
+    return JsonResponse({"weather_plot_url": weather_url, "weather_title": weather_title})
 
 def plot_features(request, system_id):
     if not system_id in cache.keys():
@@ -50,15 +116,30 @@ def plot_features(request, system_id):
 
 def load_models(request):
     global ml_models
+    global training_features
     if not ml_models:
         ml_models = tuple(Model.load(ml_model.name) for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST])
+        training_features = tuple(ftr for ftr in ml_models[0]._training_features if ftr != F.TIME)
         return JsonResponse({"status": "success", "message": "Models loaded"})
     else:
         return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})
 
+def integrate_timeseries(series: pd.Series) -> float:
+    """Numeric integration of a pandas DatetimeIndex via trapezoid rule."""
+    dt = series.index.to_series().diff().dt.total_seconds().fillna(0)
+    return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
+
 def plot_prediction(request, system_id):
-    df = cache[system_id]
+    df = cache[system_id].ftr.get(training_features)
     if ml_models is None:
         return JsonResponse({"error": "Models not loaded yet"}, status=400)
     Y = Pipeline.predict(ml_models, df)
-    return JsonResponse({"prediction_plot_url": static_url(Plot.predict(Y, system_id))})
+    energy = {ml_model.name: integrate_timeseries(Y[ml_model.name]) for ml_model in ml_models}
+    raw_data = pd.concat(
+        [df, Y], axis = 1
+    )
+    return JsonResponse({
+        "prediction_plot_url": static_url(Plot.predict(Y, system_id)),
+        "energy": energy,
+        "df_html": pd_styler(raw_data)
+    })
