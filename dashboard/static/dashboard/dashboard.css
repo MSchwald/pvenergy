@@ -2,3 +2,66 @@ body { font-family: Arial, sans-serif; margin: 20px; }
 h2 { margin-top: 40px; }
 .system-block { margin-bottom: 60px; }
 img { max-width: 800px; height: auto; display: block; margin-top: 20px; }
+div.two_columns {
+  width:100%;
+}
+div.two_columns div {
+  width:50%;  
+  float:left;
+}
+/* Sidebar */
+.sidebar {
+    height: 100%;            /* volle Höhe */
+    width: 220px;            /* Breite der Sidebar */
+    position: fixed;         /* fixiert links */
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding-top: 20px;
+    overflow-x: hidden;      /* falls Links länger werden */
+}
+
+.sidebar h1 {
+    color: #ffee00;      /* gleiche Farbe wie die Links */
+    font-size: 24px;     /* optional, anpassen */
+    margin: 0 0 20px 0;  /* Abstand nach unten */
+    padding-left: 16px;  /* passt zur Sidebar-Links-Padding */
+}
+
+.sidebar a {
+    display: block;
+    color: #f2f2f2;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+.sidebar a.active {
+    background-color: #04AA6D;
+}
+
+/* Content rechts neben der Sidebar */
+.content {
+    margin-left: 240px;      /* Platz lassen für Sidebar + etwas Abstand */
+    padding: 20px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
