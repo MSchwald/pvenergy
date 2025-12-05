@@ -12,12 +12,20 @@ BASE_DIR = Path(__file__).resolve().parent
 PLOT_DIR = BASE_DIR / "static" / "plots"
 PLOT_DIR.mkdir(parents=True, exist_ok=True)
 
+plt.rcParams["figure.autolayout"] = True
+plt.rcParams["font.size"] = 14
+plt.rcParams["axes.titlesize"] = 16
 
 class Plot:
-    def weather_forecast(df: pd.DataFrame, system_id: int) -> Path:
+    def weather_forecast(
+            df: pd.DataFrame,
+            system_id: int,
+            show_title: bool = False
+        ) -> Path:
         """Creates three plots of features from OpenMeteo weather forecast"""
-        fig, axes = plt.subplots(1, 3, figsize=(16,6), sharex=True)
-        fig.suptitle(f"Weather Forecast System {system_id}, starting from {df.index[0]} local time", fontsize=16)
+        fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
+        if show_title:
+            fig.suptitle(f"Weather Forecast System {system_id}, starting from {df.index[0]} local time", fontsize=16)
 
         # Solar radiation
         ax1 = axes[0]
@@ -62,10 +70,15 @@ class Plot:
 
         return file
     
-    def calculated_features(df: pd.DataFrame, system_id: int) -> Path:
+    def calculated_features(
+            df: pd.DataFrame,
+            system_id: int,
+            show_title: bool = False
+        ) -> Path:
         """Creates three plots of some intuitive features calculated from the weather forecast"""
-        fig, axes = plt.subplots(1, 3, figsize=(16,6), sharex=True)
-        fig.suptitle(f"Some Calculated Features For System {system_id}, starting from {df.index[0]} local time", fontsize=16)
+        fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
+        if show_title:
+            fig.suptitle(f"Some Calculated Features For System {system_id}, starting from {df.index[0]} local time", fontsize=16)
 
         # Solar radiation and geometry
         ax1 = axes[0]
@@ -115,10 +128,15 @@ class Plot:
 
         return file
     
-    def predict(Y: pd.DataFrame, system_id: int) -> Path:
+    def predict(
+            Y: pd.DataFrame,
+            system_id: int,
+            show_title: bool = False
+        ) -> Path:
         """Creates three plots of dcp prediction for all three trained models"""
-        fig, axes = plt.subplots(1, 3, figsize=(16,6), sharex=True)
-        fig.suptitle(f"DC Power prediction for System {system_id}, starting from {Y.index[0]} local time", fontsize=16)
+        fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
+        if show_title:
+            fig.suptitle(f"DC Power prediction for System {system_id}, starting from {Y.index[0]} local time", fontsize=16)
 
         for i in range(3):
             y = Y.iloc[:,i]

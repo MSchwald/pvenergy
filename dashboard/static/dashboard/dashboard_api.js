@@ -36,12 +36,15 @@ async function loadForecast(systemId) {
     const weatherData = await djangoRequest(`/weather/${systemId}/`, weatherContainerId, "Requesting weather forecast...");
     if (weatherData) {
         weatherContainer.innerHTML = `
+            <h3> ${weatherData.weather_title} </h3>
+            <h3> OpenMeteo weather forecast (solar radiation, air temperature, wind)</h3>
             <img src="${weatherData.weather_plot_url}" alt="Weather forecast for system ${systemId}">
         `;
     }
     const featuresData = await djangoRequest(`/features/${systemId}/`, featuresContainerId, "Calculating features...");
     if (featuresData) {
         featuresContainer.innerHTML = `
+            <h3> Some calculated features (solar geometry, cloudyness, cooling effects)</h3>
             <img src="${featuresData.features_plot_url}" alt="Calculated features for system ${systemId}">
         `;
     }
@@ -52,20 +55,24 @@ async function loadForecast(systemId) {
 
     const predictionData = await djangoRequest(`/prediction/${systemId}/`, predictionContainerId, "Predicting DC Power...");
     if (predictionData) {
-        predictionContainer.innerHTML = `
+        html = `
+            <h3> DC Power predicted by machine learning models </h3>
             <img src="${predictionData.prediction_plot_url}" alt="Predicted DC Power for system ${systemId}">
+            <h3> Resulting energy [kWh] (before inverters) </h3>
         `;
-    }
-}
-
-async function loadPrediction(systemId) {
-    const containerId = `predict-result-${systemId}`;
-    const data = await djangoRequest(`/predict/${systemId}/`, containerId, "Predicting DC power...");
-
-    if (data) {
-        document.getElementById(containerId).innerHTML = `
-            <pre>${JSON.stringify(data, null, 2)}</pre>
+        html += "<table><tbody>";
+        for (const [key, value] of Object.entries(predictionData.energy)) {
+            html += `<tr><td>${key}</td><td>${value.toFixed(2)}</td></tr>`;
+        }
+        html += `
+            </tbody></table>
+            <br>
+            <h3> Raw training features and predicted DC power </h3>
+            ${predictionData.df_html}
         `;
+
+        predictionContainer.innerHTML = html
+        console.log(predictionContainer.energy)
     }
 }
 
@@ -79,8 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
             switch(action) {
                 case "forecast":
                     loadForecast(systemId);
+                    btn.textContent = "Refresh system forecast";
                     break;
-                // Weitere Aktionen hier hinzufügen
                 default:
                     console.warn(`Unknown action: ${action}`);
             }
