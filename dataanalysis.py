@@ -97,8 +97,8 @@ class Model:
     # trained model gets saved here for further use
     _trained_model: object | None = None
     _fitted_scaler: object | None = None
-    _training_features: list[Feature] | None = None
-    _target_feature: Feature | None = None
+    _training_features: tuple[str] | None = None
+    _target_feature: str | None = None
     _evaluation_results: pd.Series | None = None
     
     def __str__(self):
@@ -147,15 +147,16 @@ class Model:
             model.random_state = 42
             model.fit(X_train_scaled, y_train)
             self._trained_model = model
-        self._training_features = X_train.ftr.features
-        self._target_feature = fp.FEATURE_FROM_NAME[y_train.name]
+        self._training_features = tuple(X_train.columns)
+        self._target_feature = y_train.name
         return self._trained_model
     
     def predict(self, X_test: pd.DataFrame) -> pd.Series:
         if self._trained_model is None:
             raise RuntimeError(f"Model {self.name} has not been trained yet.")
-        X_test_scaled = self.apply_scaler(X_test)
-        return pd.Series(self._trained_model.predict(X_test_scaled), index = X_test.index)
+        features = tuple(fp.FEATURE_FROM_NAME[name] for name in self._training_features)
+        X = self.apply_scaler(X_test.ftr.get(features))
+        return pd.Series(self._trained_model.predict(X), index = X.index)
 
     def evaluate(self, X_test, y_test, y_pred):
         result_list = []
@@ -373,13 +374,14 @@ class Pipeline:
         if untrained:
             raise RuntimeError(f"Models {untrained} have not been trained yet.")
         results = []
+        sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
+        df_sunny = df.loc[sunny]
+        df_sunny.ftr.set_const(df.ftr.get_const())
         for m in model:
-            X = df.ftr.get([ftr for ftr in m._training_features if ftr != F.TIME])
-            sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
-            y = pd.Series(0, index=X.index, dtype=float)
+            y = pd.Series(0, index=df.index, dtype=float)
             # Use the ML model to predict when sunny, else return 0
-            y.loc[sunny] = m.predict(X.loc[sunny])
-            y = pd.Series(data=y, index=X.index, name = m.name)
+            y.loc[sunny] = m.predict(df_sunny)
+            y = pd.Series(data=y, index=df.index, name = m.name)
             results.append(y)        
         return pd.concat(results, axis = 1)
 
@@ -462,7 +464,6 @@ class Pipeline:
 
 if __name__ == "__main__":
     """Testing space for the pipeline"""
-    print(Pipeline.get_system_constants().loc[2].to_frame().T)
     #print(df.join(Pvdaq.get_metadata()))
 
     """print(Pipeline.get_system_constants())
@@ -482,10 +483,10 @@ if __name__ == "__main__":
     ]
     
     # Choice of model to train
-    for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]:
+    #for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]:
     #ml_model = ML_MODELS.XGBOOST
     #RANDOM_FOREST, XGBOOST, LIGHTGBM
-        """Pipeline.fleet_analysis(
+    """Pipeline.fleet_analysis(
             system_ids = Pipeline.TRAINING_IDS,
             training_features = features,
             target_feature = F.PVDAQ_DC_POWER,
@@ -498,7 +499,7 @@ if __name__ == "__main__":
             hyper_parameter_search = False,
             use_cached_training_data = True,
             save_model_name = ml_model.name
-        )"""
+    )"""
 
     """res = Pipeline.individual_analysis(
         system_ids = ids,
@@ -518,7 +519,10 @@ if __name__ == "__main__":
     
     #print(res)
     
-    #m = Model.load(ML_MODELS.XGBOOST.name)
+    m = Model.load(ML_MODELS.XGBOOST.name)
+    df = Pipeline.weather_forecast(2)
+    #print(df.ftr.get_const())
+    print(Pipeline.predict(m, df))
     #m._training_features = features
     #print([ftr.is_constant for ftr in m._training_features if ftr != F.TIME])
     #print(df.ftr.get_const(F.TIME_ZONE))
