@@ -29,29 +29,29 @@ class Plot:
 
         # Solar radiation
         ax1 = axes[0]
-        ax1.plot(df.index, df[F.GHI.name], label=F.GHI.display_name())
-        ax1.plot(df.index, df[F.DNI.name], label=F.DNI.display_name())
-        ax1.plot(df.index, df[F.DHI.name], label=F.DHI.display_name())
+        ax1.plot(df.index, df[F.GHI.name], label=F.GHI.display_name)
+        ax1.plot(df.index, df[F.DNI.name], label=F.DNI.display_name)
+        ax1.plot(df.index, df[F.DHI.name], label=F.DHI.display_name)
         ax1.set_ylabel("Radiation [W/m²]")
         ax1.set_ylim(bottom=0)
         ax1.legend()
 
         # Temperature
         ax2 = axes[1]
-        ax2.plot(df.index, df[F.AIR_TEMP.name], color='tab:orange', label=F.AIR_TEMP.display_name())
+        ax2.plot(df.index, df[F.AIR_TEMP.name], color='tab:orange', label=F.AIR_TEMP.display_name)
         ax2.set_ylabel(f"Temperature [{F.AIR_TEMP.unit}]")
         #ax2.set_ylim(df[F.AIR_TEMP.name].min() - 2, df[F.AIR_TEMP.name].max() + 2)
         ax2.legend()
 
         # Wind (Speed und Direction)
         ax3 = axes[2]
-        ax3.plot(df.index, df[F.WIND_SPEED.name], color='tab:blue', label=F.WIND_SPEED.display_name())
-        ax3.set_ylabel(F.WIND_SPEED.display_name_with_unit(), color='tab:blue')
+        ax3.plot(df.index, df[F.WIND_SPEED.name], color='tab:blue', label=F.WIND_SPEED.display_name)
+        ax3.set_ylabel(F.WIND_SPEED.display_name_with_unit, color='tab:blue')
         ax3.tick_params(axis='y', labelcolor='tab:blue')
 
         ax_wind_dir = ax3.twinx()
-        ax_wind_dir.plot(df.index, df[F.WIND_DIRECTION.name], color='tab:green', label=F.WIND_DIRECTION.display_name())
-        ax_wind_dir.set_ylabel(F.WIND_DIRECTION.display_name_with_unit(), color='tab:green')
+        ax_wind_dir.plot(df.index, df[F.WIND_DIRECTION.name], color='tab:green', label=F.WIND_DIRECTION.display_name)
+        ax_wind_dir.set_ylabel(F.WIND_DIRECTION.display_name_with_unit, color='tab:green')
         ax_wind_dir.tick_params(axis='y', labelcolor='tab:green')
 
         # X axis (time)
@@ -82,34 +82,34 @@ class Plot:
 
         # Solar radiation and geometry
         ax1 = axes[0]
-        ax1.plot(df.index, df.ftr.get(F.PVLIB_POA_IRRADIANCE), color='tab:orange', label=F.PVLIB_POA_IRRADIANCE.display_name())
-        ax1.set_ylabel(F.PVLIB_POA_IRRADIANCE.display_name_with_unit(), color='tab:orange')
+        ax1.plot(df.index, df.ftr.get(F.PVLIB_POA_IRRADIANCE), color='tab:orange', label=F.PVLIB_POA_IRRADIANCE.display_name)
+        ax1.set_ylabel(F.PVLIB_POA_IRRADIANCE.display_name_with_unit, color='tab:orange')
         ax1.tick_params(axis='y', labelcolor='tab:orange')
         
         ax_angle = ax1.twinx()
-        ax_angle.plot(df.index, df.ftr.get(F.AOI), color='tab:blue', linestyle=':', label=F.AOI.display_name())
-        ax_angle.plot(df.index, df.ftr.get(F.RELATIVE_AZIMUTH), color='tab:blue', linestyle='--', label=F.RELATIVE_AZIMUTH.display_name())
+        ax_angle.plot(df.index, df.ftr.get(F.AOI), color='tab:blue', linestyle=':', label=F.AOI.display_name)
+        ax_angle.plot(df.index, df.ftr.get(F.RELATIVE_AZIMUTH), color='tab:blue', linestyle='--', label=F.RELATIVE_AZIMUTH.display_name)
         ax_angle.set_ylabel("Angle [°]", color='tab:blue')
         ax_angle.tick_params(axis='y', labelcolor='tab:blue')
         ax_angle.legend()
 
         # Cloudiness measurements
         ax2 = axes[1]
-        ax2.plot(df.index, df.ftr.get(F.DHI_PER_GHI), label=F.DHI_PER_GHI.display_name())
-        ax2.plot(df.index, df.ftr.get(F.CLEAR_SKY_RATIO), label=F.CLEAR_SKY_RATIO.display_name())
+        ax2.plot(df.index, df.ftr.get(F.DHI_PER_GHI), label=F.DHI_PER_GHI.display_name)
+        ax2.plot(df.index, df.ftr.get(F.CLEAR_SKY_RATIO), label=F.CLEAR_SKY_RATIO.display_name)
         ax2.set_ylabel(f"Ratio")
         ax2.set_ylim(bottom = 0, top = 1)
         ax2.legend()
 
         # Cooling and therming effects
         ax3 = axes[2]
-        ax3.plot(df.index, df.ftr.get(F.WIND_NORMAL_COMPONENT), color='tab:blue', label=F.WIND_NORMAL_COMPONENT.display_name())
-        ax3.set_ylabel(F.WIND_NORMAL_COMPONENT.display_name_with_unit(), color='tab:blue')
+        ax3.plot(df.index, df.ftr.get(F.WIND_NORMAL_COMPONENT), color='tab:blue', label=F.WIND_NORMAL_COMPONENT.display_name)
+        ax3.set_ylabel(F.WIND_NORMAL_COMPONENT.display_name_with_unit, color='tab:blue')
         ax3.tick_params(axis='y', labelcolor='tab:blue')
 
         ax_temp = ax3.twinx()
-        ax_temp.plot(df.index, df.ftr.get(F.GAMMA_TEMP_DIFFERENCE), color='tab:green', label=F.GAMMA_TEMP_DIFFERENCE.display_name_with_unit())
-        ax_temp.set_ylabel(F.GAMMA_TEMP_DIFFERENCE.display_name_with_unit(), color='tab:green')
+        ax_temp.plot(df.index, df.ftr.get(F.GAMMA_TEMP_DIFFERENCE), color='tab:green', label=F.GAMMA_TEMP_DIFFERENCE.display_name_with_unit)
+        ax_temp.set_ylabel(F.GAMMA_TEMP_DIFFERENCE.display_name_with_unit, color='tab:green')
         ax_temp.tick_params(axis='y', labelcolor='tab:green')
 
         # X axis (time)
