@@ -41,40 +41,23 @@ def feature_format(name: str) -> str:
         return name
     if not name in fp.ALL_FEATURE_NAMES:
         return name.replace("_", " ").title()
-    return fp.FEATURE_FROM_NAME[name].display_name()
+    return fp.FEATURE_FROM_NAME[name].display_name_with_unit
 
-def pd_styler(data: pd.DataFrame) -> str:
+def pd_styler(data: pd.DataFrame | pd.Series) -> str:
+    """Formats pandas objects with html code for displaying."""
     df = data.copy()
+    if isinstance(df, pd.Series):
+        df = df.to_frame().T
     df.columns = [feature_format(col) for col in df.columns]
     df.columns.name, df.index.name = feature_format(df.index.name), None
-    return df.style.format(
+    df_html = df.style.format(
         formatter=number_format
-    ).set_table_styles([
-        # head
-        {'selector': 'th', 'props': [
-            ('background-color', '#333'),
-            ('color', 'white'),
-            ('padding', '6px'),
-            ('text-align', 'center')
-        ]},
-        # cells
-        {'selector': 'td', 'props': [
-            ('padding', '6px'),
-            ('border', '1px solid #ddd')
-        ]},
-        # boundary & layout
-        {'selector': 'table', 'props': [
-            ('border-collapse', 'collapse'),
-            ('width', '100%')
-        ]},
-        # zebra strips
-        {'selector': 'tbody tr:nth-child(even)', 'props': [
-            ('background-color', "#D4D4D4")
-        ]},
-        {'selector': 'tbody tr:nth-child(odd)', 'props': [
-            ('background-color', 'white')
-        ]},
-    ]).format_index(number_format).to_html(escape=False)
+    ).format_index(
+        number_format
+    ).to_html(
+        escape=False, table_attributes='class="df-table"'
+    )
+    return f'<div class="table-container">{df_html}</div>'
 
 def static_url(file: Path) -> str:
     rel = file.relative_to(settings.STATICFILES_DIRS[0])
@@ -119,7 +102,7 @@ def load_models(request):
     global training_features
     if not ml_models:
         ml_models = tuple(Model.load(ml_model.name) for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST])
-        training_features = tuple(ftr for ftr in ml_models[0]._training_features if ftr != F.TIME)
+        training_features = tuple(fp.FEATURE_FROM_NAME[name] for name in ml_models[0]._training_features)
         return JsonResponse({"status": "success", "message": "Models loaded"})
     else:
         return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})
@@ -130,13 +113,13 @@ def integrate_timeseries(series: pd.Series) -> float:
     return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
 
 def plot_prediction(request, system_id):
-    df = cache[system_id].ftr.get(training_features)
+    df = cache[system_id]
     if ml_models is None:
         return JsonResponse({"error": "Models not loaded yet"}, status=400)
     Y = Pipeline.predict(ml_models, df)
-    energy = {ml_model.name: integrate_timeseries(Y[ml_model.name]) for ml_model in ml_models}
+    energy = pd_styler(pd.Series(data = {ml_model.name: integrate_timeseries(Y[ml_model.name]) for ml_model in ml_models}, name = "Energy [kWh]"))
     raw_data = pd.concat(
-        [df, Y], axis = 1
+        [df.ftr.get(training_features), Y], axis = 1
     )
     return JsonResponse({
         "prediction_plot_url": static_url(Plot.predict(Y, system_id)),
