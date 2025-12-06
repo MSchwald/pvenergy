@@ -82,6 +82,7 @@ div.two_columns div {
     text-align: center;
     padding: 6px;
     border: 1px solid #ddd;
+    word-break: break-word;
 }
 .df-table tbody th {
     padding: 6px;

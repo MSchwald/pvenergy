@@ -83,6 +83,27 @@ def all_systems(request):
         {"metadata": pd_styler(Pipeline.get_system_constants()), "active_page": "all_systems"}
     )
 
+def feature_database(request):
+    features_df = "<style>.df-table th:last-child {text-align: left;}.df-table td:last-child {text-align: left;}</style>"
+    features_df += pd_styler(
+        pd.DataFrame({
+            ftr.display_name: {
+                "Internal name": ftr.name,
+                "Source": ftr.source.value.replace("_", " ").title(),
+                "Data type": ftr.data_type.__name__,
+                "Is constant": ftr.is_constant,
+                "Unit": ftr.unit,
+                "Description": ftr.description
+            } for ftr in fp.ALL_FEATURES
+        }).T
+    )
+    return render(
+        request,
+        "dashboard/feature_database.html",
+        {"features": features_df,
+         "active_page": "feature_database"}
+    )
+
 def plot_weather(request, system_id):
     """Schnelle Wettervorhersage"""
     df = Pipeline.weather_forecast(system_id)

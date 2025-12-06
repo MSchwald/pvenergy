@@ -11,6 +11,7 @@
     <br>
         <a href="{% url 'dashboard_individual_systems' %}" class="{% if active_page == 'individual_systems' %}active{% endif %}">Individual System Forecast</a>
         <a href="{% url 'dashboard_all_systems' %}" class="{% if active_page == 'all_systems' %}active{% endif %}">All System Forecast</a>
+        <a href="{% url 'dashboard_feature_database' %}" class="{% if active_page == 'feature_database' %}active{% endif %}">Feature Database</a>
     </div>
     <div class="content">
         <h1>{% block title %}{% endblock %}</h1>
