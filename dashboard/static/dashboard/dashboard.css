@@ -1,61 +1,14 @@
+/* Main settings */
 body { font-family: Arial, sans-serif; margin: 20px; }
 h2 { margin-top: 40px; }
 .system-block { margin-bottom: 60px; }
-img { max-width: 800px; height: auto; display: block; margin-top: 20px; }
-div.two_columns {
-  width:100%;
-}
-div.two_columns div {
-  width:50%;  
-  float:left;
-}
-/* Sidebar */
-.sidebar {
-    height: 100%;            /* volle Höhe */
-    width: 220px;            /* Breite der Sidebar */
-    position: fixed;         /* fixiert links */
-    top: 0;
-    left: 0;
-    background-color: #333;
-    padding-top: 20px;
-    overflow-x: hidden;      /* falls Links länger werden */
-}
 
-.sidebar h1 {
-    color: #ffee00;      /* gleiche Farbe wie die Links */
-    font-size: 24px;     /* optional, anpassen */
-    margin: 0 0 20px 0;  /* Abstand nach unten */
-    padding-left: 16px;  /* passt zur Sidebar-Links-Padding */
-}
-
-.sidebar a {
-    display: block;
-    color: #f2f2f2;
-    padding: 12px 16px;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.sidebar a:hover {
-    background-color: #575757;
-}
-
-.sidebar a.active {
-    background-color: #04AA6D;
-}
-
-/* Content rechts neben der Sidebar */
-.content {
-    margin-left: 240px;      /* Platz lassen für Sidebar + etwas Abstand */
-    padding: 20px;
-}
-
+/* Stretch plots to width of the user's browser window */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
 img {
     padding: 0;
     display: block;
@@ -64,4 +17,82 @@ img {
     max-width: 100%;
 }
 
+/* Format for two columns, unused */
+div.two_columns {
+  width:100%;
+}
+div.two_columns div {
+  width:50%;  
+  float:left;
+}
 
+/* Sidebar (size, color, position), links with hover effect */
+.sidebar {
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding-top: 20px;
+    overflow-x: hidden;
+}
+.sidebar h1 {
+    color: #ffee00;
+    font-size: 24px;
+    margin: 0 0 20px 0;
+    padding-left: 16px;
+}
+.sidebar a {
+    display: block;
+    color: #f2f2f2;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 18px;
+}
+.sidebar a:hover {
+    background-color: #575757;
+}
+.sidebar a.active {
+    background-color: #04AA6D;
+}
+.content { /* Place content on the right from the sidebar */
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Default settings for displaying pd.DataFrames with zebra look */
+.table-container {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+.df-table {
+    width: auto;
+    border-collapse: collapse;
+    font-family: sans-serif;
+}
+.df-table thead th {
+    background-color: #333;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.df-table tbody td {
+    text-align: center;
+    padding: 6px;
+    border: 1px solid #ddd;
+}
+.df-table tbody th {
+    padding: 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: white;
+    background-color: #333;
+}
+.df-table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+.df-table tbody tr:nth-child(even) {
+    background-color: #D4D4D4;
+}
