@@ -59,13 +59,7 @@ async function loadForecast(systemId) {
             <h3> DC Power predicted by machine learning models </h3>
             <img src="${predictionData.prediction_plot_url}" alt="Predicted DC Power for system ${systemId}">
             <h3> Resulting energy [kWh] (before inverters) </h3>
-        `;
-        html += "<table><tbody>";
-        for (const [key, value] of Object.entries(predictionData.energy)) {
-            html += `<tr><td>${key}</td><td>${value.toFixed(2)}</td></tr>`;
-        }
-        html += `
-            </tbody></table>
+            ${predictionData.energy}
             <br>
             <h3> Raw training features and predicted DC power </h3>
             ${predictionData.df_html}
