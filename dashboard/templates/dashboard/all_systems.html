@@ -3,5 +3,8 @@
 {% block title %}All System Forecast{% endblock %}
 
 {% block content %}
+<h2>Pvdaq metadata and calculated system constants</h2>
 {{metadata|safe}}
+<h2>Evaluation results on each photovoltaic system</h2>
+{{evaluations|safe}}
 {% endblock %}
