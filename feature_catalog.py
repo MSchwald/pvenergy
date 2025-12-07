@@ -179,20 +179,17 @@ class FeatureCatalog:
         description="Angle between Wind Direction and the photovoltaic module's Azimuth")
     WIND_NORMAL_COMPONENT = Feature("wind_normal_component", unit="m/s", required_features=(RELATIVE_WIND_DIRECTION, WIND_SPEED, TILT),
         description="Wind component perpendicular to the photovoltaic module's surface")
-    POA_COS_AOI = Feature("poa_*_cos(aoi)", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
+    POA_COS_AOI = Feature("poa*cos(aoi)", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
         description="Product for modelling the total loss of solar irradiation due to reflection on the photovoltaic module's surface")
-    POA_WIND_SPEED = Feature("poa_*_wind_speed", unit="W/m²*m/s", required_features = (PVLIB_POA_IRRADIANCE, WIND_SPEED), label="POA * Wind Speed",
+    POA_WIND_SPEED = Feature("poa*wind_speed", unit="W/m²*m/s", required_features = (PVLIB_POA_IRRADIANCE, WIND_SPEED), label="POA * Wind Speed",
         description="Product to model higher order interactions between solar irradiation and wind")
-    DCP_PER_AREA = Feature("dcp_/_area", unit="W/m²", required_features = (PVLIB_DC_POWER, AREA), label="DCP / Area",
+    DCP_PER_AREA = Feature("dcp/area", unit="W/m²", required_features = (PVLIB_DC_POWER, AREA), label="DCP / Area",
         description="Normalization of estimated DC Power by the photovoltaic module's surface area for training on data of multiple systems")
-    DHI_PER_GHI = Feature("dhi_/_ghi", required_features = (DHI, GHI), label="DHI / GHI",
+    DHI_PER_GHI = Feature("dhi/ghi", required_features = (DHI, GHI), label="DHI / GHI",
         description="Fraction of diffuse solar irradiance; good indicator of cloudiness (undefined when GHI is zero)")
-    GAMMA_TEMP_DIFFERENCE = Feature("gamma_*_temp_diff", required_features = (GAMMA, AIR_TEMP, FAIMAN_MODULE_TEMP),
+    GAMMA_TEMP_DIFFERENCE = Feature("gamma*temp_diff", required_features = (GAMMA, AIR_TEMP, FAIMAN_MODULE_TEMP), label="Gamma * Temp Diff",
         description="Term of the Faiman model quantifying the DC Power loss due to temperature effects")
-    GAMMA_POA = Feature("gamma_*_poa", unit="W/m²K", required_features = (GAMMA, PVLIB_POA_IRRADIANCE), label="Gamma * POA",
+    GAMMA_POA = Feature("gamma*poa", unit="W/m²K", required_features = (GAMMA, PVLIB_POA_IRRADIANCE), label="Gamma * POA",
         description="Interaction term modeling the combined influence of irradiance and temperature on power losses")
     RELATIVE_AZIMUTH = Feature("relative_azimuth", unit="°", required_features = (AZIMUTH, SOLAR_AZIMUTH),
         description="Difference between the azimuth angles of the photovoltaic module and the sun")
-
-
-    
