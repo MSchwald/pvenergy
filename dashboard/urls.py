@@ -10,4 +10,5 @@ urlpatterns = [
     
     path("all_systems/", views.all_systems, name="dashboard_all_systems"),
     path("feature_database/", views.feature_database, name="dashboard_feature_database"),
+    path("ml_models/", views.models_info, name="dashboard_ml_models"),
 ]

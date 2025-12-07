@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Machine Learning Models{% endblock %}
+
+{% block content %}
+    {% for model, data in models.items %}
+        <div class="system-block">
+            <h2>{{model}}</h2>
+            The model was trained on the features
+            <h3>{{data.features}}</h3>
+            to predict the feature {{data.target}}.
+            <h3>Evaluation results</h3>
+            {{data.evaluations|safe}}
+            <h3>Hyperparameters</h3>
+            {{data.parameter|safe}}
+        </div>
+    {% endfor %}
+{% endblock %}

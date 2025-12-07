@@ -36,12 +36,14 @@ def number_format(number: float | int | Any) -> str | Any:
         return s
     return f"{round(number, 2):.2f}"
 
-def feature_format(name: str) -> str:
+def feature_format(name: str, display_unit: bool = True) -> str:
     if not isinstance(name, str):
         return name
     if not name in fp.ALL_FEATURE_NAMES:
         return name.replace("_", " ").title()
-    return fp.FEATURE_FROM_NAME[name].display_name_with_unit
+    if display_unit:
+        return fp.FEATURE_FROM_NAME[name].display_name_with_unit
+    return fp.FEATURE_FROM_NAME[name].display_name
 
 def pd_styler(data: pd.DataFrame | pd.Series) -> str:
     """Formats pandas objects with html code for displaying."""
@@ -77,10 +79,12 @@ def individual_systems(request):
     )
 
 def all_systems(request):
+    df = pd.read_csv("results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
+    df.index.name = F.SYSTEM_ID.name
     return render(
         request,
         "dashboard/all_systems.html",
-        {"metadata": pd_styler(Pipeline.get_system_constants()), "active_page": "all_systems"}
+        {"metadata": pd_styler(Pipeline.get_system_constants()), "evaluations": pd_styler(df), "active_page": "all_systems"}
     )
 
 def feature_database(request):
@@ -102,6 +106,32 @@ def feature_database(request):
         "dashboard/feature_database.html",
         {"features": features_df,
          "active_page": "feature_database"}
+    )
+
+def get_hyperparameters(model: Model):
+    default_params = model.estimator.__class__().get_params()
+    current_params = model.estimator.get_params()
+    return {
+        param: value for param, value in current_params.items()
+        if param in default_params and value != default_params[param]
+    }
+
+def models_info(request):
+    load_models(request)
+    for model in ml_models:
+        model._evaluation_results.name = "Score"
+    return render(
+        request,
+        "dashboard/ml_models.html",
+        {"models":
+            {feature_format(model.name): {
+                "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]),
+                "target": model._target_feature,
+                "evaluations": pd_styler(model._evaluation_results),
+                "parameter": pd_styler(pd.Series(get_hyperparameters(model), name="Value"))
+                } for model in ml_models
+            },
+         "active_page": "ml_models"}
     )
 
 def plot_weather(request, system_id):
