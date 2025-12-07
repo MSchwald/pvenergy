@@ -28,7 +28,9 @@ div.two_columns div {
 
 /* Sidebar (size, color, position), links with hover effect */
 .sidebar {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     width: 220px;
     position: fixed;
     top: 0;
@@ -61,6 +63,54 @@ div.two_columns div {
     padding: 20px;
 }
 
+/* Sidebar footer with my name and Github link */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 16px 12px;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+.sidebar-footer-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffee00;
+    opacity: 1 !important;
+    pointer-events: none;
+    display: inline-block;
+}
+.sidebar-footer-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    text-decoration: none;
+    color: #ddd;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    font-size: 0.95rem;
+    display: inline-flex; 
+}
+.footer-link-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    text-align: left;
+}
+.footer-link-subtext {
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+.sidebar-footer-link:hover {
+    opacity: 1;
+}
+.github-icon {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
 /* Default settings for displaying pd.DataFrames with zebra look */
 .table-container {
     overflow-x: auto;
@@ -83,6 +133,7 @@ div.two_columns div {
     padding: 6px;
     border: 1px solid #ddd;
     word-break: break-word;
+    white-space: nowrap;
 }
 .df-table tbody th {
     padding: 6px;
