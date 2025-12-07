@@ -72,20 +72,15 @@ def individual_systems(request):
         results[system_id] = {
             "metadata": metadata
         }
-    return render(
-        request,
-        "dashboard/individual_systems.html",
-        {"results": results, "active_page": "individual_systems"}
-    )
+    return {"results": results, "active_page": "individual_systems"}
 
 def all_systems(request):
     df = pd.read_csv("results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
     df.index.name = F.SYSTEM_ID.name
-    return render(
-        request,
-        "dashboard/all_systems.html",
-        {"metadata": pd_styler(Pipeline.get_system_constants()), "evaluations": pd_styler(df), "active_page": "all_systems"}
-    )
+    return {
+        "metadata": pd_styler(Pipeline.get_system_constants()),
+        "evaluations": pd_styler(df)
+    }
 
 def feature_database(request):
     features_df = "<style>.df-table th:last-child {text-align: left;}.df-table td:last-child {text-align: left;}</style>"
@@ -101,12 +96,7 @@ def feature_database(request):
             } for ftr in fp.ALL_FEATURES
         }).T
     )
-    return render(
-        request,
-        "dashboard/feature_database.html",
-        {"features": features_df,
-         "active_page": "feature_database"}
-    )
+    return {"features": features_df}
 
 def get_hyperparameters(model: Model):
     default_params = model.estimator.__class__().get_params()
@@ -120,19 +110,16 @@ def models_info(request):
     load_models(request)
     for model in ml_models:
         model._evaluation_results.name = "Score"
-    return render(
-        request,
-        "dashboard/ml_models.html",
-        {"models":
-            {feature_format(model.name): {
+    return {
+        "models": {
+            feature_format(model.name): {
                 "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]),
                 "target": model._target_feature,
                 "evaluations": pd_styler(model._evaluation_results),
                 "parameter": pd_styler(pd.Series(get_hyperparameters(model), name="Value"))
-                } for model in ml_models
-            },
-         "active_page": "ml_models"}
-    )
+            } for model in ml_models
+        }
+    }
 
 def plot_weather(request, system_id):
     """Schnelle Wettervorhersage"""
