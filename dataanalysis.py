@@ -83,6 +83,7 @@ class EVALUATIONS:
         name = "feature_importance",
         method = feature_importance_method
     )
+ALL_EVALUATIONS = tuple(eval for eval in vars(EVALUATIONS).values() if isinstance(eval, EvaluationMethod))
     
 @dataclass
 class Model:
@@ -90,7 +91,7 @@ class Model:
     name: str
     estimator: object
     scaler: Scaler | None = None
-    evaluation_methods: tuple[EvaluationMethod] | None = (EVALUATIONS.RMSE, EVALUATIONS.R2, EVALUATIONS.FEATURE_IMPORTANCE)
+    evaluation_methods: tuple[str] | None = (EVALUATIONS.RMSE.name, EVALUATIONS.R2.name, EVALUATIONS.FEATURE_IMPORTANCE.name)
     # search for best hyperparmeters with RandomizedSearchCV
     hyperparam_grid: dict | None = None # possible hyperparam combinations to choose from
     n_iter_search: int = 15 # amount of random combinations to compare
@@ -160,9 +161,10 @@ class Model:
 
     def evaluate(self, X_test, y_test, y_pred):
         result_list = []
-        for method in self.evaluation_methods:
-            method.evaluate(self._trained_model, X_test, y_test, y_pred)
-            result_list.append(method._result)
+        for method in ALL_EVALUATIONS:
+            if method.name in self.evaluation_methods:
+                method.evaluate(self._trained_model, X_test, y_test, y_pred)
+                result_list.append(method._result)
         results = pd.concat(result_list)
         self._evaluation_results = results
         return results
@@ -176,8 +178,6 @@ class Model:
     def load(cls, file_name: str):
         if '__main__' in sys.modules:
             sys.modules['__main__'].Model = cls
-            sys.modules['__main__'].EvaluationMethod = EvaluationMethod
-            sys.modules['__main__'].EVALUATIONS = EVALUATIONS
         path = BASE_DIR / "trained_models" / f"{file_name}.joblib"
         return joblib.load(path)
 
@@ -352,8 +352,14 @@ class Pipeline:
     def weather_forecast(cls, system_id: int) -> pd.DataFrame:
         meta = Pvdaq.meta(system_id)
         df = OpenMeteo.get_forecast(meta[F.LATITUDE], meta[F.LONGITUDE])
-        df.reset_index()
         df.ftr.set_const(meta)
+        df = cls.utc_to_local_time(df)
+        df.ftr.set_const(cls.system_constants(system_id))
+        return df
+
+    @classmethod
+    def utc_to_local_time(cls, df: pd.DataFrame) -> pd.DataFrame:
+        df.reset_index()
         df.insert(
             0,
             F.TIME.name,
@@ -363,7 +369,6 @@ class Pipeline:
             ).dt.tz_localize(None)
         )
         df = df.set_index(F.TIME.name)
-        df.ftr.set_const(cls.system_constants(system_id))
         return df
 
     @classmethod
@@ -375,13 +380,12 @@ class Pipeline:
             raise RuntimeError(f"Models {untrained} have not been trained yet.")
         results = []
         sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
-        df_sunny = df.loc[sunny]
+        df_sunny = df.loc[sunny].copy() # can this copy be avoided?
         df_sunny.ftr.set_const(df.ftr.get_const())
         for m in model:
-            y = pd.Series(0, index=df.index, dtype=float)
+            y = pd.Series(0, index=df.index, dtype=float, name = m.name)
             # Use the ML model to predict when sunny, else return 0
             y.loc[sunny] = m.predict(df_sunny)
-            y = pd.Series(data=y, index=df.index, name = m.name)
             results.append(y)        
         return pd.concat(results, axis = 1)
 
@@ -465,7 +469,8 @@ class Pipeline:
 if __name__ == "__main__":
     """Testing space for the pipeline"""
     #print(df.join(Pvdaq.get_metadata()))
-
+    df = Pipeline.weather_forecast(2)
+    print(df)
     """print(Pipeline.get_system_constants())
     for id in Pipeline.TRAINING_IDS:
         print(Pvdaq.load_measured_features(id))"""
@@ -486,7 +491,7 @@ if __name__ == "__main__":
     #for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]:
     #ml_model = ML_MODELS.XGBOOST
     #RANDOM_FOREST, XGBOOST, LIGHTGBM
-    """Pipeline.fleet_analysis(
+    """    Pipeline.fleet_analysis(
             system_ids = Pipeline.TRAINING_IDS,
             training_features = features,
             target_feature = F.PVDAQ_DC_POWER,
@@ -499,7 +504,7 @@ if __name__ == "__main__":
             hyper_parameter_search = False,
             use_cached_training_data = True,
             save_model_name = ml_model.name
-    )"""
+        )"""
 
     """res = Pipeline.individual_analysis(
         system_ids = ids,
@@ -519,10 +524,10 @@ if __name__ == "__main__":
     
     #print(res)
     
-    m = Model.load(ML_MODELS.XGBOOST.name)
-    df = Pipeline.weather_forecast(2)
+    #m = Model.load(ML_MODELS.XGBOOST.name)
+    #df = Pipeline.weather_forecast(2)
     #print(df.ftr.get_const())
-    print(Pipeline.predict(m, df))
+    #print(Pipeline.predict(m, df))
     #m._training_features = features
     #print([ftr.is_constant for ftr in m._training_features if ftr != F.TIME])
     #print(df.ftr.get_const(F.TIME_ZONE))
