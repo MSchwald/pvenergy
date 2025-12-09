@@ -6,7 +6,7 @@ import pyarrow.dataset as ds
 import pandas as pd
 import re
 from natsort import natsorted
-
+from datetime import datetime, timedelta
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -215,3 +215,13 @@ def concat_files(
     if not cache_single_files and output_file is not None:
         full_df.to_parquet(output_file, index = False)
     return full_df
+
+def file_up_to_date(file: str | Path):
+    path = absolute_path(file)
+    if not path.exists():
+        return False
+    mtime = datetime.fromtimestamp(file.stat().st_mtime)
+    time_now = datetime.now()
+    if time_now - mtime < timedelta(hours = 1) and time_now.hour == mtime.hour:
+        return True
+    return False
