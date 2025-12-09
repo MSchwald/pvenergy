@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
@@ -6,6 +8,8 @@ from dataanalysis import Pipeline, ML_MODELS, Model
 from feature_catalog import FeatureCatalog as F
 
 from pathlib import Path
+
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
