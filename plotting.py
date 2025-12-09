@@ -6,10 +6,11 @@ import pandas as pd
 
 from dataanalysis import Pipeline, ML_MODELS, Model
 from feature_catalog import FeatureCatalog as F
+import file_utilities as fu
+
+
 
 from pathlib import Path
-
-
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -21,12 +22,21 @@ plt.rcParams["font.size"] = 14
 plt.rcParams["axes.titlesize"] = 16
 
 class Plot:
-    def weather_forecast(
+    weather_cache_name = "forecast"
+    features_cache_name = "calculated_features"
+    prediction_cache_name = "dcp_prediction"
+
+    @classmethod
+    def weather_forecast(cls,
             df: pd.DataFrame,
             system_id: int,
-            show_title: bool = False
+            show_title: bool = False,
+            use_cache: bool = True
         ) -> Path:
         """Creates three plots of features from OpenMeteo weather forecast"""
+        cache = PLOT_DIR / f"{cls.weather_cache_name}_{system_id}.png"
+        if fu.file_up_to_date(cache):
+            return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
         if show_title:
             fig.suptitle(f"Weather Forecast System {system_id}, starting from {df.index[0]} local time", fontsize=16)
@@ -67,19 +77,23 @@ class Plot:
 
         fig.tight_layout(rect=[0, 0, 1, 0.96])
 
-        file = PLOT_DIR / f"forecast_{system_id}.png"
-        fig.savefig(file)
+        fig.savefig(cache)
 
         plt.close(fig)
 
-        return file
+        return cache
     
-    def calculated_features(
+    @classmethod
+    def calculated_features(cls,
             df: pd.DataFrame,
             system_id: int,
-            show_title: bool = False
+            show_title: bool = False,
+            use_cache: bool = True
         ) -> Path:
         """Creates three plots of some intuitive features calculated from the weather forecast"""
+        cache = PLOT_DIR / f"{cls.features_cache_name}_{system_id}.png"
+        if fu.file_up_to_date(cache):
+            return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
         if show_title:
             fig.suptitle(f"Some Calculated Features For System {system_id}, starting from {df.index[0]} local time", fontsize=16)
@@ -125,19 +139,23 @@ class Plot:
 
         fig.tight_layout(rect=[0, 0, 1, 0.96])
 
-        file = PLOT_DIR / f"calculated_features_{system_id}.png"
-        fig.savefig(file)
+        fig.savefig(cache)
 
         plt.close(fig)
 
-        return file
+        return cache
     
-    def predict(
+    @classmethod
+    def predict(cls,
             Y: pd.DataFrame,
             system_id: int,
-            show_title: bool = False
+            show_title: bool = False,
+            use_cache: bool = True
         ) -> Path:
         """Creates three plots of dcp prediction for all three trained models"""
+        cache = PLOT_DIR / f"{cls.prediction_cache_name}_{system_id}.png"
+        if fu.file_up_to_date(cache):
+            return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
         if show_title:
             fig.suptitle(f"DC Power prediction for System {system_id}, starting from {Y.index[0]} local time", fontsize=16)
