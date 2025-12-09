@@ -1,75 +1,194 @@
 /**
  * Universal function to load Django data into a container
  * @param {string} url - URL to Django end point
- * @param {string} containerId - ID of HTML container
- * @param {string} loadingText - Optional: Text displayed while loading data
+ * @param {string | array} containerId - ID of HTML container or an array of several IDs
+ * @param {string} loadingHtml - Optional: Text displayed while loading data
+ * @param {function} successHtml- Optional: An html for each ID provided
+ * to be displayed after loading. Takes the obtained data as an argument.
+ * @param {string} errorHtml - Optional: Text displayed when loading fails
  */
-async function djangoRequest(url, containerId, loadingText = "Loading...") {
-    const container = document.getElementById(containerId);
-    if (container) {
-        container.innerHTML = `<p>${loadingText}</p>`;
+async function djangoRequest({
+    url,
+    containerId = null,
+    loadingHtml = `<p class="text-loading">Loading...</i>`,
+    successHtml = (data) => `<p class="text-success">Successfully loaded.</p>`,
+    errorHtml = `<p class="text-error">Error while loading.</p>`,
+    method = "GET",
+    body = null
+}) {
+    const containerIds = Array.isArray(containerId) ? containerId : (containerId ? [containerId] : []);
+    const containers = {};
+    for (const cid of containerIds) {
+        const el = document.getElementById(cid);
+        if (el) {
+            el.innerHTML = loadingHtml;
+            containers[cid] = el;
+        }
     }
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+        const response = await fetch(url, {
+            method: method,
+            headers: body ? { "Content-Type": "application/json" } : undefined,
+            body: body
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        let result = successHtml(data);
+        
+        if (typeof result === "string") result = { [containerIds[0]]: result };
+        if (Object.keys(result).length !== containerIds.length) {
+            console.warn("Mismatch between containerIds and successHtml result keys.");
         }
-        return await response.json();
+        for (const cid of containerIds) {
+            if (containers[cid] && result[cid] !== undefined) {
+                containers[cid].innerHTML = result[cid];
+            }
+        }
+        return data;
     } catch (error) {
         console.error("AJAX request failed:", error);
-        if (container) {
-            container.innerHTML = "<p>Error while loading.</p>";
+        for (const cid of containerIds) {
+            if (containers[cid]) containers[cid].innerHTML = errorHtml;
         }
         return null;
     }
 }
 
-// Load weather first, then calculated features, then dcp predictions
-async function loadForecast(systemId) {
-    const weatherContainerId = `forecast-weather-${systemId}`;
-    const featuresContainerId = `forecast-features-${systemId}`;
-    const predictionContainerId = `forecast-prediction-${systemId}`;
-    const weatherContainer = document.getElementById(weatherContainerId);
-    const featuresContainer = document.getElementById(featuresContainerId);
-    const predictionContainer = document.getElementById(predictionContainerId);
-
-    const weatherData = await djangoRequest(`/weather/${systemId}/`, weatherContainerId, "Requesting weather forecast...");
-    if (weatherData) {
-        weatherContainer.innerHTML = `
-            <h3> ${weatherData.weather_title} </h3>
-            <h3> OpenMeteo weather forecast (solar radiation, air temperature, wind)</h3>
-            <img src="${weatherData.weather_plot_url}" alt="Weather forecast for system ${systemId}">
-        `;
+// Load ml models once at start
+let modelsLoadedPromise = null;
+function loadTrainedModels() {
+    if (!modelsLoadedPromise) {
+        modelsLoadedPromise = djangoRequest({
+            url: "/load-models/",
+            containerId: "status-container",
+            loadingHtml: '<p class="text-loading">Loading trained ML models...</p>',
+            successHtml: () => '<p class="text-success">ML models successfully loaded.</p>',
+            errorHtml: '<p class="text-error">Failed to load ML models.</p>'
+        });
     }
-    const featuresData = await djangoRequest(`/features/${systemId}/`, featuresContainerId, "Calculating features...");
-    if (featuresData) {
-        featuresContainer.innerHTML = `
-            <h3> Some calculated features (solar geometry, cloudyness, cooling effects)</h3>
-            <img src="${featuresData.features_plot_url}" alt="Calculated features for system ${systemId}">
-        `;
-    }
-    const loadResult = await djangoRequest("/load-models/", predictionContainerId, "<p>Loading trained ML models...</p>");
-    await new Promise(r => setTimeout(r, 0));   // oder requestAnimationFrame
-    predictionContainer.innerHTML = "<p>Models loaded. Predicting DC Power...</p>";
-    await new Promise(r => setTimeout(r, 600));
-
-    const predictionData = await djangoRequest(`/prediction/${systemId}/`, predictionContainerId, "Predicting DC Power...");
-    if (predictionData) {
-        html = `
-            <h3> DC Power predicted by machine learning models </h3>
-            <img src="${predictionData.prediction_plot_url}" alt="Predicted DC Power for system ${systemId}">
-            <h3> Resulting energy [kWh] (before inverters) </h3>
-            ${predictionData.energy}
-            <br>
-            <h3> Raw training features and predicted DC power </h3>
-            ${predictionData.df_html}
-        `;
-
-        predictionContainer.innerHTML = html
-        console.log(predictionContainer.energy)
-    }
+    return modelsLoadedPromise;
 }
 
+//Fetch OpenMeteo weather forecasts
+async function fetchWeatherAndCache(containerId) {
+    const info = await djangoRequest({
+        url: "/load-weather/",
+        containerId: containerId,
+        loadingHtml: `<p class="text-loading">Checking which locations need updates...</p>`,
+        successHtml: data => `<p class="text-success">Locations info loaded. ${data.locations.length} locations to fetch.</p>`,
+    });
+    let weatherDict = {};
+    if (info && info.locations.length) {
+        const url = info?.url;
+        const parameters = info?.parameters;
+        const locations = info?.locations || [];
+        const fetchPromises = locations.map(([lat, lon]) => {
+            const params = new URLSearchParams({ ...parameters, latitude: lat, longitude: lon });
+            if (Array.isArray(parameters.hourly)) {
+                params.set("hourly", parameters.hourly.join(","));
+            }
+            return fetch(`${url}?${params.toString()}`)
+                .then(r => r.json())
+                .then(data => ({ [`${lat},${lon}`]: data }));
+        });
+        const weatherArray = await Promise.all(fetchPromises);
+        weatherDict = weatherArray.reduce((acc, cur) => ({ ...acc, ...cur }), {});
+    }
+    await djangoRequest({
+        url: "/save-weather/",
+        containerId: containerId,
+        loadingHtml: `<p class="text-loading">Saving fetched weather data...</p>`,
+        successHtml: data => `<p class="text-success">Fetched weather data cached for ${data.count} locations.</p>`,
+        method: "POST",
+        body: JSON.stringify(weatherDict)
+    });
+}
+
+// The formated html code to be displayed after successfully loading each request
+const Success = {
+    plot_weather: data => {
+        const result = {};
+        for (const [id, value] of Object.entries(data)) {
+            result[`forecast-weather-${id}`] = `<h3>${value.weather_title}</h3>
+                                                <h3> OpenMeteo weather forecast (solar radiation, air temperature, wind)</h3>
+                                                <img src="${value.weather_url}" alt="Weather forecast for system ${id}">`
+        }
+        return result;
+    },
+    plot_features: data => {
+        const result = {};
+        for (const [id, value] of Object.entries(data)) {
+            result[`forecast-features-${id}`] = `<h3> Some calculated features (solar geometry, cloudyness, cooling effects)</h3>
+                                                <img src="${value.features_plot_url}" alt="Calculated features for system ${id}">`;
+        }
+        return result;
+    },
+    plot_predictions: data => {
+        const result = {};
+        for (const [id, value] of Object.entries(data)) {
+            result[`forecast-prediction-${id}`] = `<h3> DC Power predicted by machine learning models </h3>
+                                                <img src="${value.prediction_plot_url}" alt="Predicted DC Power for system ${id}">
+                                                <h3> Resulting energy [kWh] (before inverters) </h3>
+                                                ${value.energy}
+                                                <br>
+                                                <h3> Raw training features and predicted DC power </h3>
+                                                ${value.df_html}`
+        }
+        return result;
+    }
+};
+
+const statusContainerId = "status-container"
+async function fetchWeatherAndPipeline(ids) {
+    await fetchWeatherAndCache(statusContainerId);
+    console.log("test")
+    await djangoRequest({
+        url: "/plot-weather/",
+        containerId: ids.map(id => `forecast-weather-${id}`),
+        loadingHtml: '<p class="text-loading">Rendering weather plots...</p>',
+        successHtml: Success.plot_weather
+    });
+    await djangoRequest({
+        url: "/plot-features/",
+        containerId: ids.map(id => `forecast-features-${id}`),
+        loadingHtml: '<p class="text-loading">Calculating feature plots...</p>',
+        successHtml: Success.plot_features
+    });
+    await loadTrainedModels();
+    await djangoRequest({
+        url: "/plot-predictions/",
+        containerId: ids.map(id => `forecast-prediction-${id}`),
+        loadingHtml: '<p class="text-loading">Predicting DC Power...</p>',
+        successHtml: Success.plot_predictions
+    });
+}
+
+let systemIds = [] // Gets requested from Django upon start
+document.addEventListener("DOMContentLoaded", async () => {
+    const metadata = await djangoRequest({
+        url: "/load-metadata/",
+        containerId: "status-container",
+        loadingHtml: '<p class="text-loading">Loading system metadata...</p>',
+        successHtml: data => '<p class="text-success">Loading system metadata...</p>',
+    });
+    systemIds = Object.keys(metadata);
+    for (const id of systemIds) {
+        const container = document.getElementById(`system-metadata-${id}`);
+        if (container) {
+            container.innerHTML = metadata[id];
+        }
+    }
+    loadTrainedModels()
+    fetchWeatherAndPipeline(systemIds);
+    const now = new Date();
+    const delayMs = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
+    setTimeout(() => {
+        fetchWeatherAndPipeline(systemIds);
+        setInterval(fetchWeatherAndPipeline(systemIds), 60 * 60 * 1000);
+    }, delayMs);
+});
+
+/*
 // Initialize buttons
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("button[data-action]").forEach(btn => {
@@ -88,3 +207,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+*/
