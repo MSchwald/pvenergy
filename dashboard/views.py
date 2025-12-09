@@ -1,15 +1,19 @@
-import sys
+#import sys
 from pathlib import Path
 import pandas as pd
+import json
+from pathlib import Path
 
-from dataanalysis import Pipeline, Model, ML_MODELS, EVALUATIONS, EvaluationMethod
-#from data_request import Pvdaq
+from dataanalysis import Pipeline, Model, ML_MODELS
+from data_request import OpenMeteo, Pvdaq
+import file_utilities as fu
 from feature_catalog import FeatureCatalog as F
 from feature_catalog import Feature
 from feature_processing import FeatureProcessing as fp
 from plotting import Plot
 from typing import Any
 
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.conf import settings
 from django.http import JsonResponse
@@ -18,8 +22,16 @@ from django.http import JsonResponse
 #print(BASE_DIR / "trained_models" / Path(file_name + ".joblib"))
 #m = Model.load("xgboost")
 
+weather_cache = {}
 cache = {}
+
+# Load cached files from the main program
 SYSTEM_IDS: tuple[int] = Pipeline.TRAINING_IDS
+SYSTEM_CONSTANTS: dict = {id: Pipeline.system_constants(id) for id in SYSTEM_IDS}
+LOCATION_FROM_ID = {id : (Pvdaq.meta(id)[F.LATITUDE], Pvdaq.meta(id)[F.LONGITUDE]) for id in SYSTEM_IDS}
+LOCATIONS: tuple[int] = tuple({(Pvdaq.meta(id)[F.LATITUDE], Pvdaq.meta(id)[F.LONGITUDE]) for id in SYSTEM_IDS})
+
+# Get loaded while already rendering in order to not delay showing the starting page for several seconds
 ml_models: tuple[Model] = tuple()
 training_features: tuple[Feature] = tuple()
 
@@ -66,13 +78,7 @@ def static_url(file: Path) -> str:
     return f"{settings.STATIC_URL}{rel.as_posix()}"
     
 def individual_systems(request):
-    results = {}
-    for system_id in SYSTEM_IDS:
-        metadata = pd_styler(Pipeline.get_system_constants().loc[system_id].to_frame().T)
-        results[system_id] = {
-            "metadata": metadata
-        }
-    return {"results": results, "active_page": "individual_systems"}
+    return {"ids": SYSTEM_IDS}
 
 def all_systems(request):
     df = pd.read_csv("results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
@@ -121,19 +127,23 @@ def models_info(request):
         }
     }
 
-def plot_weather(request, system_id):
-    """Schnelle Wettervorhersage"""
-    df = Pipeline.weather_forecast(system_id)
-    cache[system_id] = df
-    weather_url = static_url(Plot.weather_forecast(df, system_id))
-    weather_title = f"Forecast, starting from {df.index[0]} local time (UTC{df.ftr.get_const(F.UTC_OFFSET)})"
-    return JsonResponse({"weather_plot_url": weather_url, "weather_title": weather_title})
+def load_metadata(request):
+    return JsonResponse({str(id): pd_styler(Pipeline.get_system_constants().loc[id].to_frame().T) for id in SYSTEM_IDS})
 
-def plot_features(request, system_id):
-    if not system_id in cache.keys():
-        return JsonResponse({"error": f"Weather forecast for system {system_id} not loaded yet"}, status=400)
-    df = cache[system_id]
-    return JsonResponse({"features_plot_url": static_url(Plot.calculated_features(df, system_id))})
+def load_weather(request):
+    fetch_locations = [
+        (lat, lon) for (lat, lon) in LOCATIONS if not fu.file_up_to_date(
+            OpenMeteo.cache_name(lat, lon)
+        )
+    ]
+    for loc in [loc for loc in LOCATIONS if not loc in fetch_locations]:
+        if not loc in weather_cache.keys():
+            weather_cache[loc] = OpenMeteo.load_cache(OpenMeteo.cache_name(loc[0], loc[1]))
+    return JsonResponse({
+        "locations": fetch_locations,
+        "url": OpenMeteo.url,
+        "parameters": OpenMeteo.PARAMETERS
+    })
 
 def load_models(request):
     global ml_models
@@ -145,22 +155,60 @@ def load_models(request):
     else:
         return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})
 
+@csrf_exempt
+def save_weather(request):
+    data_dict = json.loads(request.body)  # {"lat,lon": {...}, ...}
+    count = 0
+    for key, weather_json in data_dict.items():
+        lat_str, lon_str = key.split(",")
+        lat, lon = float(lat_str), float(lon_str)
+        df = OpenMeteo.format_response(weather_json)
+        df.to_csv(OpenMeteo.cache_name(lat, lon), index=True)
+        weather_cache[(lat, lon)] = df
+        count += 1
+    return JsonResponse({"count": count})
+
+def plot_weather(request):
+    """Plot weather forecasts"""
+    plots = {}
+    for id in SYSTEM_IDS:
+        df = weather_cache[LOCATION_FROM_ID[id]].copy()
+        df.ftr.set_const(SYSTEM_CONSTANTS[id])
+        df = Pipeline.utc_to_local_time(df)
+        df.ftr.set_const(SYSTEM_CONSTANTS[id])
+        cache[id] = df
+        plots[str(id)] = {
+            "weather_url": static_url(Plot.weather_forecast(df, id)),
+            "weather_title": f"Forecast, starting from {df.index[0]} local time (UTC{df.ftr.get_const(F.UTC_OFFSET)})"
+        }
+    return JsonResponse(plots)
+
+def plot_features(request):
+    plots = {}
+    for id in SYSTEM_IDS:
+        df = cache[id]
+        plots[str(id)] = {
+            "features_plot_url": static_url(Plot.calculated_features(df, id))
+        }
+    return JsonResponse(plots)
+
 def integrate_timeseries(series: pd.Series) -> float:
     """Numeric integration of a pandas DatetimeIndex via trapezoid rule."""
     dt = series.index.to_series().diff().dt.total_seconds().fillna(0)
     return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
 
-def plot_prediction(request, system_id):
-    df = cache[system_id]
-    if ml_models is None:
-        return JsonResponse({"error": "Models not loaded yet"}, status=400)
-    Y = Pipeline.predict(ml_models, df)
-    energy = pd_styler(pd.Series(data = {ml_model.name: integrate_timeseries(Y[ml_model.name]) for ml_model in ml_models}, name = "Energy [kWh]"))
-    raw_data = pd.concat(
-        [df.ftr.get(training_features), Y], axis = 1
-    )
-    return JsonResponse({
-        "prediction_plot_url": static_url(Plot.predict(Y, system_id)),
-        "energy": energy,
-        "df_html": pd_styler(raw_data)
-    })
+def plot_predictions(request):
+    results = {}
+    for id in SYSTEM_IDS:
+        df = cache[id]
+        Y = Pipeline.predict(ml_models, df)
+        energy = pd_styler(pd.Series(data = {ml_model.name: integrate_timeseries(Y[ml_model.name]) for ml_model in ml_models}, name = "Energy [kWh]"))
+        raw_data = pd.concat(
+            [df.ftr.get(training_features), Y], axis = 1
+        )
+        results[id] = {
+            "prediction_plot_url": static_url(Plot.predict(Y, id)),
+            "energy": energy,
+            "df_html": pd_styler(raw_data)
+        }
+    return JsonResponse(results)
