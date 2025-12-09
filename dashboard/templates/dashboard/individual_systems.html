@@ -3,19 +3,15 @@
 {% block title %}Individual System Forecast{% endblock %}
 
 {% block content %}
-    {% for id, result in results.items %}
+    <div id="status-container" class="forecast-container"></div>
+    {% for id in ids %}
         <div class="system-block">
             <h2>System {{ id }}</h2>
-            {{result.metadata|safe}}
             <br>
-            <button class="forecast-btn" data-id="{{ id }}" data-action="forecast">
-                Get system forecast
-            </button>
-            
+            <div id="system-metadata-{{ id }}" class="forecast-container"></div>
             <div id="forecast-weather-{{ id }}" class="forecast-container"></div>
             <div id="forecast-features-{{ id }}" class="forecast-container"></div>
             <div id="forecast-prediction-{{ id }}" class="forecast-container"></div>
-            <div id="followup-buttons-{{ id }}"></div>
         </div>
     {% endfor %}
 {% endblock %}
