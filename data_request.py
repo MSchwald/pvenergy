@@ -15,10 +15,6 @@ from feature_catalog import Feature
 import pandas as pd
 from typing import Any, Union
 import file_utilities as fu
-import re
-
-from timezonefinder import TimezoneFinder
-from datetime import datetime, timedelta
 
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
@@ -367,6 +363,15 @@ class Nsrdb:
 class OpenMeteo:
     """Request live / forecast weather data"""
     url = "https://api.open-meteo.com/v1/forecast"
+    PARAMETERS = {
+            "hourly": [
+                "shortwave_radiation", "diffuse_radiation", "direct_normal_irradiance",
+                "temperature_2m", "wind_speed_10m", "wind_direction_10m"
+            ],
+            "models": "gfs_seamless",
+            "current_weather": True,
+            "forecast_hours": 24
+    }
     COLUMN_NAME_MAP = {
         "time": F.UTC_TIME.name,
         "temperature_2m": F.AIR_TEMP.name,
@@ -377,8 +382,25 @@ class OpenMeteo:
         "wind_direction_10m": F.WIND_DIRECTION.name,
     }
     LOCAL_DIR = BASE_DIR / "live_weatherdata"
-    tf = TimezoneFinder()
+    LOCAL_DIR.mkdir(parents = True, exist_ok = True)
+    
+    @classmethod
+    def cache_name(cls, latitude: float, longitude: float) -> Path:
+        return cls.LOCAL_DIR / f"openmeteo_lat={latitude}_lon={longitude}.csv"
 
+    @classmethod
+    def load_cache(cls, cache: Path) -> pd.DataFrame:
+        df = pd.read_csv(cache, index_col = F.UTC_TIME.name)
+        df.index = pd.to_datetime(df.index)
+        print("Loaded cached version of OpenMeteo data")
+        return df
+
+    @classmethod
+    def format_response(cls, json: str):
+        df = pd.DataFrame(data = json["hourly"]).rename(columns=cls.COLUMN_NAME_MAP).set_index(F.UTC_TIME.name)
+        df.index = pd.to_datetime(df.index)
+        return df
+        
     @classmethod
     def get_forecast(cls,
         latitude: float,
@@ -389,38 +411,21 @@ class OpenMeteo:
         Get hourly weather forecast for given location for the next day.
         Caching is used for multiple requests in the same hour of the day.
         """
-        cls.LOCAL_DIR.mkdir(parents = True, exist_ok = True)
-        file = cls.LOCAL_DIR / f"openmeteo_lat={latitude}_lon={longitude}.csv"
-        if file.exists():
-            mtime = datetime.fromtimestamp(file.stat().st_mtime)
-            time_now = datetime.now()
-            if time_now - mtime < timedelta(hours = 1) and time_now.hour == mtime.hour:
-                df = pd.read_csv(file, index_col = F.UTC_TIME.name)
-                df.index = pd.to_datetime(df.index)
-                print("Cached version of OpenMeteo data")
-                return df
-        print("request new version from OpenMeteo")
-        params = {
-            "latitude": latitude,
-            "longitude": longitude,
-            "hourly": [
-                "shortwave_radiation", "diffuse_radiation", "direct_normal_irradiance",
-                "temperature_2m", "wind_speed_10m", "wind_direction_10m"
-            ],
-            "models": "gfs_seamless",
-            "current_weather": True,
-            "forecast_hours": 24
-        }
-        response = requests.get(cls.url, params=params, timeout=30)
+        cache = cls.cache_name(latitude, longitude)
+        if fu.file_up_to_date(cache):
+            cls.load_cache(cache)
+        params = {"latitude": latitude, "longitude": longitude}
+        params.update(cls.PARAMETERS)
+        print("Request new version from OpenMeteo")
+        response = requests.get(
+            cls.url,
+            params = params,
+            timeout = 30
+        )
         response.raise_for_status()
-
-        # Stundenweise Daten
-        df = pd.DataFrame(data = response.json()["hourly"]).rename(columns=cls.COLUMN_NAME_MAP).set_index(F.UTC_TIME.name)
-        df.index = pd.to_datetime(df.index)
-        
+        df = cls.format_response(response.json())
         if save_result:
-            df.to_csv(file, index = True)
-
+            df.to_csv(cache, index = True)
         return df
 
 def request_data(
