@@ -17,6 +17,20 @@ img {
     max-width: 100%;
 }
 
+.text-loading {
+    color: rgb(7, 0, 73);
+    font-style: italic;
+}
+.text-success {
+    color: green;
+    font-weight: bold;
+}
+.text-error {
+    color: red;
+    font-weight: bold;
+}
+
+
 /* Format for two columns, unused */
 div.two_columns {
   width:100%;
