@@ -1,7 +1,11 @@
+import os
+from dotenv import load_dotenv
+
 STATIC_URL = "/static/"
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",   # dies ist pvenergy/static/
@@ -12,7 +16,8 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vtl+oic!t8g96t7=0uplztp)5un5gskz@_g^f5i#hxl_s%p75i'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
