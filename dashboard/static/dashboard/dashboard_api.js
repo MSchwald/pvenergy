@@ -75,14 +75,13 @@ async function fetchWithRetries(url, options = {}, retries = 3) {
         try {
             const res = await fetch(url, options);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return await res.json();
+            return await res;
         } catch (err) {
             if (i === retries - 1) throw err;
             await new Promise(r => setTimeout(r, 500 * (i + 1)));
         }
     }
 }
-
 
 //Fetch OpenMeteo weather forecasts
 async function fetchWeatherAndCache(containerId) {
@@ -150,6 +149,19 @@ const Success = {
                                                 ${value.df_html}`
         }
         return result;
+    },
+    models_training_results: data => {
+        const result = {};
+        for (const [id, value] of Object.entries(data)) {
+            result[`model-data-${id}`] = `The model was trained on the features
+                                        <h3> ${value.features} </h3>
+                                        to predict the feature ${value.target}.
+                                        <h3>Evaluation results</h3>
+                                        ${value.evaluations}
+                                        <h3>Hyperparameters</h3>
+                                        ${value.parameter}`
+        }
+        return result;
     }
 };
 
@@ -177,11 +189,33 @@ async function fetchWeatherAndPipeline(ids) {
     });
 }
 
-let systemIds = [] // Gets requested from Django upon start
+let systemIds = []
+let modelNames = null
 document.addEventListener("DOMContentLoaded", async () => {
     if (!sessionStorage.getItem("metadataLoaded")) {
         sessionStorage.setItem("metadataLoaded", "true");
         loadTrainedModels()
+    }
+    if (window.location.pathname === "/machine_learning_models/") {
+        if (!modelNames) {
+            const result = await djangoRequest({
+                url: "/models-names/"
+            });
+            modelNames = result.names
+        }
+        const modelContainerIds = modelNames.map((name, i) => {
+            const nameContainer = document.getElementById(`model-name-${i}`);
+            const dataContainer = document.getElementById(`model-data-${i}`)
+            if (nameContainer) nameContainer.innerHTML = `<h2>${name}</h2>`;
+            if (dataContainer) dataContainer.innerHTML = `<p class="text-loading">Loading trained ML model ${name}...</p>`;
+            return i;
+        });
+        await loadTrainedModels();
+        await djangoRequest({
+            url: "/models-training-results/",
+            containerId: modelContainerIds.map(i => `model-data-${i}`),
+            successHtml: Success.models_training_results
+        });
     }
     if (window.location.pathname === "/") {
         const metadata = await djangoRequest({
