@@ -2,8 +2,8 @@ from __future__ import annotations
 from feature_accessor import FeatureAccessor
 
 from pathlib import Path
-import requests
-from apidata import NSRDB_API_KEY, EMAIL # personal data not to be shared in repository
+import requests, os
+from dotenv import load_dotenv
 from io import StringIO
 from tqdm import tqdm
 
@@ -19,6 +19,7 @@ import file_utilities as fu
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
 BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
 
 class Pvdaq:
     """Request pv data and metadata of PVDAQ systems."""
@@ -262,13 +263,13 @@ class Nsrdb:
 
         url = "https://developer.nrel.gov/api/nsrdb/v2/solar/nsrdb-GOES-aggregated-v4-0-0-download.csv"
         params = {
-            "api_key": NSRDB_API_KEY,
+            "api_key": os.environ.get("NSRDB_API_KEY"),
             "wkt": f"POINT({longitude} {latitude})",
             "attributes": ",".join(attributes),
             "names": str(year),
             "utc": "false",
             "leap_day": "true",
-            "email": EMAIL
+            "email": os.environ.get("EMAIL")
         }
 
         response = requests.get(url, params = params, timeout = 30)
@@ -478,5 +479,4 @@ def get_features(
 
 if __name__ == "__main__":
     """Testing space for data requests"""
-
-    #print(OpenMeteo.system_forecast(2))
+    print(request_data(2))
