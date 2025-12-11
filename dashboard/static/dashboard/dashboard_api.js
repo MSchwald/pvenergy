@@ -69,6 +69,21 @@ function loadTrainedModels() {
     return modelsLoadedPromise;
 }
 
+//When fetching OpenMeteo weather fails, do up to 3 retries
+async function fetchWithRetries(url, options = {}, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (err) {
+            if (i === retries - 1) throw err;
+            await new Promise(r => setTimeout(r, 500 * (i + 1)));
+        }
+    }
+}
+
+
 //Fetch OpenMeteo weather forecasts
 async function fetchWeatherAndCache(containerId) {
     const info = await djangoRequest({
@@ -87,7 +102,7 @@ async function fetchWeatherAndCache(containerId) {
             if (Array.isArray(parameters.hourly)) {
                 params.set("hourly", parameters.hourly.join(","));
             }
-            return fetch(`${url}?${params.toString()}`)
+            return fetchWithRetries(`${url}?${params.toString()}`)
                 .then(r => r.json())
                 .then(data => ({ [`${lat},${lon}`]: data }));
         });
@@ -141,7 +156,6 @@ const Success = {
 const statusContainerId = "status-container"
 async function fetchWeatherAndPipeline(ids) {
     await fetchWeatherAndCache(statusContainerId);
-    console.log("test")
     await djangoRequest({
         url: "/plot-weather/",
         containerId: ids.map(id => `forecast-weather-${id}`),
@@ -165,27 +179,32 @@ async function fetchWeatherAndPipeline(ids) {
 
 let systemIds = [] // Gets requested from Django upon start
 document.addEventListener("DOMContentLoaded", async () => {
-    const metadata = await djangoRequest({
-        url: "/load-metadata/",
-        containerId: "status-container",
-        loadingHtml: '<p class="text-loading">Loading system metadata...</p>',
-        successHtml: data => '<p class="text-success">Loading system metadata...</p>',
-    });
-    systemIds = Object.keys(metadata);
-    for (const id of systemIds) {
-        const container = document.getElementById(`system-metadata-${id}`);
-        if (container) {
-            container.innerHTML = metadata[id];
-        }
+    if (!sessionStorage.getItem("metadataLoaded")) {
+        sessionStorage.setItem("metadataLoaded", "true");
+        loadTrainedModels()
     }
-    loadTrainedModels()
-    fetchWeatherAndPipeline(systemIds);
-    const now = new Date();
-    const delayMs = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
-    setTimeout(() => {
+    if (window.location.pathname === "/") {
+        const metadata = await djangoRequest({
+            url: "/load-metadata/",
+            containerId: "status-container",
+            loadingHtml: '<p class="text-loading">Loading system metadata...</p>',
+            successHtml: data => '<p class="text-success">Loading system metadata...</p>',
+        });
+        systemIds = Object.keys(metadata);
+        for (const id of systemIds) {
+            const container = document.getElementById(`system-metadata-${id}`);
+            if (container) {
+                container.innerHTML = metadata[id];
+            }
+        }
         fetchWeatherAndPipeline(systemIds);
-        setInterval(fetchWeatherAndPipeline(systemIds), 60 * 60 * 1000);
-    }, delayMs);
+        const now = new Date();
+        const delayMs = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
+        setTimeout(() => {
+            fetchWeatherAndPipeline(systemIds);
+            setInterval(() => fetchWeatherAndPipeline(systemIds), 60 * 60 * 1000);
+        }, delayMs);
+    }
 });
 
 /*
