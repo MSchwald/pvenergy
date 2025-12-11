@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
 from .menu import make_menu_urls
+from .views import ApiEndpoints
+import inspect
 
 MENU = [
     ("Individual System Forecast", "individual_systems"),
@@ -10,13 +11,6 @@ MENU = [
 ]
 
 urlpatterns = make_menu_urls(MENU) + [
-    path("load-metadata/", views.load_metadata, name="load_metadata"),
-    path("load-models/", views.load_models, name="load_models"),
-    path("load-weather/", views.load_weather, name="load_weather"),
-    path("save-weather/", views.save_weather, name="save_weather"),
-    path("plot-weather/", views.plot_weather, name="plot_weather"),
-    path("plot-features/", views.plot_features, name="plot_features"),
-    path("plot-predictions/", views.plot_predictions, name="plot_predictions"),
-    path("models-names/", views.models_names, name="models_names"),
-    path("models-training-results/", views.models_training_results, name="models_training_results"),
+    path(f"{name.replace("_","-")}/", getattr(ApiEndpoints, name), name = name)
+    for name, method in inspect.getmembers(ApiEndpoints, inspect.isfunction) if not name.startswith("_")
 ]
