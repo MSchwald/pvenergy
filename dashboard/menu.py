@@ -18,7 +18,7 @@ def make_menu_urls(menu: list[tuple[str, str]]) -> list:
     return [
         path(
             label.lower().replace(" ", "_") + "/" if i!= 0 else "",
-            view_wrapper(getattr(views, view), f"dashboard/{view}.html", view),
+            view_wrapper(getattr(views.TemplateViews, view), f"dashboard/{view}.html", view),
             name = view
         ) for i, (label, view) in enumerate(menu)
     ]
