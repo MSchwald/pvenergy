@@ -168,6 +168,14 @@ class Model:
         results = pd.concat(result_list)
         self._evaluation_results = results
         return results
+    
+    def get_hyperparameters(self):
+        default_params = self.estimator.__class__().get_params()
+        current_params = self.estimator.get_params()
+        return {
+            param: value for param, value in current_params.items()
+            if param in default_params and value != default_params[param]
+        }
 
     def save(self, file_name: str):
         path = BASE_DIR / "trained_models" / f"{file_name}.joblib"
@@ -370,6 +378,12 @@ class Pipeline:
         )
         df = df.set_index(F.TIME.name)
         return df
+
+    @classmethod
+    def integrate_timeseries(lcs, series: pd.Series) -> float:
+        """Numeric integration of a pandas DatetimeIndex via trapezoid rule."""
+        dt = series.index.to_series().diff().dt.total_seconds().fillna(0)
+        return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
 
     @classmethod
     def predict(cls, model: Model | list[Model], df: pd.DataFrame) -> pd.DataFrame:
