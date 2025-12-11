@@ -17,4 +17,6 @@ urlpatterns = make_menu_urls(MENU) + [
     path("plot-weather/", views.plot_weather, name="plot_weather"),
     path("plot-features/", views.plot_features, name="plot_features"),
     path("plot-predictions/", views.plot_predictions, name="plot_predictions"),
+    path("models-names/", views.models_names, name="models_names"),
+    path("models-training-results/", views.models_training_results, name="models_training_results"),
 ]

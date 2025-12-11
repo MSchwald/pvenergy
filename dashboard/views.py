@@ -32,6 +32,7 @@ LOCATION_FROM_ID = {id : (Pvdaq.meta(id)[F.LATITUDE], Pvdaq.meta(id)[F.LONGITUDE
 LOCATIONS: tuple[int] = tuple({(Pvdaq.meta(id)[F.LATITUDE], Pvdaq.meta(id)[F.LONGITUDE]) for id in SYSTEM_IDS})
 
 # Get loaded while already rendering in order to not delay showing the starting page for several seconds
+TRAINED_MODELS = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
 ml_models: tuple[Model] = tuple()
 training_features: tuple[Feature] = tuple()
 
@@ -113,19 +114,23 @@ def get_hyperparameters(model: Model):
     }
 
 def models_info(request):
-    load_models(request)
+    return {"indices": list(range(len(TRAINED_MODELS)))}
+
+def models_names(request):
+    return JsonResponse({"names": [feature_format(model.name, display_unit = False) for model in TRAINED_MODELS]})
+
+def models_training_results(request):
     for model in ml_models:
         model._evaluation_results.name = "Score"
-    return {
-        "models": {
-            feature_format(model.name): {
+    return JsonResponse({
+        str(i): {
                 "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]),
                 "target": model._target_feature,
                 "evaluations": pd_styler(model._evaluation_results),
                 "parameter": pd_styler(pd.Series(get_hyperparameters(model), name="Value"))
-            } for model in ml_models
-        }
-    }
+        } for i, model in enumerate(ml_models)
+    })
+
 
 def load_metadata(request):
     return JsonResponse({str(id): pd_styler(Pipeline.get_system_constants().loc[id].to_frame().T) for id in SYSTEM_IDS})
@@ -149,7 +154,7 @@ def load_models(request):
     global ml_models
     global training_features
     if not ml_models:
-        ml_models = tuple(Model.load(ml_model.name) for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST])
+        ml_models = tuple(Model.load(ml_model.name) for ml_model in TRAINED_MODELS)
         training_features = tuple(fp.FEATURE_FROM_NAME[name] for name in ml_models[0]._training_features)
         return JsonResponse({"status": "success", "message": "Models loaded"})
     else:
