@@ -40,7 +40,7 @@ class Scaler:
 class EvaluationMethod:
     """Template for creating evaluation methods for trained ML models"""
     name: str
-    method: Callable[tuple, pd.Series]
+    method: Callable[..., pd.Series]
     _result: pd.Series = None
 
     def evaluate(self, model, X_test, y_test, y_pred):
