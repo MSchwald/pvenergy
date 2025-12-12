@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 from pathlib import Path
 
-from feature_processing import FeatureProcessing as fp
+from pvcore.feature import Processing as fp
 from typing import Any
 
 from django.conf import settings
@@ -45,6 +45,18 @@ def pd_styler(data: pd.DataFrame | pd.Series) -> str:
     )
     return f'<div class="table-container">{df_html}</div>'
 
-def static_url(file: Path) -> str:
-    rel = file.relative_to(settings.STATICFILES_DIRS[0])
-    return f"{settings.STATIC_URL}{rel.as_posix()}"
+def file_to_url(file: Path) -> str:
+    """Converts a local path into a public url."""
+    try:
+        rel = file.relative_to(settings.MEDIA_ROOT)
+        print(f"{settings.MEDIA_URL}{rel.as_posix()}")
+        return f"{settings.MEDIA_URL}{rel.as_posix()}"
+    except ValueError:
+        pass
+    try:
+        rel = file.relative_to(settings.STATIC_ROOT)
+        return f"{settings.STATIC_URL}{rel.as_posix()}"
+    except (ValueError, AttributeError):
+        pass
+    print(f"Warning: file {file} neither in media nor staticfiles folder.")
+    
