@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .menu import make_menu_urls
 from .views import ApiEndpoints
 import inspect
@@ -11,6 +13,6 @@ MENU = [
 ]
 
 urlpatterns = make_menu_urls(MENU) + [
-    path(f"{name.replace("_","-")}/", getattr(ApiEndpoints, name), name = name)
+    path(name.replace("_","-") + "/", getattr(ApiEndpoints, name), name = name)
     for name, method in inspect.getmembers(ApiEndpoints, inspect.isfunction) if not name.startswith("_")
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
