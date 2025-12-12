@@ -1,14 +1,18 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pvcore.feature import Feature
+
 import pandas as pd
 import json
 
-from dataanalysis import Pipeline, Model, ML_MODELS
-from data_request import OpenMeteo, Pvdaq
-import file_utilities as fu
-from feature_catalog import FeatureCatalog as F
-from feature_catalog import Feature
-from feature_processing import FeatureProcessing as fp
-from plotting import Plot
-from .formating import feature_format, pd_styler, static_url
+from pvcore.ml import Pipeline, Model, ML_MODELS
+from pvcore.io import Pvdaq, OpenMeteo
+import pvcore.io.file_utilities as fu
+from pvcore.feature import Catalog as F, Processing as fp
+from pvcore.plotting import Plot
+from pvcore.paths import RESULTS_DIR
+from .formatting import feature_format, pd_styler, file_to_url
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -32,7 +36,7 @@ class TemplateViews:
         return {"ids": SYSTEM_IDS}
 
     def all_systems(request):
-        df = pd.read_csv("results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
+        df = pd.read_csv(RESULTS_DIR / "results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
         df.index.name = F.SYSTEM_ID.name
         return {
             "metadata": pd_styler(Pipeline.get_system_constants()),
@@ -125,7 +129,7 @@ class ApiEndpoints:
             df.ftr.set_const(SYSTEM_CONSTANTS[id])
             cache[id] = df
             plots[str(id)] = {
-                "weather_url": static_url(Plot.weather_forecast(df, id)),
+                "weather_url": file_to_url(Plot.weather_forecast(df, id)),
                 "weather_title": f"Forecast, starting from {df.index[0]} local time (UTC{df.ftr.get_const(F.UTC_OFFSET)})"
             }
         return JsonResponse(plots)
@@ -135,7 +139,7 @@ class ApiEndpoints:
         for id in SYSTEM_IDS:
             df = cache[id]
             plots[str(id)] = {
-                "features_plot_url": static_url(Plot.calculated_features(df, id))
+                "features_plot_url": file_to_url(Plot.calculated_features(df, id))
             }
         return JsonResponse(plots)
 
@@ -149,7 +153,7 @@ class ApiEndpoints:
                 [df.ftr.get(training_features), Y], axis = 1
             )
             results[id] = {
-                "prediction_plot_url": static_url(Plot.predict(Y, id)),
+                "prediction_plot_url": file_to_url(Plot.predict(Y, id)),
                 "energy": energy,
                 "df_html": pd_styler(raw_data)
             }
