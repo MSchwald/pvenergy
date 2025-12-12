@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from pathlib import Path
 from tqdm import tqdm
 import s3fs
@@ -8,7 +9,7 @@ import re
 from natsort import natsorted
 from datetime import datetime, timedelta
 
-BASE_DIR = Path(__file__).resolve().parent
+from pvcore.paths import BASE_DIR
 
 s3_fs = s3fs.S3FileSystem(anon=True)
 

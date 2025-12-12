@@ -2,20 +2,14 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+
 import pandas as pd
-
-from dataanalysis import Pipeline, ML_MODELS, Model
-from feature_catalog import FeatureCatalog as F
-import file_utilities as fu
-
-
-
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
-
-PLOT_DIR = BASE_DIR / "static" / "plots"
-PLOT_DIR.mkdir(parents=True, exist_ok=True)
+from pvcore.ml import Pipeline, ML_MODELS, Model
+from pvcore.feature import Catalog as F
+import pvcore.io.file_utilities as fu
+from pvcore.paths import PLOTS_DIR
 
 plt.rcParams["figure.autolayout"] = True
 plt.rcParams["font.size"] = 14
@@ -34,7 +28,7 @@ class Plot:
             use_cache: bool = True
         ) -> Path:
         """Creates three plots of features from OpenMeteo weather forecast"""
-        cache = PLOT_DIR / f"{cls.weather_cache_name}_{system_id}.png"
+        cache = PLOTS_DIR / f"{cls.weather_cache_name}_{system_id}.png"
         if fu.file_up_to_date(cache):
             return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
@@ -91,7 +85,7 @@ class Plot:
             use_cache: bool = True
         ) -> Path:
         """Creates three plots of some intuitive features calculated from the weather forecast"""
-        cache = PLOT_DIR / f"{cls.features_cache_name}_{system_id}.png"
+        cache = PLOTS_DIR / f"{cls.features_cache_name}_{system_id}.png"
         if fu.file_up_to_date(cache):
             return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
@@ -153,7 +147,7 @@ class Plot:
             use_cache: bool = True
         ) -> Path:
         """Creates three plots of dcp prediction for all three trained models"""
-        cache = PLOT_DIR / f"{cls.prediction_cache_name}_{system_id}.png"
+        cache = PLOTS_DIR / f"{cls.prediction_cache_name}_{system_id}.png"
         if fu.file_up_to_date(cache):
             return cache
         fig, axes = plt.subplots(1, 3, figsize=(18,6), sharex=True)
@@ -175,7 +169,7 @@ class Plot:
 
         fig.tight_layout(rect=[0, 0, 1, 0.96])
 
-        file = PLOT_DIR / f"dcp_prediction_{system_id}.png"
+        file = PLOTS_DIR / f"dcp_prediction_{system_id}.png"
         fig.savefig(file)
 
         plt.close(fig)

@@ -1,8 +1,9 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Any
+
 import pandas as pd
 from enum import Enum
+from dataclasses import dataclass
+from typing import Any
 
 class Source(Enum):
     """Indicates if a feature gets calculated or requested from an external source"""
@@ -41,7 +42,7 @@ class Feature:
     def __repr__(self) -> str:
         return f"Feature({self.name})"
 
-class FeatureCatalog:
+class Catalog:
     """
     Features to be considered to analyze the data of PVDAQ pv systems.
     They are listed in a logical order of their requirements and by themes.

@@ -1,18 +1,19 @@
 from __future__ import annotations
-from typing import Union
+from typing import TYPE_CHECKING, Union
+if TYPE_CHECKING:
+    from .accessor import Accessor as FeatureAccessor
+
 import pandas as pd
 import numpy as np
-from feature_catalog import Feature, Source
-from feature_catalog import FeatureCatalog as F
 from sklearn.linear_model import LinearRegression
 import pvlib
 import pytz
 from timezonefinder import TimezoneFinder
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+from .catalog import Feature, Source, Catalog as F
+#from pvcore.paths import RESULTS_DIR
 
-class FeatureProcessing:
+class Processing:
     ALL_FEATURES: tuple[Feature] = tuple(
         feature for feature in vars(F).values() if isinstance(feature, Feature)
     )
@@ -249,7 +250,7 @@ class FeatureProcessing:
         results_df = pd.DataFrame(results).set_index(F.YEAR.name).sort_index()
         
         # saving is still bugged (only saves index)
-        # results_df.ftr.to_csv(BASE_DIR / "parameter" / "dcp0_gamma_per_year" / f"{api.get_const(F.SYSTEM_ID)}.csv")
+        # results_df.ftr.to_csv(RESULTS_DIR / "dcp0_gamma_per_year" / f"{api.get_const(F.SYSTEM_ID)}.csv")
         
         dcp0 = results_df['annual_dcp0'].mean()
         gamma = results_df['annual_gamma'].mean()

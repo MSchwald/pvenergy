@@ -1,19 +1,23 @@
+from __future__ import annotations
+from typing import Dict, Any, Union
+
 from pandas.api.extensions import register_dataframe_accessor
 import pandas as pd
 import numpy as np
-from typing import Dict, Any, Union
-from feature_catalog import Feature, Source
-from feature_processing import FeatureProcessing as fp
 from pathlib import Path
-import file_utilities as fu
+import os
+
+from .catalog import Source, Feature
+from .processing import Processing as fp
+import pvcore.io.file_utilities as fu
 
 # alias for typing, allowing a single or a list of features
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
-BASE_DIR = Path(__file__).resolve().parent
+show_warnings = os.environ.get("DEBUG", "False") == "True"
 
 @register_dataframe_accessor("ftr")
-class FeatureAccessor:
+class Accessor:
     """
     Create for every pd.DataFrame df a pandas accessor df.ftr
     for convenient access and management of features, relevant constants and metadata.
@@ -80,10 +84,11 @@ class FeatureAccessor:
     def set_const(self, value_dict: dict[Feature, Any]):
         self._constants.update(value_dict)
 
-    def _calculate(self, feature: Feature) -> Union[pd.Series, np.dtype]:
+    def _calculate(self, feature: Feature, show_warnings: bool = show_warnings) -> Union[pd.Series, np.dtype]:
         """Wrapper method for error handling and potential type casting when calculating missing features"""
         if feature.source != Source.CALCULATED:
-            print(f"Warning: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
+            if show_warnings:
+                print(f"Warning: Cannot calculate feature {feature.name}. Must be loaded from {feature.source.value}.")
             if feature.is_constant:
                 return np.nan
             return pd.Series(np.nan, index=self._df.index)
@@ -93,7 +98,8 @@ class FeatureAccessor:
             nan_cols = [col for col in df.columns if df[col].isna().all().any()]
             nan_consts = [const for const in const_list if pd.isna(const)]
             if nan_cols or nan_consts:
-                print(f"Warning: {nan_cols + nan_consts} is missing to calculate feature {feature}.")
+                if show_warnings:
+                    print(f"Warning: {nan_cols + nan_consts} is missing to calculate feature {feature}.")
                 if feature.is_constant:
                     return np.nan
                 return pd.Series(np.nan, index=self._df.index, dtype=feature.data_type)
@@ -169,5 +175,3 @@ class FeatureAccessor:
             feature = [feature]
         self._df = self._df.dropna(subset = [ftr.name for ftr in feature], how = how)
         return self._df
-
-    #def plot  
