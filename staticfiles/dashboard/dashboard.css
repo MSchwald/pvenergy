@@ -1,0 +1,164 @@
+/* Main settings */
+body { font-family: Arial, sans-serif; margin: 20px; }
+h2 { margin-top: 40px; }
+.system-block { margin-bottom: 60px; }
+
+/* Stretch plots to width of the user's browser window */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.text-loading {
+    color: rgb(7, 0, 73);
+    font-style: italic;
+}
+.text-success {
+    color: green;
+    font-weight: bold;
+}
+.text-error {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* Format for two columns, unused */
+div.two_columns {
+  width:100%;
+}
+div.two_columns div {
+  width:50%;  
+  float:left;
+}
+
+/* Sidebar (size, color, position), links with hover effect */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding-top: 20px;
+    overflow-x: hidden;
+}
+.sidebar h1 {
+    color: #ffee00;
+    font-size: 24px;
+    margin: 0 0 20px 0;
+    padding-left: 16px;
+}
+.sidebar a {
+    display: block;
+    color: #f2f2f2;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 18px;
+}
+.sidebar a:hover {
+    background-color: #575757;
+}
+.sidebar a.active {
+    background-color: #04AA6D;
+}
+.content { /* Place content on the right from the sidebar */
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Sidebar footer with my name and Github link */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 16px 12px;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+.sidebar-footer-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffee00;
+    opacity: 1 !important;
+    pointer-events: none;
+    display: inline-block;
+}
+.sidebar-footer-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    text-decoration: none;
+    color: #ddd;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    font-size: 0.95rem;
+    display: inline-flex; 
+}
+.footer-link-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    text-align: left;
+}
+.footer-link-subtext {
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+.sidebar-footer-link:hover {
+    opacity: 1;
+}
+.github-icon {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+/* Default settings for displaying pd.DataFrames with zebra look */
+.table-container {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+.df-table {
+    width: auto;
+    border-collapse: collapse;
+    font-family: sans-serif;
+}
+.df-table thead th {
+    background-color: #333;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.df-table tbody td {
+    text-align: center;
+    padding: 6px;
+    border: 1px solid #ddd;
+    word-break: break-word;
+    white-space: nowrap;
+}
+.df-table tbody th {
+    padding: 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: white;
+    background-color: #333;
+}
+.df-table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+.df-table tbody tr:nth-child(even) {
+    background-color: #D4D4D4;
+}
