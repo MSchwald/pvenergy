@@ -263,13 +263,13 @@ class Nsrdb:
 
         url = "https://developer.nrel.gov/api/nsrdb/v2/solar/nsrdb-GOES-aggregated-v4-0-0-download.csv"
         params = {
-            "api_key": os.environ.get("NSRDB_API_KEY"),
+            "api_key": os.environ.get("NSRDB_API_KEY", "TRASH_API_KEY"),
             "wkt": f"POINT({longitude} {latitude})",
             "attributes": ",".join(attributes),
             "names": str(year),
             "utc": "false",
             "leap_day": "true",
-            "email": os.environ.get("EMAIL")
+            "email": os.environ.get("EMAIL", "TRASH_EMAIL"),
         }
 
         response = requests.get(url, params = params, timeout = 30)
