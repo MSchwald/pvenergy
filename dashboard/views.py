@@ -8,8 +8,8 @@ import json
 
 from pvcore.ml import Pipeline, Model, ML_MODELS
 from pvcore.io import Pvdaq, OpenMeteo
-import pvcore.io.file_utilities as fu
-from pvcore.feature import Catalog as F, Processing as fp
+import pvcore.utils.file_utilities as fu
+from pvcore.feature import Catalog as F, ALL_FEATURES, FEATURE_FROM_NAME
 from pvcore.plotting import Plot
 from pvcore.paths import RESULTS_DIR
 from .formatting import feature_format, pd_styler, file_to_url
@@ -54,7 +54,7 @@ class TemplateViews:
                     "Is constant": ftr.is_constant,
                     "Unit": ftr.unit,
                     "Description": ftr.description
-                } for ftr in fp.ALL_FEATURES
+                } for ftr in ALL_FEATURES
             }).T
         )
         return {"features": features_df}
@@ -101,7 +101,7 @@ class ApiEndpoints:
         global training_features
         if not ml_models:
             ml_models = tuple(Model.load(ml_model.name) for ml_model in TRAINED_MODELS)
-            training_features = tuple(fp.FEATURE_FROM_NAME[name] for name in ml_models[0]._training_features)
+            training_features = tuple(FEATURE_FROM_NAME[name] for name in ml_models[0]._training_features)
             return JsonResponse({"status": "success", "message": "Models loaded"})
         else:
             return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})

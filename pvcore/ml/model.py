@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 import lightgbm as lgb
 
-from pvcore.feature import Processing as fp
+from pvcore.feature import FEATURE_FROM_NAME
 from pvcore.paths import MODELS_DIR
 from .evaluation import EVALUATIONS, ALL_EVALUATIONS
 
@@ -90,7 +90,7 @@ class Model:
     def predict(self, X_test: pd.DataFrame) -> pd.Series:
         if self._trained_model is None:
             raise RuntimeError(f"Model {self.name} has not been trained yet.")
-        features = tuple(fp.FEATURE_FROM_NAME[name] for name in self._training_features)
+        features = tuple(FEATURE_FROM_NAME[name] for name in self._training_features)
         X = self.apply_scaler(X_test.ftr.get(features))
         return pd.Series(self._trained_model.predict(X), index = X.index)
 

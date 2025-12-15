@@ -194,3 +194,13 @@ class Catalog:
         description="Interaction term modeling the combined influence of irradiance and temperature on power losses")
     RELATIVE_AZIMUTH = Feature("relative_azimuth", unit="°", required_features = (AZIMUTH, SOLAR_AZIMUTH),
         description="Difference between the azimuth angles of the photovoltaic module and the sun")
+    
+ALL_FEATURES: tuple[Feature] = tuple(
+        feature for feature in vars(Catalog).values() if isinstance(feature, Feature)
+    )
+ALL_FEATURE_NAMES: tuple[str] = tuple(feature.name for feature in ALL_FEATURES)
+CALCULATED_FEATURES: tuple[Feature] = tuple(
+    feature for feature in ALL_FEATURES if feature.source == Source.CALCULATED
+)
+
+FEATURE_FROM_NAME: dict[str, Feature] = {feature.name: feature for feature in ALL_FEATURES}

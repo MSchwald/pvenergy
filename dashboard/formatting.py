@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 from pathlib import Path
 
-from pvcore.feature import Processing as fp
+from pvcore.feature import FEATURE_FROM_NAME, ALL_FEATURE_NAMES
 from typing import Any
 
 from django.conf import settings
@@ -23,11 +23,11 @@ def number_format(number: float | int | Any) -> str | Any:
 def feature_format(name: str, display_unit: bool = True) -> str:
     if not isinstance(name, str):
         return name
-    if not name in fp.ALL_FEATURE_NAMES:
+    if not name in ALL_FEATURE_NAMES:
         return name.replace("_", " ").title()
     if display_unit:
-        return fp.FEATURE_FROM_NAME[name].display_name_with_unit
-    return fp.FEATURE_FROM_NAME[name].display_name
+        return FEATURE_FROM_NAME[name].display_name_with_unit
+    return FEATURE_FROM_NAME[name].display_name
 
 def pd_styler(data: pd.DataFrame | pd.Series) -> str:
     """Formats pandas objects with html code for displaying."""
@@ -59,4 +59,3 @@ def file_to_url(file: Path) -> str:
     except (ValueError, AttributeError):
         pass
     print(f"Warning: file {file} neither in media nor staticfiles folder.")
-    

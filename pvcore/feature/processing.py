@@ -10,19 +10,10 @@ import pvlib
 import pytz
 from timezonefinder import TimezoneFinder
 
-from .catalog import Feature, Source, Catalog as F
-#from pvcore.paths import RESULTS_DIR
+from .catalog import Feature, Catalog as F
 
 class Processing:
-    ALL_FEATURES: tuple[Feature] = tuple(
-        feature for feature in vars(F).values() if isinstance(feature, Feature)
-    )
-    ALL_FEATURE_NAMES: tuple[str] = tuple(feature.name for feature in ALL_FEATURES)
-    CALCULATED_FEATURES: tuple[Feature] = tuple(
-        feature for feature in ALL_FEATURES if feature.source == Source.CALCULATED
-    )
 
-    FEATURE_FROM_NAME: dict[str, Feature] = {feature.name: feature for feature in ALL_FEATURES}
     tf = TimezoneFinder()
 
     @classmethod
