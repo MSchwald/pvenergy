@@ -5,7 +5,7 @@ import pandas as pd
 
 from pvcore.paths import OPENMETEO_DIR
 from pvcore.feature import Catalog as F
-from . import file_utilities as fu
+from pvcore.utils import file_utilities as fu
 
 class OpenMeteo:
     """Request live / forecast weather data"""

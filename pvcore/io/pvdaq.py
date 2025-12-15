@@ -8,7 +8,7 @@ import pandas as pd
 
 from pvcore.paths import PVDAQ_DIR
 from pvcore.feature import Catalog as F
-from . import file_utilities as fu
+from pvcore.utils import file_utilities as fu
 
 class Pvdaq:
     """Request pv data and metadata of PVDAQ systems."""

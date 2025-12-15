@@ -7,9 +7,9 @@ import numpy as np
 from pathlib import Path
 import os
 
-from .catalog import Source, Feature
+from .catalog import Source, Feature, FEATURE_FROM_NAME, ALL_FEATURE_NAMES
 from .processing import Processing as fp
-import pvcore.io.file_utilities as fu
+import pvcore.utils.file_utilities as fu
 
 # alias for typing, allowing a single or a list of features
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
@@ -31,7 +31,7 @@ class Accessor:
     
     @property
     def features(self) -> list[Feature]:
-        return [fp.FEATURE_FROM_NAME[col] for col in self._df.columns.tolist() + [self._df.index.name] if col in fp.ALL_FEATURE_NAMES]
+        return [FEATURE_FROM_NAME[col] for col in self._df.columns.tolist() + [self._df.index.name] if col in ALL_FEATURE_NAMES]
 
     def get(self, feature: FeatureList = None) -> Union[pd.Series, pd.DataFrame]:
         """

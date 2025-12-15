@@ -8,7 +8,7 @@ from pathlib import Path
 
 from pvcore.ml import Pipeline, ML_MODELS, Model
 from pvcore.feature import Catalog as F
-import pvcore.io.file_utilities as fu
+import pvcore.utils.file_utilities as fu
 from pvcore.paths import PLOTS_DIR
 
 plt.rcParams["figure.autolayout"] = True
