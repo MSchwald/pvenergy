@@ -82,7 +82,7 @@ class Pvdaq:
     def meta(cls, system_id: int) -> dict[Feature, Any]:
         """Shortcut to obtain the metadata of a single system as a dictionary."""
         meta_df = cls.get_metadata().reset_index()
-        row = meta_df[meta_df[F.SYSTEM_ID.name] == system_id].squeeze().to_dict()
+        row = meta_df[meta_df[F.SYSTEM_ID.name] == system_id].to_dict(orient="records")[0]
         return {feature: row[feature.name] for feature in meta_df.ftr.features} 
 
     @classmethod
