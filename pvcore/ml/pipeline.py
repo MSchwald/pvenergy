@@ -132,7 +132,9 @@ class Pipeline:
     
     @classmethod
     def system_constants(cls, system_id: int) -> dict[Feature, Any]:
-        return {FEATURE_FROM_NAME[name]: value for name, value in cls.get_system_constants().loc[system_id].to_dict().items()}
+        const_df = cls.get_system_constants().reset_index()
+        const_dict = const_df[const_df[F.SYSTEM_ID.name] == system_id].to_dict(orient="records")[0]
+        return {FEATURE_FROM_NAME[name]: value for name, value in const_dict.items()}
 
     @staticmethod
     def train_test_split(
