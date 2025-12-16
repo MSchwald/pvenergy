@@ -5,6 +5,7 @@ if TYPE_CHECKING:
 
 import pyarrow.dataset as ds
 import pandas as pd
+from tqdm import tqdm
 
 from pvcore.paths import PVDAQ_DIR
 from pvcore.feature import Catalog as F
@@ -186,6 +187,8 @@ class Pvdaq:
         column_rename_map["measured_on"] = F.TIME.name
         use_columns = list(column_rename_map.keys())
         parquet_filter = None
+        if not mute_tqdm:
+            tqdm.write(f"Loading PVDAQ data for system {system_id}")
         if file_format == "parquet":
             # Replace all column names with the ids they end with (except for the time column)
             ids = [metric_ids[ftr.name] for ftr in measured_features]

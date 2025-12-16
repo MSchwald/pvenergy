@@ -41,6 +41,8 @@ class Pipeline:
         if pv_data.empty:
             return pd.DataFrame()
         weather_data = Nsrdb.load_system(pv_data.ftr, mute_tqdm = mute_tqdm).sort_index()
+        if not mute_tqdm:
+            tqdm.write("Merging PV and weather data...")
         pv_data = pv_data.sort_index().reindex(
             weather_data.index
         ).interpolate(
@@ -75,8 +77,8 @@ class Pipeline:
 
         # Download pv and weather data and calculate requested features for the given pv systems
         dfs = []
-        for system_id in tqdm(system_ids, desc=f"Loading PVDAQ and NSRDB data"):
-            tqdm.write(f"Loading data for system {system_id}")
+        for system_id in tqdm(system_ids, desc=f"Preprocessing PVDAQ and NSRDB data"):
+            tqdm.write(f"Loading training data for system {system_id}")
             df = cls.request_data(system_id = system_id, mute_tqdm = mute_tqdm)
             if system_id in cached_ids:
                 df.ftr.set_const(cls.system_constants(system_id))
@@ -115,10 +117,12 @@ class Pipeline:
         ids = [id for id in Pvdaq.filter_systems(metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]) if id in good_ids]
         constant_features = META_COLUMNS + [F.TIME_ZONE, F.UTC_OFFSET, F.DCP0, F.GAMMA, F.FAIMAN_U0, F.FAIMAN_U1]
         system_constants = pd.DataFrame(data = np.nan, index = ids, columns = [ftr.name for ftr in constant_features])
+        system_constants[F.TIME_ZONE.name] = system_constants[F.TIME_ZONE.name].astype('object')
         system_constants.index.name = F.SYSTEM_ID.name
-        for id in tqdm(ids, desc="Calculating system constants..."):
+        for id in tqdm(ids, desc="Requesting raw data from PVDAQ and NSRDB and calculating system constants..."):
             tqdm.write(f"for system {id}")
             df = cls.request_data(id)
+            tqdm.write("Calculating system constants...")
             for ftr in constant_features:
                 system_constants.loc[id, ftr.name] = df.ftr.get_const(ftr)
             

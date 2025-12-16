@@ -67,7 +67,7 @@ class Nsrdb:
             "email": os.environ.get("EMAIL", "TRASH_EMAIL"),
         }
 
-        response = requests.get(url, params = params, timeout = 30)
+        response = requests.get(url, params = params, timeout = 180)
         if response.status_code != 200:
             print(f"HTTP Error: {response.status_code}")
             print(response.text)
@@ -114,7 +114,7 @@ class Nsrdb:
         end_year = end_date.year
         years = list(range(start_year, end_year+1))
         dfs = []
-        for year in years if mute_tqdm else tqdm(years, desc=f"Loading weather data from {start_date}-{end_date} - CSVs"):
+        for year in years if mute_tqdm else tqdm(years, desc=f"Loading weather data from {start_date} to {end_date} - CSVs"):
             if not mute_tqdm:
                 tqdm.write(f"Loading weather data from year {year}")
             dfs.append(cls.load_year(latitude, longitude, year, save_result = cache_single_files))
@@ -137,7 +137,7 @@ class Nsrdb:
         id = api.get_const(F.SYSTEM_ID)
         if cache_directory is not None:
             cache_directory.mkdir(parents = True, exist_ok = True)
-            cache_path = NSRDB_DIR / f"weather_system_id={id}.parquet"
+            cache_path = NSRDB_DIR / f"weather_system_id={int(id)}.parquet"
         if cache_path.exists():
             return pd.read_parquet(cache_path)
         start = api._df.index[api._df.index.year >= 1998].min()
