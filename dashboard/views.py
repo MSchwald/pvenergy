@@ -36,11 +36,11 @@ class TemplateViews:
         return {"ids": SYSTEM_IDS}
 
     def all_systems(request):
-        df = pd.read_csv(RESULTS_DIR / "results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
-        df.index.name = F.SYSTEM_ID.name
+        #df = pd.read_csv(RESULTS_DIR / "results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
+        #df.index.name = F.SYSTEM_ID.name
         return {
             "metadata": pd_styler(Pipeline.get_system_constants()),
-            "evaluations": pd_styler(df)
+            #"evaluations": pd_styler(df)
         }
 
     def feature_database(request):
