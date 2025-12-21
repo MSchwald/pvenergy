@@ -14,7 +14,7 @@ import pvcore.utils.file_utilities as fu
 # alias for typing, allowing a single or a list of features
 FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
 
-show_warnings = os.environ.get("DEBUG", "False") == "True"
+show_warnings = os.environ.get("FEATURE_DEBUG", "False") == "True"
 
 @register_dataframe_accessor("ftr")
 class Accessor:
