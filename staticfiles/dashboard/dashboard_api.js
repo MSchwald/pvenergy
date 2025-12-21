@@ -158,8 +158,10 @@ const Success = {
                                         to predict the feature ${value.target}.
                                         <h3>Evaluation results</h3>
                                         ${value.evaluations}
-                                        <h3>Hyperparameters</h3>
-                                        ${value.parameter}`
+                                        <h3>Hyperparameters test</h3>
+                                        ${value.parameter}
+                                        <h3>Individual system analysis</h3>
+                                        ${value.system_evaluation}`
         }
         return result;
     }
