@@ -1,13 +1,12 @@
-import sys, argparse
+import sys, argparse, os
 from pathlib import Path
-from dotenv import load_dotenv
 
 from pvcore.io import Pvdaq
 from pvcore.ml import Pipeline, ML_MODELS, Model
 from pvcore.feature import Feature, Catalog as F, FEATURE_FROM_NAME, ALL_FEATURE_NAMES
 
 BASE_DIR = Path(__file__).resolve().parent
-load_dotenv(BASE_DIR / ".env")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pvenergy.settings")
 
 default_features: list[Feature] = [
     ftr.name for ftr in [
@@ -68,7 +67,7 @@ def main():
     elif args.command == "evaluate":
         for name in args.models:
             ml_model = Model.load(name)
-            Pipeline.system_evaluations(trained_model = ml_model, system_ids = args.ids)
+            print(Pipeline.system_evaluations(trained_model = ml_model, system_ids = args.ids))
     elif args.command == "pipeline":
         for ml_model in [m for m in default_models if m.name in args.models]:
             Pipeline.fleet_analysis(
