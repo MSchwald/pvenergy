@@ -1,12 +1,6 @@
 # Personal data to connect with APIs
 apidata.py
 
-# downloaded solar data from pvdaq
-pvdata/
-
-# downloaded weather data
-weatherdata/
-
 # downloaded data to try out data processing 
 *.csv
 *.joblib
