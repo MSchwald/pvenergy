@@ -43,15 +43,18 @@ class Pipeline:
         weather_data = Nsrdb.load_system(pv_data.ftr, mute_tqdm = mute_tqdm).sort_index()
         if not mute_tqdm:
             tqdm.write("Merging PV and weather data...")
-        pv_data = pv_data.sort_index().reindex(
-            weather_data.index
-        ).interpolate(
+        pv_data = pv_data.sort_index()
+        full_index = pv_data.index.union(weather_data.index)
+        merged_data = pv_data.reindex(full_index).interpolate(
             method="time", limit = 1, limit_area = "inside"
-        ).join(weather_data, how='inner')
+        ).reindex(weather_data.index).join(
+            weather_data, how='inner'
+        )
+        
         if cache_name is not None:
-            pv_data.to_parquet(cache, index = True)
-        pv_data.ftr.set_const(meta)
-        return pv_data
+            merged_data.to_parquet(cache, index = True)
+        merged_data.ftr.set_const(meta)
+        return merged_data
 
     @classmethod
     def get_training_data(cls,
@@ -236,11 +239,33 @@ class Pipeline:
     def system_evaluations(cls,
         trained_model: Model,
         system_ids: tuple[int] = TRAINING_IDS,
+        evaluate: bool = True
     ) -> pd.DataFrame:
+        """
+        Evaluates a trained model's performance on each system individually
+        If evaluate == False, then this function only returns the cache if available.        
+        """
         features = tuple(FEATURE_FROM_NAME[name] for name in trained_model._training_features)
         if features is None:
             raise RuntimeError(f"Model {trained_model} has not been trained yet.")
-        return cls.individual_analysis(training_features = features, system_ids = system_ids, ml_model = trained_model)
+        cache = RESULTS_DIR / f"{trained_model.name}.csv"
+        cache_info = RESULTS_DIR / f"{trained_model.name}.json"
+        if cache.exists() and cache_info.exists():
+            with open(cache_info) as f:
+                info = json.load(f)
+            if set(info["system_ids"]) == set(system_ids) and set(info["features"]) == set(ftr.name for ftr in features):
+                return pd.read_csv(cache, index_col = F.SYSTEM_ID.name)
+        if evaluate == False:
+            return pd.DataFrame()
+        df = cls.individual_analysis(training_features = features, system_ids = system_ids, ml_model = trained_model)
+        df.to_csv(cache, index = True)
+        df_info = {
+                "system_ids": system_ids,
+                "features": [ftr.name for ftr in features]
+        }
+        with open(cache_info, "w") as f:
+            json.dump(df_info, f, indent=2)
+        return df
 
     @classmethod
     def weather_forecast(cls, system_id: int) -> pd.DataFrame:
