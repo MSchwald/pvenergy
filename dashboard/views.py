@@ -11,7 +11,6 @@ from pvcore.io import Pvdaq, OpenMeteo
 import pvcore.utils.file_utilities as fu
 from pvcore.feature import Catalog as F, ALL_FEATURES, FEATURE_FROM_NAME
 from pvcore.plotting import Plot
-from pvcore.paths import RESULTS_DIR
 from .formatting import feature_format, pd_styler, file_to_url
 
 from django.views.decorators.csrf import csrf_exempt
@@ -69,12 +68,20 @@ class ApiEndpoints:
     def models_training_results(request):
         for model in ml_models:
             model._evaluation_results.name = "Score"
+        system_evaluation = {}
+        for model in ml_models:
+            df = Pipeline.system_evaluations(model, evaluate = False)
+            if df.empty:
+                system_evaluation[model.name] = "Model has not yet been evaluated on each individual system. Use 'python main.py evaluate' to get such an analysis."
+            else:
+                system_evaluation[model.name] = pd_styler(df)
         return JsonResponse({
             str(i): {
                     "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]),
-                    "target": model._target_feature,
+                    "target": feature_format(model._target_feature, display_unit = False),
                     "evaluations": pd_styler(model._evaluation_results),
-                    "parameter": pd_styler(pd.Series(model.get_hyperparameters(), name="Value"))
+                    "parameter": pd_styler(pd.Series(model.get_hyperparameters(), name="Value")),
+                    "system_evaluation": system_evaluation[model.name]
             } for i, model in enumerate(ml_models)
         })
 

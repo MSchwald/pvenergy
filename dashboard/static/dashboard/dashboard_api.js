@@ -159,7 +159,9 @@ const Success = {
                                         <h3>Evaluation results</h3>
                                         ${value.evaluations}
                                         <h3>Hyperparameters</h3>
-                                        ${value.parameter}`
+                                        ${value.parameter}
+                                        <h3>Individual system analysis</h3>
+                                        ${value.system_evaluation}`
         }
         return result;
     }
