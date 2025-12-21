@@ -221,8 +221,6 @@ def file_up_to_date(file: str | Path):
     path = absolute_path(file)
     if not path.exists():
         return False
-    mtime = datetime.fromtimestamp(file.stat().st_mtime)
+    mtime = datetime.fromtimestamp(path.stat().st_mtime)
     time_now = datetime.now()
-    if time_now - mtime < timedelta(hours = 1) and time_now.hour == mtime.hour:
-        return True
-    return False
+    return mtime.hour == time_now.hour and mtime.date() == time_now.date()
