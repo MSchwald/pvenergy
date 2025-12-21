@@ -57,14 +57,29 @@ class Nsrdb:
         # "ssa","surface_pressure", "total_precipitable_water"]
 
         url = "https://developer.nrel.gov/api/nsrdb/v2/solar/nsrdb-GOES-aggregated-v4-0-0-download.csv"
+        
+        api_key = os.environ.get("NSRDB_API_KEY")
+        email = os.environ.get("NSRDB_EMAIL")
+
+        if not api_key or not email:
+            raise RuntimeError(
+                "For fetching raw data, register at https://developer.nrel.gov/signup/\n"
+                "with your email adress to obtain an API key. Then, restart this programm with\n"
+                "  docker run -e NSRDB_API_KEY=<key> -e NSRDB_EMAIL=<email>\n"
+                "Or set the environmental variables via\n"
+                "  export NSRDB_API_KEY=<key>\n"
+                "  export NSRDB_EMAIL=<email>\n"
+            )
+        
         params = {
-            "api_key": os.environ.get("NSRDB_API_KEY", "TRASH_API_KEY"),
+            "api_key": api_key,
             "wkt": f"POINT({longitude} {latitude})",
             "attributes": ",".join(attributes),
             "names": str(year),
             "utc": "false",
             "leap_day": "true",
-            "email": os.environ.get("EMAIL", "TRASH_EMAIL"),
+            "interval": "30",
+            "email": api_key,
         }
 
         response = requests.get(url, params = params, timeout = 180)
