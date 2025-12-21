@@ -22,7 +22,7 @@ model_names = [m.name for m in default_models]
 system_ids = [str(id) for id in Pvdaq.get_system_ids()]
 
 def main():
-    parser = argparse.ArgumentParser(prog = "main", description = "PV Energy Forecasting")
+    parser = argparse.ArgumentParser(prog = "pvenergy", description = "PV Energy Forecasting")
     subparsers = parser.add_subparsers(dest = "command", required = True)
     
     django = subparsers.add_parser("django", help="Run arbitrary Django management commands", add_help=False)
@@ -52,7 +52,7 @@ def main():
     if args.command == "django":
         run_django(args.django_args)
     elif args.command == "runserver":
-        run_django(["runserver", *args.django_args])
+        run_django(["runserver", "0.0.0.0:8000", *args.django_args])
     elif args.command == "request":
         for system_id in args.ids:
             print(Pipeline.request_data(system_id))
@@ -82,7 +82,7 @@ def main():
 def run_django(args):
     """Run django management commands"""
     from django.core.management import execute_from_command_line
-    sys.argv = [Path(sys.argv[0]).name, *args]
+    sys.argv = [os.path.abspath(__file__), *args]
     execute_from_command_line(sys.argv)
 
 if __name__ == '__main__':
