@@ -29,7 +29,13 @@ def get_system_ids() -> tuple[int]:
 # Get loaded while already rendering in order to not delay showing the starting page for several seconds
 TRAINED_MODELS = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
 ml_models: tuple[Model] = tuple()
-training_features: tuple[Feature] = tuple()
+training_features: tuple[Feature] = (
+            F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
+            F.DAY_OF_YEAR, F.TIME_SINCE_SUNLIGHT,
+            F.CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
+            F.POA_COS_AOI, F.POA_WIND_SPEED, F.DHI_PER_GHI,
+            F.DCP_PER_AREA, F.GAMMA_TEMP_DIFFERENCE, F.RELATIVE_AZIMUTH
+)
 
 class TemplateViews:
     def individual_systems(request):
@@ -73,7 +79,7 @@ class ApiEndpoints:
         for model in ml_models:
             df = Pipeline.system_evaluations(model, evaluate = False)
             if df.empty:
-                system_evaluation[model.name] = "Model has not yet been evaluated on each individual system. Use 'python main.py evaluate' to get such an analysis."
+                system_evaluation[model.name] = "Model has not yet been evaluated on each individual system. Use 'pvenergy evaluate' to get such an analysis."
             else:
                 system_evaluation[model.name] = pd_styler(df)
         return JsonResponse({
@@ -109,10 +115,8 @@ class ApiEndpoints:
 
     def load_models(request):
         global ml_models
-        global training_features
         if not ml_models:
             ml_models = tuple(Model.load(ml_model.name) for ml_model in TRAINED_MODELS)
-            training_features = tuple(FEATURE_FROM_NAME[name] for name in ml_models[0]._training_features)
             return JsonResponse({"status": "success", "message": "Models loaded"})
         else:
             return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})

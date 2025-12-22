@@ -145,7 +145,7 @@ const Success = {
                                                 <h3> Resulting energy [kWh] (before inverters) </h3>
                                                 ${value.energy}
                                                 <br>
-                                                <h3> Raw training features and predicted DC power </h3>
+                                                <h3> Raw default training features and predicted DC power </h3>
                                                 ${value.df_html}`
         }
         return result;
