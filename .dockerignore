@@ -3,6 +3,10 @@ db.sqlite3
 media/
 .devcontainer/
 .env
+data/raw/pvdaq/system_id*
+data/raw/openmeteo/
+data/raw/nsrdb/
+data/training/
 
 # Git
 .git
