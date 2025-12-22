@@ -174,13 +174,13 @@ class Catalog:
         description="Time since the day's first solar irradiance reached the photovoltaic module; used for modelling thermic inertia of the module")
     POWER_RATIO = Feature("power_ratio", required_features=(PVLIB_DC_POWER, DCP0),
         description="Ratio between DC Power estimated with pvlib and DCP0")
-    COS_AOI = Feature("cos(aoi)", required_features=(AOI,), label="cos(AOI)",
+    COS_AOI = Feature("cos_aoi", required_features=(AOI,), label="cos(AOI)",
         description="The Cosine of the Solar AOI determines the fraction of light that get's reflected by the photovoltaic module's surface")
     RELATIVE_WIND_DIRECTION = Feature("relative_wind_direction", unit="°", required_features=(AZIMUTH, WIND_DIRECTION),
         description="Angle between Wind Direction and the photovoltaic module's Azimuth")
     WIND_NORMAL_COMPONENT = Feature("wind_normal_component", unit="m/s", required_features=(RELATIVE_WIND_DIRECTION, WIND_SPEED, TILT),
         description="Wind component perpendicular to the photovoltaic module's surface")
-    POA_COS_AOI = Feature("poa*cos(aoi)", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
+    POA_COS_AOI = Feature("poa*cos_aoi)", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
         description="Product for modelling the total loss of solar irradiation due to reflection on the photovoltaic module's surface")
     POA_WIND_SPEED = Feature("poa*wind_speed", unit="W/m²*m/s", required_features = (PVLIB_POA_IRRADIANCE, WIND_SPEED), label="POA * Wind Speed",
         description="Product to model higher order interactions between solar irradiation and wind")
