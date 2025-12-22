@@ -18,8 +18,14 @@ docker run mschwald/pvenergy:latest train --features <feature1 feature2 ...>
 ```
 with a list of feature names separated by spaces. View the entire list of implemented features via the `train --help` function and check out the *Feature Database* section of the dashboard for explanations on their definitions.
 
-## Complete documentation of the CLI
-To access the CLI of this project, either use the aforementioned docker image or run `python src/main.py` together with one of the following commands:
+## Accessing the CLI directly
+Alternatively, you can access the CLI directly (*recommended for LINUX/WSL2 only*):
+* Ensure you have **Python 3.11** installed.
+* (*Optional but recommended*) Use a virtual environment via `python -m venv venv` and then `source venv/bin/activate` (Linux/macOS bash) or `.\venv\Scripts\activate.bat` (Windows).
+* Run `pip install -e .` in the root directory of this repository to install all dependencies.
+* From now on, you can run `pvenergy` together with one of the commands in the list below.
+
+## Complete list of commands of the CLI
 * **`runserver`**: Opens the dashboard using Django's default development server to analyze the trained models in `data/models`; if further arguments get provided, they get directly passed to Django. Django's `runserver` is just for a convenient local presentation of a Django project before eventually deploying it on a public web server.
 * **`train`**: By default, this uses the raw data in `data/merged` (if not present, it first runs **`request`**) to train the three machine learning models **XGBoost**, **LightGBM** and **Random Forest** for a preselected set of features and PVDAQ system IDs, saves the trained models in `data/models/<name>.joblib` and does some statistical analysis on the models' performances. The set of IDs and features can be customized by the additional arguments `--features <feature1 feature2 ...>` and `--ids <id1 id2 ...>`, respectively; then, this function overwrites the pre-trained models and the new models can be analyzed with the dashboard. The additional argument `--models <name1 ...>` allows for training only a subset of the three models' names *xgboost*, *lightgbm*, *random_forest*. Reducing the amount of selected IDs and models can be useful to save time when trying out to find better features for forecasting.
 * **`evaluate`**: Runs an additional system-wise analysis on the three trained models in `data/models` to compare how well their performances generalizes over different photovoltaic systems. Not included in the standard analysis of the **`train`** command in order to save time. The optional arguments `--ids <id1 id2 ...>` and `--models <name1 ...>` can be provided to customize the used lists of IDs and models.
