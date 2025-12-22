@@ -180,7 +180,7 @@ class Catalog:
         description="Angle between Wind Direction and the photovoltaic module's Azimuth")
     WIND_NORMAL_COMPONENT = Feature("wind_normal_component", unit="m/s", required_features=(RELATIVE_WIND_DIRECTION, WIND_SPEED, TILT),
         description="Wind component perpendicular to the photovoltaic module's surface")
-    POA_COS_AOI = Feature("poa*cos_aoi)", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
+    POA_COS_AOI = Feature("poa*cos_aoi", unit="W/m²", required_features = (PVLIB_POA_IRRADIANCE, COS_AOI), label="POA * cos(AOI)",
         description="Product for modelling the total loss of solar irradiation due to reflection on the photovoltaic module's surface")
     POA_WIND_SPEED = Feature("poa*wind_speed", unit="W/m²*m/s", required_features = (PVLIB_POA_IRRADIANCE, WIND_SPEED), label="POA * Wind Speed",
         description="Product to model higher order interactions between solar irradiation and wind")
