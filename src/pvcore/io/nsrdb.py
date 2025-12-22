@@ -78,7 +78,7 @@ class Nsrdb:
             "names": str(year),
             "utc": "false",
             "leap_day": "true",
-            "interval": "30",
+            "interval": "60",
             "email": api_key,
         }
 
