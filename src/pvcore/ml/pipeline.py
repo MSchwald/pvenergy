@@ -247,14 +247,16 @@ class Pipeline:
         """
         features = tuple(FEATURE_FROM_NAME[name] for name in trained_model._training_features)
         if features is None:
-            raise RuntimeError(f"Model {trained_model} has not been trained yet.")
+            print(f"Warning: Model {trained_model} has not been trained yet.")
+            return pd.DataFrame()
         cache = RESULTS_DIR / f"{trained_model.name}.csv"
         cache_info = RESULTS_DIR / f"{trained_model.name}.json"
         if cache.exists() and cache_info.exists():
             with open(cache_info) as f:
                 info = json.load(f)
-            if set(info["system_ids"]) == set(system_ids) and set(info["features"]) == set(ftr.name for ftr in features):
-                return pd.read_csv(cache, index_col = F.SYSTEM_ID.name)
+            if set(info["features"]) == set(ftr.name for ftr in features):
+                if set(info["system_ids"]) == set(system_ids) or evaluate == False:
+                    return pd.read_csv(cache, index_col = F.SYSTEM_ID.name)
         if evaluate == False:
             return pd.DataFrame()
         df = cls.individual_analysis(training_features = features, system_ids = system_ids, ml_model = trained_model)
