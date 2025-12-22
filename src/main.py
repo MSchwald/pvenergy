@@ -8,20 +8,20 @@ from pvcore.feature import Feature, Catalog as F, FEATURE_FROM_NAME, ALL_FEATURE
 BASE_DIR = Path(__file__).resolve().parent
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pvenergy.settings")
 
-default_features: list[Feature] = [
-    ftr.name for ftr in [
-        F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
-        F.DAY_OF_YEAR, F.TIME_SINCE_SUNLIGHT,
-        F.CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
-        F.POA_COS_AOI, F.POA_WIND_SPEED, F.DHI_PER_GHI,
-        F.DCP_PER_AREA, F.GAMMA_TEMP_DIFFERENCE, F.RELATIVE_AZIMUTH
-    ]
-]
-default_models = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
-model_names = [m.name for m in default_models]
-system_ids = Pvdaq.get_system_ids()
-
 def main():
+    default_features: list[Feature] = [
+        ftr.name for ftr in [
+            F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
+            F.DAY_OF_YEAR, F.TIME_SINCE_SUNLIGHT,
+            F.CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
+            F.POA_COS_AOI, F.POA_WIND_SPEED, F.DHI_PER_GHI,
+            F.DCP_PER_AREA, F.GAMMA_TEMP_DIFFERENCE, F.RELATIVE_AZIMUTH
+        ]
+    ]
+    default_models = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
+    model_names = [m.name for m in default_models]
+    system_ids = Pvdaq.get_system_ids()
+
     parser = argparse.ArgumentParser(prog = "pvenergy", description = "PV Energy Forecasting")
     subparsers = parser.add_subparsers(dest = "command", required = True)
     
