@@ -1,0 +1,34 @@
+staticfiles/
+db.sqlite3
+media/
+.devcontainer/
+.env
+
+# Git
+.git
+.gitignore
+
+# Python Caches
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtuelle Umgebungen (lokal)
+.venv/
+venv/
+env/
+
+# IDE / Editor Settings
+.vscode/
+.idea/
+.DS_Store
+
+# Docker (man muss das Dockerfile nicht in das Image kopieren)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Dokumentation / Notizen (optional, hält das Image sauber)
+docs/
+notizen.txt
