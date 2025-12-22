@@ -1,0 +1,1769 @@
+system_id,metric_id,sensor_name,common_name,raw_units,units,calc_scale,calc_offset,calc_details,aggregation_type,source_type,source_id,comments,standard_name
+2,346,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__346
+2,348,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__348
+2,351,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__351
+2,345,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__345
+2,349,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__349
+2,347,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__347
+2,350,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__350
+3,353,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__353
+3,355,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__355
+3,358,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__358
+3,352,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__352
+3,356,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__356
+3,354,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__354
+3,357,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__357
+4,314,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__314
+4,315,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__315
+4,319,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__319
+4,327,power_factor,AC other,na,na,1.0,0.0,,avg,,,,power_factor__327
+4,318,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__318
+4,317,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__317
+4,326,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__326
+4,313,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__313
+4,320,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__320
+4,321,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__321
+4,322,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__322
+4,323,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__323
+4,324,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__324
+4,316,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__316
+4,325,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__325
+10,422,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__422
+10,423,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__423
+10,427,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__427
+10,426,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__426
+10,425,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__425
+10,434,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__434
+10,421,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__421
+10,428,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__428
+10,429,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__429
+10,430,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__430
+10,431,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__431
+10,432,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__432
+10,424,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__424
+10,433,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__433
+33,583,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__583
+33,584,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__584
+33,588,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__588
+33,587,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__587
+33,586,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__586
+33,595,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__595
+33,582,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__582
+33,589,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__589
+33,590,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__590
+33,591,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__591
+33,592,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__592
+33,593,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__593
+33,585,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__585
+33,594,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__594
+33,596,power_factor,AC other,-,-,1.0,0.0,,,,,,power_factor__596
+34,2694,dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,dc_power_hw__2694
+34,2695,ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,ac_power_hw__2695
+34,2683,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__2683
+34,2685,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__2685
+34,2693,power_factor_1000,AC other,-,-,0.001,0.0,,avg,,,,power_factor_1000__2693
+34,2684,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__2684
+34,2679,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2679
+34,2689,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__2689
+34,2688,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__2688
+34,2686,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__2686
+34,2687,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__2687
+34,2682,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__2682
+34,2690,inverter_error_code,System status,-,-,1.0,0.0,,union,,,,inverter_error_code__2690
+34,2691,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__2691
+34,2692,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__2692
+35,2712,dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,dc_power_hw__2712
+35,2713,ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,ac_power_hw__2713
+35,2701,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__2701
+35,2703,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__2703
+35,2711,power_factor_1000,AC other,-,-,0.001,0.0,,avg,,,,power_factor_1000__2711
+35,2702,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__2702
+35,2699,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2699
+35,2707,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__2707
+35,2706,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__2706
+35,2704,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__2704
+35,2705,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__2705
+35,2700,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__2700
+35,2708,inverter_error_code,System status,-,-,1.0,0.0,,union,,,,inverter_error_code__2708
+35,2709,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__2709
+35,2710,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__2710
+36,628,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__628
+36,629,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__629
+36,631,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__631
+36,633,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__633
+36,632,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__632
+36,627,poa_irradiance_1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_1__627
+36,658,poa_irradiance_2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_2__658
+36,635,module8_temp_Top,Temperature module,C,C,1.0,0.0,,avg,,,,module8_temp_top__635
+36,636,module8_temp_Mid,Temperature module,C,C,1.0,0.0,,avg,,,,module8_temp_mid__636
+36,637,module8_temp_Bot,Temperature module,C,C,1.0,0.0,,avg,,,,module8_temp_bot__637
+36,634,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__634
+36,661,inv_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv_temp__661
+36,630,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__630
+36,662,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__662
+36,639,Module3_Temp,Temperature module,C,C,1.0,0.0,,avg,,,,module3_temp__639
+36,640,Module10NW_Temp,Temperature module,C,C,1.0,0.0,,avg,,,,module10nw_temp__640
+36,641,Module6NE_Temp,Temperature module,C,C,1.0,0.0,,avg,,,,module6ne_temp__641
+36,659,Module1SW_Temp,Temperature module,C,C,1.0,0.0,,avg,,,,module1sw_temp__659
+36,660,Module5SE_Temp,Temperature module,C,C,1.0,0.0,,avg,,,,module5se_temp__660
+36,638,reflector_temp_1,Temperature other,C,C,1.0,0.0,,avg,,,,reflector_temp_1__638
+36,642,module_current_1,DC current other,A,A,1.0,0.0,,avg,,,,module_current_1__642
+36,643,module_current_2,DC current other,A,A,1.0,0.0,,avg,,,,module_current_2__643
+36,644,module_current_3,DC current other,A,A,1.0,0.0,,avg,,,,module_current_3__644
+36,645,module_current_4,DC current other,A,A,1.0,0.0,,avg,,,,module_current_4__645
+36,646,module_current_5,DC current other,A,A,1.0,0.0,,avg,,,,module_current_5__646
+36,647,module_current_6,DC current other,A,A,1.0,0.0,,avg,,,,module_current_6__647
+36,648,module_current_7,DC current other,A,A,1.0,0.0,,avg,,,,module_current_7__648
+36,649,module_current_8,DC current other,A,A,1.0,0.0,,avg,,,,module_current_8__649
+36,650,module_current_9,DC current other,A,A,1.0,0.0,,avg,,,,module_current_9__650
+36,651,module_current_10,DC current other,A,A,1.0,0.0,,avg,,,,module_current_10__651
+36,652,PhotoDiode_1,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_1__652
+36,653,PhotoDiode_2,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_2__653
+36,654,PhotoDiode_3,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_3__654
+36,655,PhotoDiode_4,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_4__655
+36,656,PhotoDiode_5,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_5__656
+36,657,PhotoDiode_6,Irradiance other,W/m^2,W/m^2,1.0,0.0,,avg,,,,photodiode_6__657
+50,751,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__751
+50,752,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__752
+50,765,dc_power_1,DC power,W,W,1.0,0.0,,avg,,,,dc_power_1__765
+50,766,dc_power_2,DC power,W,W,1.0,0.0,,avg,,,,dc_power_2__766
+50,767,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__767
+50,768,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__768
+50,758,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__758
+50,757,ac_volts,AC voltage,V,V,1.0,0.0,,avg,,,,ac_volts__757
+50,754,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__754
+50,756,dc_neg_current,DC current,A,A,1.0,0.0,,avg,,,,dc_neg_current__756
+50,769,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__769
+50,750,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__750
+50,770,inverter_temp_2,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp_2__770
+50,759,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__759
+50,760,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__760
+50,761,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__761
+50,762,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__762
+50,753,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__753
+50,755,dc_neg_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_neg_voltage__755
+50,764,das_temperature,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temperature__764
+50,763,inveter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inveter_temp__763
+51,772,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__772
+51,773,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__773
+51,786,dc_power_1,DC power,W,W,1.0,0.0,,avg,,,,dc_power_1__786
+51,787,dc_power_2,DC power,W,W,1.0,0.0,,avg,,,,dc_power_2__787
+51,788,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__788
+51,789,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__789
+51,779,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__779
+51,778,ac_volts,AC voltage,V,V,1.0,0.0,,avg,,,,ac_volts__778
+51,775,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__775
+51,777,dc_neg_current,DC current,A,A,1.0,0.0,,avg,,,,dc_neg_current__777
+51,790,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__790
+51,771,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__771
+51,791,inverter_temp_2,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp_2__791
+51,780,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__780
+51,781,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__781
+51,782,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__782
+51,783,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__783
+51,774,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__774
+51,776,dc_neg_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_neg_voltage__776
+51,785,das_temperature,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temperature__785
+51,784,inveter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inveter_temp__784
+1199,2714,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power+inv3_ac_power+inv4_ac_power+inv5_ac_power+inv6_ac_power+inv7_ac_power,avg,,,,ac_power__2714
+1199,2715,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power+inv4_dc_power+inv5_dc_power+inv6_dc_power+inv7_dc_power,avg,,,,dc_power__2715
+1199,2716,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__2716
+1199,2717,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__2717
+1199,2721,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__2721
+1199,2722,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__2722
+1199,2726,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__2726
+1199,2727,inv3_dc_power,DC power,W,W,1.0,0.0,inv3_dc_voltage*inv3_dc_current,avg,,,,inv3_dc_power__2727
+1199,2731,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__2731
+1199,2732,inv4_dc_power,DC power,W,W,1.0,0.0,inv4_dc_voltage*inv4_dc_current,avg,,,,inv4_dc_power__2732
+1199,2736,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__2736
+1199,2737,inv5_dc_power,DC power,W,W,1.0,0.0,inv5_dc_voltage*inv5_dc_current,avg,,,,inv5_dc_power__2737
+1199,2741,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__2741
+1199,2742,inv6_dc_power,DC power,W,W,1.0,0.0,inv6_dc_voltage*inv6_dc_current,avg,,,,inv6_dc_power__2742
+1199,2746,inv7_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv7_ac_power__2746
+1199,2747,inv7_dc_power,DC power,W,W,1.0,0.0,inv7_dc_voltage*inv7_dc_current,avg,,,,inv7_dc_power__2747
+1199,2719,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__2719
+1199,2724,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__2724
+1199,2729,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__2729
+1199,2734,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__2734
+1199,2739,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__2739
+1199,2744,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__2744
+1199,2749,inv7_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv7_dc_current__2749
+1199,2720,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__2720
+1199,2725,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__2725
+1199,2730,inv3_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv3_temp__2730
+1199,2740,inv5_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv5_temp__2740
+1199,2745,inv6_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv6_temp__2745
+1199,2718,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__2718
+1199,2723,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__2723
+1199,2728,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__2728
+1199,2733,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__2733
+1199,2738,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__2738
+1199,2743,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__2743
+1199,2748,inv7_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv7_dc_voltage__2748
+1199,2735,inv4_dc_temp,Temperature other,C,C,1.0,0.0,,avg,,,,inv4_dc_temp__2735
+1199,2750,inv7_temp,Temperature other,C,C,1.0,0.0,,avg,,,,inv7_temp__2750
+1200,2751,ac_power,AC power,W,W,1.0,0.0,ac_power_metered_kW,avg,,,,ac_power__2751
+1200,2752,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__2752
+1200,2757,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__2757
+1200,2758,inv1_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv1_dc_power__2758
+1200,2762,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__2762
+1200,2763,inv2_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv2_dc_power__2763
+1200,2767,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__2767
+1200,2768,inv3_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv3_dc_power__2768
+1200,2772,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__2772
+1200,2773,inv4_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv4_dc_power__2773
+1200,2777,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__2777
+1200,2778,inv5_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv5_dc_power__2778
+1200,2782,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__2782
+1200,2783,inv6_dc_power,DC power,W,W,1.0,0.0,,avg,,,,inv6_dc_power__2783
+1200,2760,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__2760
+1200,2765,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__2765
+1200,2770,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__2770
+1200,2775,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__2775
+1200,2780,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__2780
+1200,2785,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__2785
+1200,4197,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__4197
+1200,4199,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__4199
+1200,2753,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2753
+1200,2755,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__2755
+1200,2754,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__2754
+1200,2761,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__2761
+1200,2766,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__2766
+1200,2771,inv3_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv3_temp__2771
+1200,2776,inv4_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv4_temp__2776
+1200,2781,inv5_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv5_temp__2781
+1200,2786,inv6_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv6_temp__2786
+1200,2759,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__2759
+1200,2764,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__2764
+1200,2769,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__2769
+1200,2774,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__2774
+1200,2779,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__2779
+1200,2784,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__2784
+1200,4198,power_factor,AC other,-,-,1.0,0.0,,,,,,power_factor__4198
+1200,2756,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__2756
+1201,2800,dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,dc_power_hw__2800
+1201,2801,ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,ac_power_hw__2801
+1201,2794,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__2794
+1201,2796,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__2796
+1201,2799,power_factor,AC other,-,-,1.0,0.0,,avg,,,,power_factor__2799
+1201,2793,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__2793
+1201,2789,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2789
+1201,2791,module_temp_K,Temperature module,C,C,1.0,-273.15,,avg,,,,module_temp_k__2791
+1201,2790,ambient_temp_K,Temperature ambient,C,C,1.0,-273.15,,avg,,,,ambient_temp_k__2790
+1201,2797,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__2797
+1201,2795,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__2795
+1201,2798,inverter_error_code,System status,-,-,1.0,0.0,,union,,,,inverter_error_code__2798
+1201,2792,wind_speed,Wind speed,m/s,m/s,1.0,0.0,,median,,,,wind_speed__2792
+1202,2810,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__2810
+1202,2811,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__2811
+1202,2815,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__2815
+1202,2816,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__2816
+1202,2820,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__2820
+1202,2821,inv3_dc_power,DC power,W,W,1.0,0.0,inv3_dc_voltage*inv3_dc_current,avg,,,,inv3_dc_power__2821
+1202,2825,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__2825
+1202,2826,inv4_dc_power,DC power,W,W,1.0,0.0,inv4_dc_voltage*inv4_dc_current,avg,,,,inv4_dc_power__2826
+1202,2830,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__2830
+1202,2831,inv5_dc_power,DC power,W,W,1.0,0.0,inv5_dc_voltage*inv5_dc_current,avg,,,,inv5_dc_power__2831
+1202,2835,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__2835
+1202,2836,inv6_dc_power,DC power,W,W,1.0,0.0,inv6_dc_voltage*inv6_dc_current,avg,,,,inv6_dc_power__2836
+1202,2840,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power+inv3_ac_power+inv4_ac_power+inv5_ac_power+inv6_ac_power,avg,,,,ac_power__2840
+1202,2841,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power+inv4_dc_power+inv5_dc_power+inv6_dc_power,avg,,,,dc_power__2841
+1202,2804,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__2804
+1202,2813,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__2813
+1202,2818,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__2818
+1202,2823,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__2823
+1202,2828,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__2828
+1202,2833,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__2833
+1202,2838,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__2838
+1202,2802,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__2802
+1202,2803,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__2803
+1202,2806,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2806
+1202,2808,module_temp_K,Temperature module,C,C,1.0,-273.15,,avg,,,,module_temp_k__2808
+1202,2807,ambient_temp_K,Temperature ambient,C,C,1.0,-273.15,,avg,,,,ambient_temp_k__2807
+1202,2814,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__2814
+1202,2819,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__2819
+1202,2824,inv3_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv3_temp__2824
+1202,2829,inv4_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv4_temp__2829
+1202,2834,inv5_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv5_temp__2834
+1202,2839,inv6_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv6_temp__2839
+1202,2812,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__2812
+1202,2817,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__2817
+1202,2822,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__2822
+1202,2827,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__2827
+1202,2832,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__2832
+1202,2837,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__2837
+1202,2805,power_factor,AC other,-,-,1.0,0.0,,,,,,power_factor__2805
+1202,2809,wind_speed,Wind speed,m/s,m/s,1.0,0.0,,median,,,,wind_speed__2809
+1203,2889,ac_power,AC power,W,W,1.0,0.0,ac_meter_1_power_kW+ac_meter_2_power_kW,avg,,,,ac_power__2889
+1203,2890,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power_hW+inv2_dc_power_hW,avg,,,,dc_power__2890
+1203,2895,inv1_ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,inv1_ac_power_hw__2895
+1203,2896,inv1_dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,inv1_dc_power_hw__2896
+1203,2902,inv2_ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,inv2_ac_power_hw__2902
+1203,2903,inv2_dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,inv2_dc_power_hw__2903
+1203,2911,ac_inverter_power,AC power,W,W,1.0,0.0,inv1_ac_power_hW+inv2_ac_power_hW,avg,,,,ac_inverter_power__2911
+1203,2898,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__2898
+1203,2905,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__2905
+1203,2909,ac_meter_1_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_1_power_kw__2909
+1203,2910,ac_meter_2_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_2_power_kw__2910
+1203,2901,inv1_power_factor,AC other,-,-,1.0,0.0,,avg,,,,inv1_power_factor__2901
+1203,2908,inv2_power_factor,AC other,-,-,1.0,0.0,,avg,,,,inv2_power_factor__2908
+1203,2897,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__2897
+1203,2904,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__2904
+1203,2893,gh_irradiance,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,,,,gh_irradiance__2893
+1203,2894,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__2894
+1203,2891,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__2891
+1203,2899,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__2899
+1203,2906,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__2906
+1203,2892,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__2892
+1203,2900,inv1_error_code,System status,-,-,1.0,0.0,,union,,,,inv1_error_code__2900
+1203,2907,inv2_error_code,System status,-,-,1.0,0.0,,union,,,,inv2_error_code__2907
+1204,2916,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__2916
+1204,2917,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__2917
+1204,2920,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__2920
+1204,2921,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__2921
+1204,2924,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__2924
+1204,2925,inv3_dc_power,DC power,W,W,1.0,0.0,inv3_dc_voltage*inv3_dc_current,avg,,,,inv3_dc_power__2925
+1204,2928,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__2928
+1204,2929,inv4_dc_power,DC power,W,W,1.0,0.0,inv4_dc_voltage*inv4_dc_current,avg,,,,inv4_dc_power__2929
+1204,2932,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__2932
+1204,2933,inv5_dc_power,DC power,W,W,1.0,0.0,inv5_dc_voltage*inv5_dc_current,avg,,,,inv5_dc_power__2933
+1204,2936,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__2936
+1204,2937,inv6_dc_power,DC power,W,W,1.0,0.0,inv6_dc_voltage*inv6_dc_current,avg,,,,inv6_dc_power__2937
+1204,2940,inv7_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv7_ac_power__2940
+1204,2941,inv7_dc_power,DC power,W,W,1.0,0.0,inv7_dc_voltage*inv7_dc_current,avg,,,,inv7_dc_power__2941
+1204,2944,inv8_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv8_ac_power__2944
+1204,2945,inv8_dc_power,DC power,W,W,1.0,0.0,inv8_dc_voltage*inv8_dc_current,avg,,,,inv8_dc_power__2945
+1204,2948,inv9_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv9_ac_power__2948
+1204,2949,inv9_dc_power,DC power,W,W,1.0,0.0,inv9_dc_voltage*inv9_dc_current,avg,,,,inv9_dc_power__2949
+1204,2952,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power+inv3_ac_power+inv4_ac_power+inv5_ac_power+inv6_ac_power+inv7_ac_power+inv8_ac_power+inv9_ac_power,avg,,,,ac_power__2952
+1204,2953,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power+inv4_dc_power+inv5_dc_power+inv6_dc_power+inv7_dc_power+inv8_dc_power+inv9_dc_power,avg,,,,dc_power__2953
+1204,2919,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__2919
+1204,2923,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__2923
+1204,2927,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__2927
+1204,2931,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__2931
+1204,2935,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__2935
+1204,2939,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__2939
+1204,2943,inv7_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv7_dc_current__2943
+1204,2947,inv8_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv8_dc_current__2947
+1204,2951,inv9_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv9_dc_current__2951
+1204,2912,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2912
+1204,2914,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__2914
+1204,2913,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__2913
+1204,2918,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__2918
+1204,2922,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__2922
+1204,2926,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__2926
+1204,2930,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__2930
+1204,2934,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__2934
+1204,2938,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__2938
+1204,2942,inv7_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv7_dc_voltage__2942
+1204,2946,inv8_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv8_dc_voltage__2946
+1204,2950,inv9_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv9_dc_voltage__2950
+1204,2915,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__2915
+1207,2622,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__2622
+1207,2633,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__2633
+1207,2629,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__2629
+1207,2623,dc_power_A1,DC power,-,-,1.0,0.0,,,,,,dc_power_a1__2623
+1207,2624,dc_power_A2,DC power,-,-,1.0,0.0,,,,,,dc_power_a2__2624
+1207,2625,dc_power_B1,DC power,-,-,1.0,0.0,,,,,,dc_power_b1__2625
+1207,2626,dc_power_B2,DC power,-,-,1.0,0.0,,,,,,dc_power_b2__2626
+1207,2627,dc_power_C1,DC power,-,-,1.0,0.0,,,,,,dc_power_c1__2627
+1207,2628,dc_power_C2,DC power,-,-,1.0,0.0,,,,,,dc_power_c2__2628
+1207,2630,poa_irradiance_cs300_1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_cs300_1__2630
+1207,2631,poa_irradiance_cs300_2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_cs300_2__2631
+1207,2634,poa_irradiance_lp02_2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_lp02_2__2634
+1207,2632,direct_normal_dr01,Irradiance DNI,-,-,1.0,0.0,,,,,,direct_normal_dr01__2632
+1207,2635,dc_voltage_A,DC voltage,-,-,1.0,0.0,,,,,,dc_voltage_a__2635
+1207,2636,dc_voltage_B,DC voltage,-,-,1.0,0.0,,,,,,dc_voltage_b__2636
+1207,2637,dc_voltage_C,DC voltage,-,-,1.0,0.0,,,,,,dc_voltage_c__2637
+1208,1130,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__1130
+1208,1131,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__1131
+1208,1132,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power,avg,,,,dc_power__1132
+1208,1133,ac_power_metered_1_2,AC power,W,W,1.0,0.0,ac_meter_1_power_kW+ac_meter_2_power_kW,avg,,,,ac_power_metered_1_2__1133
+1208,1021,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__1021
+1208,1025,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__1025
+1208,1016,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__1016
+1208,1017,ac_meter_1_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_1_power_kw__1017
+1208,1018,ac_meter_2_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_2_power_kw__1018
+1208,1019,inv1_ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,inv1_ac_power_kw__1019
+1208,1023,inv2_ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,inv2_ac_power_kw__1023
+1208,1022,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__1022
+1208,1026,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__1026
+1208,1020,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__1020
+1208,1024,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__1024
+1214,3185,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3185
+1214,3184,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3184
+1214,3183,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3183
+1214,3182,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3182
+1216,3192,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3192
+1216,3189,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,avg,,,,wh_n_sum__3189
+1216,3190,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3190
+1217,3266,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3266
+1217,3265,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3265
+1217,3264,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3264
+1217,3263,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3263
+1217,11748,module_temp_2,Temperature module,C,C,1.0,0.0,,,,,,module_temp_2__11748
+1218,3274,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3274
+1218,3271,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,avg,,,,wh_n_sum__3271
+1218,3272,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3272
+1218,11749,module_temp_3,Temperature module,C,C,1.0,0.0,,,,,,module_temp_3__11749
+1219,3283,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3283
+1219,3282,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3282
+1219,3281,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3281
+1219,3280,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3280
+1220,3290,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3290
+1220,3287,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,avg,,,,wh_n_sum__3287
+1220,3288,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3288
+1221,3298,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3298
+1221,3297,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3297
+1221,3296,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3296
+1221,3295,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3295
+1222,3307,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3307
+1222,3305,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3305
+1222,3304,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3304
+1223,3315,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3315
+1223,3314,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3314
+1223,3313,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3313
+1223,3312,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3312
+1224,3322,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3322
+1224,3320,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3320
+1224,3319,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3319
+1225,3331,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3331
+1225,3330,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3330
+1225,3329,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3329
+1225,3328,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3328
+1226,3338,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3338
+1226,3336,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3336
+1226,3335,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3335
+1228,1031,module_temp_5,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_5__1031
+1228,1032,module_temp_6,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_6__1032
+1228,1033,module_temp_7,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_7__1033
+1228,1034,module_temp_8,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_8__1034
+1228,1035,module_temp_9,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_9__1035
+1228,1036,module_temp_10,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_10__1036
+1228,1037,module_temp_11,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_11__1037
+1228,1038,module_temp_12,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_12__1038
+1228,1039,module_temp_13,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_13__1039
+1228,1027,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__1027
+1228,1028,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__1028
+1228,1029,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__1029
+1228,1030,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__1030
+1229,886,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__886
+1229,878,poa_irradiance_south_array,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_south_array__878
+1229,879,poa_irradiance_west_array,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_west_array__879
+1229,887,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__887
+1229,880,gh_irradiance,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,,,,gh_irradiance__880
+1229,881,module_temp_south_F,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_south_f__881
+1229,882,module_temp_west_F,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_west_f__882
+1229,883,relative_humidity,Humidity,-,-,1.0,0.0,,avg,,,,relative_humidity__883
+1229,885,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__885
+1229,884,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__884
+1230,889,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__889
+1230,888,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__888
+1230,890,ambient_temp_1_F,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp_1_f__890
+1230,891,ambient_temp_2_F,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp_2_f__891
+1230,892,relative_humidity,Humidity,-,-,1.0,0.0,,,,,,relative_humidity__892
+1231,896,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__896
+1231,893,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__893
+1231,894,gh_irradiance,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,,,,gh_irradiance__894
+1231,895,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__895
+1239,3015,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__3015
+1239,3022,total_energy_kWh,AC energy,kWh,kWh,1.0,0.0,,sum,,,,total_energy_kwh__3022
+1239,3018,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__3018
+1239,3019,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__3019
+1239,3016,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__3016
+1239,3017,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__3017
+1239,3020,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__3020
+1239,3021,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__3021
+1244,3347,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3347
+1244,3346,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3346
+1244,3345,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3345
+1244,3344,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3344
+1245,3351,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3351
+1245,3350,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3350
+1245,3349,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3349
+1245,3348,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3348
+1246,3355,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3355
+1246,3354,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3354
+1246,3353,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3353
+1246,3352,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3352
+1248,3363,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3363
+1248,3362,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3362
+1248,3361,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3361
+1248,3360,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3360
+1249,3367,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3367
+1249,3366,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3366
+1249,3365,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3365
+1249,3364,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3364
+1250,3371,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3371
+1250,3370,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3370
+1250,3369,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3369
+1250,3368,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3368
+1251,3375,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__3375
+1251,3373,ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_kw__3373
+1251,3374,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__3374
+1251,3372,energy,AC energy,-,-,1.0,0.0,,,,,,energy__3372
+1252,3379,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3379
+1252,3378,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3378
+1252,3377,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3377
+1252,3376,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3376
+1253,3383,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3383
+1253,3382,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3382
+1253,3381,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3381
+1253,3380,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3380
+1254,3387,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3387
+1254,3386,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3386
+1254,3385,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3385
+1254,3384,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3384
+1255,3391,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3391
+1255,3390,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3390
+1255,3389,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3389
+1255,3388,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3388
+1256,3395,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3395
+1256,3394,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3394
+1256,3393,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3393
+1256,3392,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3392
+1257,3399,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3399
+1257,3398,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3398
+1257,3397,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3397
+1257,3396,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3396
+1258,3403,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3403
+1258,3402,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3402
+1258,3401,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3401
+1258,3400,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3400
+1259,3407,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3407
+1259,3406,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3406
+1259,3405,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3405
+1259,3404,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3404
+1260,3411,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3411
+1260,3410,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3410
+1260,3409,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3409
+1260,3408,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3408
+1261,3415,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3415
+1261,3414,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3414
+1261,3413,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3413
+1261,3412,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3412
+1262,3419,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3419
+1262,3418,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3418
+1262,3417,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3417
+1262,3416,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3416
+1263,3423,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3423
+1263,3422,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3422
+1263,3421,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3421
+1263,3420,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3420
+1264,3427,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3427
+1264,3426,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3426
+1264,3425,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3425
+1264,3424,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3424
+1265,3431,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3431
+1265,3430,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3430
+1265,3429,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3429
+1265,3428,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3428
+1266,3435,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3435
+1266,3434,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3434
+1266,3433,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3433
+1266,3432,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3432
+1267,3439,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3439
+1267,3438,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3438
+1267,3437,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3437
+1267,3436,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3436
+1268,3443,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3443
+1268,3442,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3442
+1268,3441,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3441
+1268,3440,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3440
+1269,3447,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3447
+1269,3446,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3446
+1269,3445,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3445
+1269,3444,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3444
+1270,3451,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3451
+1270,3450,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3450
+1270,3449,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3449
+1270,3448,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3448
+1271,3455,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3455
+1271,3454,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3454
+1271,3453,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3453
+1271,3452,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3452
+1272,3459,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3459
+1272,3458,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3458
+1272,3457,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3457
+1272,3456,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3456
+1273,3463,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3463
+1273,3462,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3462
+1273,3461,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3461
+1273,3460,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3460
+1274,3467,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3467
+1274,3466,PPV_avg,AC voltage,V,V,1.0,0.0,,avg,,,,ppv_avg__3466
+1274,3465,W_avg,AC power,W,W,1.0,0.0,,avg,,,,w_avg__3465
+1274,3464,Wh_sum,AC energy,kWh,kWh,0.001,0.0,,sum,,,,wh_sum__3464
+1275,3025,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__3025
+1275,3023,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__3023
+1275,3024,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__3024
+1276,3039,dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,dc_power_hw__3039
+1276,3040,ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,ac_power_hw__3040
+1276,3036,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__3036
+1276,3038,power_factor,AC other,-,-,1.0,0.0,,avg,,,,power_factor__3038
+1276,3035,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__3035
+1276,3026,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__3026
+1276,3029,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__3029
+1276,3028,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__3028
+1276,3037,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__3037
+1276,3027,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__3027
+1276,3033,input_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,input_voltage__3033
+1276,3034,input_current,DC current,A,A,1.0,0.0,,avg,,,,input_current__3034
+1276,3032,inverter_error_code,System status,-,-,1.0,0.0,,union,,,,inverter_error_code__3032
+1276,3030,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__3030
+1276,3031,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__3031
+1277,3054,dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,dc_power_hw__3054
+1277,3055,ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,ac_power_hw__3055
+1277,3051,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__3051
+1277,3053,power_factor,AC other,-,-,1.0,0.0,,avg,,,,power_factor__3053
+1277,3050,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__3050
+1277,3041,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__3041
+1277,3044,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__3044
+1277,3043,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__3043
+1277,3052,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__3052
+1277,3042,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__3042
+1277,3048,input_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,input_voltage__3048
+1277,3049,input_current,DC current,A,A,1.0,0.0,,avg,,,,input_current__3049
+1277,3047,inverter_error_code,System status,-,-,1.0,0.0,,union,,,,inverter_error_code__3047
+1277,3045,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__3045
+1277,3046,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__3046
+1278,3069,inv1_dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,inv1_dc_power_hw__3069
+1278,3070,inv1_ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,inv1_ac_power_hw__3070
+1278,3078,inv2_dc_power_hW,DC power,W,W,100.0,0.0,,avg,,,,inv2_dc_power_hw__3078
+1278,3079,inv2_ac_power_hW,AC power,W,W,100.0,0.0,,avg,,,,inv2_ac_power_hw__3079
+1278,3080,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power_hW+inv2_dc_power_hW,avg,,,,dc_power__3080
+1278,3081,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power_hW+inv2_ac_power_hW,avg,,,,ac_power__3081
+1278,3066,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__3066
+1278,3075,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__3075
+1278,3068,inv1_power_factor,AC other,-,-,1.0,0.0,,avg,,,,inv1_power_factor__3068
+1278,3077,inv2_power_factor,AC other,-,-,1.0,0.0,,avg,,,,inv2_power_factor__3077
+1278,3065,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__3065
+1278,3074,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__3074
+1278,3056,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__3056
+1278,3059,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__3059
+1278,3058,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__3058
+1278,3067,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__3067
+1278,3076,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__3076
+1278,3057,relative_humidity,Humidity,%,%,1.0,0.0,,avg,,,,relative_humidity__3057
+1278,3063,inv1_input_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_input_voltage__3063
+1278,3072,inv2_input_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_input_voltage__3072
+1278,3064,inv1_input_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_input_current__3064
+1278,3073,inv2_input_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_input_current__3073
+1278,3062,inv1_error_code,System status,-,-,1.0,0.0,,union,,,,inv1_error_code__3062
+1278,3071,inv2_error_code,System status,-,-,1.0,0.0,,union,,,,inv2_error_code__3071
+1278,3060,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__3060
+1278,3061,wind_direction,Wind direction,degrees,degrees,1.0,0.0,,median,,,,wind_direction__3061
+1283,1134,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__1134
+1283,1135,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__1135
+1283,1136,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power,avg,,,,dc_power__1136
+1283,1137,ac_power,AC power,W,W,1.0,0.0,ac_meter_1_power_kW+ac_meter_2_power_kW,avg,,,,ac_power__1137
+1283,1045,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__1045
+1283,1049,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__1049
+1283,1040,ac_power_metered_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_metered_kw__1040
+1283,1041,ac_meter_1_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_1_power_kw__1041
+1283,1042,ac_meter_2_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_meter_2_power_kw__1042
+1283,1043,inv1_ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,inv1_ac_power_kw__1043
+1283,1047,inv2_ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,inv2_ac_power_kw__1047
+1283,1055,POA_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__1055
+1283,1054,POA_irradiance_refcell,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_refcell__1054
+1283,1056,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__1056
+1283,1053,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__1053
+1283,1046,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__1046
+1283,1050,inv2_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv2_temp__1050
+1283,1044,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__1044
+1283,1048,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__1048
+1283,1052,refcell_temp,Temperature refdevice,C,C,1.0,0.0,,avg,,,,refcell_temp__1052
+1283,1051,wind_speed,Wind speed,m/s,m/s,1.0,0.0,,median,,,,wind_speed__1051
+1284,943,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__943
+1284,944,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__944
+1284,948,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__948
+1284,957,power_factor,AC other,-,-,1.0,0.0,,avg,,,,power_factor__957
+1284,947,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__947
+1284,946,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__946
+1284,955,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__955
+1284,941,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__941
+1284,942,poa_irradiance_2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance_2__942
+1284,949,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__949
+1284,950,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__950
+1284,951,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__951
+1284,952,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__952
+1284,953,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__953
+1284,945,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__945
+1284,958,reference_cell_temperature,Temperature refdevice,C,C,1.0,0.0,,avg,,,,reference_cell_temperature__958
+1284,954,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__954
+1284,956,das_temp_2,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp_2__956
+1289,1059,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__1059
+1289,1060,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__1060
+1289,1064,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__1064
+1289,1063,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__1063
+1289,1062,dc_pos_current,DC current,A,A,1.0,0.0,,avg,,,,dc_pos_current__1062
+1289,1072,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__1072
+1289,1057,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__1057
+1289,1065,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__1065
+1289,1066,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__1066
+1289,1067,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__1067
+1289,1068,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__1068
+1289,1069,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__1069
+1289,1070,inverter_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inverter_temp__1070
+1289,1061,dc_pos_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_pos_voltage__1061
+1289,1071,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__1071
+1289,1074,power_factor,AC other,-,-,1.0,0.0,,,,,,power_factor__1074
+1289,1058,poa_irradiance_2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_2__1058
+1289,1073,das_temp_2,Temperature panel,C,C,1.0,0.0,,,,,,das_temp_2__1073
+1294,3,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__3
+1294,2,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__2
+1294,1,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__1
+1294,5,error,System status,-,-,1.0,0.0,,union,,,,error__5
+1294,4,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__4
+1295,8,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__8
+1295,7,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__7
+1295,6,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__6
+1295,10,error,System status,-,-,1.0,0.0,,union,,,,error__10
+1295,9,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__9
+1296,13,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__13
+1296,12,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__12
+1296,11,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__11
+1296,15,error,System status,-,-,1.0,0.0,,union,,,,error__15
+1296,14,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__14
+1297,860,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__860
+1297,859,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__859
+1297,858,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__858
+1297,861,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__861
+1298,18,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__18
+1298,17,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__17
+1298,16,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__16
+1298,20,error,System status,-,-,1.0,0.0,,union,,,,error__20
+1298,19,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__19
+1299,23,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__23
+1299,22,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__22
+1299,21,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__21
+1299,25,error,System status,-,-,1.0,0.0,,union,,,,error__25
+1299,24,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__24
+1300,33,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__33
+1300,36,dc_power_calc,DC power,W,W,1.0,0.0,dc_current*dc_voltage,avg,,,,dc_power_calc__36
+1300,31,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__31
+1300,32,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__32
+1300,30,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__30
+1300,34,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__34
+1300,28,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__28
+1300,27,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__27
+1300,35,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__35
+1300,26,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__26
+1300,37,error,System status,-,-,1.0,0.0,,union,,,,error__37
+1300,29,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__29
+1301,40,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__40
+1301,39,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__39
+1301,38,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__38
+1301,42,error,System status,-,-,1.0,0.0,,union,,,,error__42
+1301,41,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__41
+1302,45,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__45
+1302,44,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__44
+1302,43,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__43
+1302,47,error,System status,-,-,1.0,0.0,,union,,,,error__47
+1302,46,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__46
+1303,50,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__50
+1303,49,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__49
+1303,48,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__48
+1303,52,error,System status,-,-,1.0,0.0,,union,,,,error__52
+1303,51,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__51
+1304,202,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__202
+1304,201,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__201
+1304,200,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__200
+1304,203,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__203
+1305,58,ac_current_1,AC current,A,A,1.0,0.0,,avg,,,,ac_current_1__58
+1305,59,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__59
+1305,60,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__60
+1305,63,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__63
+1305,64,ac_current_2,AC current,A,A,1.0,0.0,,avg,,,,ac_current_2__64
+1305,65,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__65
+1305,66,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__66
+1305,69,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__69
+1305,70,ac_current_3,AC current,A,A,1.0,0.0,,avg,,,,ac_current_3__70
+1305,71,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__71
+1305,72,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__72
+1305,75,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__75
+1305,76,ac_power,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3,avg,,,,ac_power__76
+1305,77,dc_power,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc,avg,,,,dc_power__77
+1305,57,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__57
+1305,61,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__61
+1305,67,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__67
+1305,73,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__73
+1305,55,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__55
+1305,54,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__54
+1305,62,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__62
+1305,68,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__68
+1305,74,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__74
+1305,53,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__53
+1305,78,error,System status,-,-,1.0,0.0,,union,,,,error__78
+1305,56,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__56
+1306,209,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__209
+1306,212,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__212
+1306,213,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__213
+1306,216,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__216
+1306,217,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__217
+1306,220,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__220
+1306,221,dc_current_4,DC current,A,A,1.0,0.0,,avg,,,,dc_current_4__221
+1306,224,ac_power_4,AC power,W,W,1.0,0.0,,avg,,,,ac_power_4__224
+1306,225,dc_current_5,DC current,A,A,1.0,0.0,,avg,,,,dc_current_5__225
+1306,228,ac_power_5,AC power,W,W,1.0,0.0,,avg,,,,ac_power_5__228
+1306,229,dc_current_6,DC current,A,A,1.0,0.0,,avg,,,,dc_current_6__229
+1306,232,ac_power_6,AC power,W,W,1.0,0.0,,avg,,,,ac_power_6__232
+1306,233,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__233
+1306,234,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__234
+1306,235,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__235
+1306,236,dc_power_4_calc,DC power,W,W,1.0,0.0,dc_current_4*dc_voltage_4,avg,,,,dc_power_4_calc__236
+1306,237,dc_power_5_calc,DC power,W,W,1.0,0.0,dc_current_5*dc_voltage_5,avg,,,,dc_power_5_calc__237
+1306,238,dc_power_6_calc,DC power,W,W,1.0,0.0,dc_current_6*dc_voltage_6,avg,,,,dc_power_6_calc__238
+1306,239,ac_power_1_6,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3+ac_power_4+ac_power_5+ac_power_6,avg,,,,ac_power_1_6__239
+1306,240,dc_power_1_6,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc+dc_power_4_calc+dc_power_5_calc+dc_power_6_calc,avg,,,,dc_power_1_6__240
+1306,208,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__208
+1306,211,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__211
+1306,215,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__215
+1306,219,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__219
+1306,223,ac_voltage_4,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_4__223
+1306,227,ac_voltage_5,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_5__227
+1306,231,ac_voltage_6,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_6__231
+1306,206,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__206
+1306,205,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__205
+1306,210,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__210
+1306,214,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__214
+1306,218,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__218
+1306,222,dc_voltage_4,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_4__222
+1306,226,dc_voltage_5,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_5__226
+1306,230,dc_voltage_6,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_6__230
+1306,204,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__204
+1306,207,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__207
+1307,84,ac_current_1,AC current,A,A,1.0,0.0,,avg,,,,ac_current_1__84
+1307,85,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__85
+1307,86,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__86
+1307,89,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__89
+1307,90,ac_current_2,AC current,A,A,1.0,0.0,,avg,,,,ac_current_2__90
+1307,91,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__91
+1307,92,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__92
+1307,95,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__95
+1307,96,ac_current_3,AC current,A,A,1.0,0.0,,avg,,,,ac_current_3__96
+1307,97,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__97
+1307,98,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__98
+1307,101,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__101
+1307,102,ac_power,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3,avg,,,,ac_power__102
+1307,103,dc_power,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc,avg,,,,dc_power__103
+1307,83,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__83
+1307,87,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__87
+1307,93,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__93
+1307,99,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__99
+1307,81,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__81
+1307,80,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__80
+1307,88,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__88
+1307,94,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__94
+1307,100,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__100
+1307,79,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__79
+1307,104,error,System status,-,-,1.0,0.0,,union,,,,error__104
+1307,82,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__82
+1308,110,ac_current_1,AC current,A,A,1.0,0.0,,avg,,,,ac_current_1__110
+1308,111,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__111
+1308,112,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__112
+1308,115,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__115
+1308,116,ac_current_2,AC current,A,A,1.0,0.0,,avg,,,,ac_current_2__116
+1308,117,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__117
+1308,118,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__118
+1308,121,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__121
+1308,122,ac_current_3,AC current,A,A,1.0,0.0,,avg,,,,ac_current_3__122
+1308,123,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__123
+1308,124,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__124
+1308,127,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__127
+1308,128,ac_power,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3,avg,,,,ac_power__128
+1308,129,dc_power,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc,avg,,,,dc_power__129
+1308,109,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__109
+1308,113,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__113
+1308,119,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__119
+1308,125,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__125
+1308,107,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__107
+1308,106,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__106
+1308,114,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__114
+1308,120,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__120
+1308,126,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__126
+1308,105,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__105
+1308,130,error,System status,-,-,1.0,0.0,,union,,,,error__130
+1308,108,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__108
+1309,133,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__133
+1309,132,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__132
+1309,131,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__131
+1309,135,error,System status,-,-,1.0,0.0,,union,,,,error__135
+1309,134,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__134
+1310,141,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__141
+1310,144,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__144
+1310,145,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__145
+1310,148,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__148
+1310,149,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__149
+1310,152,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__152
+1310,153,dc_current_4,DC current,A,A,1.0,0.0,,avg,,,,dc_current_4__153
+1310,156,ac_power_4,AC power,W,W,1.0,0.0,,avg,,,,ac_power_4__156
+1310,157,dc_current_5,DC current,A,A,1.0,0.0,,avg,,,,dc_current_5__157
+1310,160,ac_power_5,AC power,W,W,1.0,0.0,,avg,,,,ac_power_5__160
+1310,161,dc_current_6,DC current,A,A,1.0,0.0,,avg,,,,dc_current_6__161
+1310,164,ac_power_6,AC power,W,W,1.0,0.0,,avg,,,,ac_power_6__164
+1310,165,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__165
+1310,166,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__166
+1310,167,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__167
+1310,168,dc_power_4_calc,DC power,W,W,1.0,0.0,dc_current_4*dc_voltage_4,avg,,,,dc_power_4_calc__168
+1310,169,dc_power_5_calc,DC power,W,W,1.0,0.0,dc_current_5*dc_voltage_5,avg,,,,dc_power_5_calc__169
+1310,170,dc_power_6_calc,DC power,W,W,1.0,0.0,dc_current_6*dc_voltage_6,avg,,,,dc_power_6_calc__170
+1310,171,ac_power_1_6,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3+ac_power_4+ac_power_5+ac_power_6,avg,,,,ac_power_1_6__171
+1310,172,dc_power_1_6,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc+dc_power_4_calc+dc_power_5_calc+dc_power_6_calc,avg,,,,dc_power_1_6__172
+1310,140,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__140
+1310,143,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__143
+1310,147,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__147
+1310,151,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__151
+1310,155,ac_voltage_4,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_4__155
+1310,159,ac_voltage_5,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_5__159
+1310,163,ac_voltage_6,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_6__163
+1310,138,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__138
+1310,137,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__137
+1310,142,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__142
+1310,146,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__146
+1310,150,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__150
+1310,154,dc_voltage_4,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_4__154
+1310,158,dc_voltage_5,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_5__158
+1310,162,dc_voltage_6,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_6__162
+1310,136,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__136
+1310,173,error,System status,-,-,1.0,0.0,,union,,,,error__173
+1310,139,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__139
+1311,243,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__243
+1311,242,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__242
+1311,241,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__241
+1311,244,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__244
+1312,179,ac_current_1,AC current,A,A,1.0,0.0,,avg,,,,ac_current_1__179
+1312,180,dc_current_1,DC current,A,A,1.0,0.0,,avg,,,,dc_current_1__180
+1312,181,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__181
+1312,184,dc_power_1_calc,DC power,W,W,1.0,0.0,dc_current_1*dc_voltage_1,avg,,,,dc_power_1_calc__184
+1312,185,ac_current_2,AC current,A,A,1.0,0.0,,avg,,,,ac_current_2__185
+1312,186,dc_current_2,DC current,A,A,1.0,0.0,,avg,,,,dc_current_2__186
+1312,187,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__187
+1312,190,dc_power_2_calc,DC power,W,W,1.0,0.0,dc_current_2*dc_voltage_2,avg,,,,dc_power_2_calc__190
+1312,191,ac_current_3,AC current,A,A,1.0,0.0,,avg,,,,ac_current_3__191
+1312,192,dc_current_3,DC current,A,A,1.0,0.0,,avg,,,,dc_current_3__192
+1312,193,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__193
+1312,196,dc_power_3_calc,DC power,W,W,1.0,0.0,dc_current_3*dc_voltage_3,avg,,,,dc_power_3_calc__196
+1312,197,ac_power,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3,avg,,,,ac_power__197
+1312,198,dc_power,DC power,W,W,1.0,0.0,dc_power_1_calc+dc_power_2_calc+dc_power_3_calc,avg,,,,dc_power__198
+1312,178,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__178
+1312,182,ac_voltage_1,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_1__182
+1312,188,ac_voltage_2,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_2__188
+1312,194,ac_voltage_3,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_3__194
+1312,176,module_temp_F,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,,module_temp_f__176
+1312,175,ambient_temp_F,Temperature ambient,C,C,0.5555556,-17.7777778,,avg,,,,ambient_temp_f__175
+1312,183,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__183
+1312,189,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__189
+1312,195,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__195
+1312,174,IntSolIrrad,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,intsolirrad__174
+1312,199,error,System status,-,-,1.0,0.0,,union,,,,error__199
+1312,177,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__177
+1314,262,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__262
+1314,261,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__261
+1314,263,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__263
+1315,266,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__266
+1315,265,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__265
+1315,267,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__267
+1316,308,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__308
+1316,307,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__307
+1316,309,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__309
+1317,269,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__269
+1317,268,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__268
+1317,270,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__270
+1318,272,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__272
+1318,271,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__271
+1318,273,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__273
+1319,305,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__305
+1319,304,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__304
+1319,306,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__306
+1320,311,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__311
+1320,310,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__310
+1320,312,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__312
+1321,302,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__302
+1321,301,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__301
+1321,303,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__303
+1322,275,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__275
+1322,274,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__274
+1322,276,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__276
+1323,3601,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__3601
+1323,3600,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__3600
+1323,3602,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__3602
+1324,278,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__278
+1324,277,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__277
+1324,279,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__279
+1325,281,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__281
+1325,280,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__280
+1325,282,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__282
+1326,284,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__284
+1326,283,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__283
+1326,285,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__285
+1327,287,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__287
+1327,286,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__286
+1327,288,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__288
+1328,290,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__290
+1328,289,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__289
+1328,291,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__291
+1329,293,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__293
+1329,292,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__292
+1329,294,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__294
+1330,296,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__296
+1330,295,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__295
+1330,297,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__297
+1331,299,VATotal,AC other,VA,VA,1.0,0.0,,avg,,,,vatotal__299
+1331,298,RTW,AC power,W,W,1.0,0.0,,avg,,,,rtw__298
+1331,300,WHTotal,AC energy,Wh,Wh,1.0,0.0,,avg,,,,whtotal__300
+1332,2645,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__2645
+1332,2649,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__2649
+1332,2653,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__2653
+1332,2641,meter3_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,meter3_ac_power__2641
+1332,2640,meter2_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,meter2_ac_power__2640
+1332,2643,inv1_dc_power,DC power,kW,W,1000.0,0.0,,avg,,,,inv1_dc_power__2643
+1332,2647,inv2_dc_power,DC power,kW,W,1000.0,0.0,,avg,,,,inv2_dc_power__2647
+1332,2651,inv3_dc_power,DC power,kW,W,1000.0,0.0,,avg,,,,inv3_dc_power__2651
+1332,2642,inv1_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,inv1_ac_power__2642
+1332,2646,inv2_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,inv2_ac_power__2646
+1332,2650,inv3_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,inv3_ac_power__2650
+1332,2639,meter1_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,meter1_ac_power__2639
+1332,2638,metered_ac_power,AC power,kW,W,1000.0,0.0,,avg,,,,metered_ac_power__2638
+1332,2654,inv_total_ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power+inv3_ac_power,avg,,,,inv_total_ac_power__2654
+1332,2655,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power,avg,,,,dc_power__2655
+1332,2644,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__2644
+1332,2648,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__2648
+1332,2652,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__2652
+1332,2656,String1Current_unshaded,DC current other,A,A,1.0,0.0,,avg,,,,string1current_unshaded__2656
+1332,2657,String2Current_unshaded,DC current other,A,A,1.0,0.0,,avg,,,,string2current_unshaded__2657
+1332,2658,String11Current_shaded,DC current other,A,A,1.0,0.0,,avg,,,,string11current_shaded__2658
+1332,2659,String12Current_shaded,DC current other,A,A,1.0,0.0,,avg,,,,string12current_shaded__2659
+1334,3471,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3471
+1334,3469,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3469
+1334,3468,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3468
+1335,3475,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3475
+1335,3473,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3473
+1335,3472,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3472
+1336,3479,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3479
+1336,3477,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3477
+1336,3476,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3476
+1337,3483,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3483
+1337,3481,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3481
+1337,3480,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3480
+1338,3487,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3487
+1338,3485,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3485
+1338,3484,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3484
+1339,3491,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3491
+1339,3489,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3489
+1339,3488,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3488
+1340,3495,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3495
+1340,3493,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3493
+1340,3492,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3492
+1341,3499,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__3499
+1341,3497,ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,ac_power_kw__3497
+1341,3498,ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage__3498
+1341,3496,energy,AC energy,-,-,1.0,0.0,,,,,,energy__3496
+1342,3503,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3503
+1342,3501,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3501
+1342,3500,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3500
+1343,3507,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3507
+1343,3505,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3505
+1343,3504,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3504
+1344,3511,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3511
+1344,3509,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3509
+1344,3508,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3508
+1345,3515,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3515
+1345,3513,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3513
+1345,3512,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3512
+1346,3519,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3519
+1346,3517,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3517
+1346,3516,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3516
+1347,3523,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3523
+1347,3521,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3521
+1347,3520,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3520
+1348,3527,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3527
+1348,3525,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3525
+1348,3524,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3524
+1349,3531,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3531
+1349,3529,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3529
+1349,3528,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3528
+1350,3535,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3535
+1350,3533,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3533
+1350,3532,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3532
+1351,3539,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3539
+1351,3537,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3537
+1351,3536,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3536
+1352,3543,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3543
+1352,3541,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3541
+1352,3540,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3540
+1353,3547,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3547
+1353,3545,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3545
+1353,3544,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3544
+1354,3551,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3551
+1354,3549,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3549
+1354,3548,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3548
+1355,3555,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3555
+1355,3553,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3553
+1355,3552,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3552
+1356,3559,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3559
+1356,3557,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3557
+1356,3556,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3556
+1357,3563,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3563
+1357,3561,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3561
+1357,3560,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3560
+1358,3567,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3567
+1358,3565,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3565
+1358,3564,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3564
+1359,3571,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3571
+1359,3569,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3569
+1359,3568,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3568
+1360,3575,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3575
+1360,3573,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3573
+1360,3572,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3572
+1361,3579,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3579
+1361,3577,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3577
+1361,3576,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3576
+1362,3583,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3583
+1362,3581,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3581
+1362,3580,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3580
+1363,3587,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3587
+1363,3585,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3585
+1363,3584,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3584
+1364,3591,A_avg,AC current other,A,A,1.0,0.0,,avg,,,,a_avg__3591
+1364,3589,W_n_avg,AC other,W,W,1.0,0.0,,avg,,,,w_n_avg__3589
+1364,3588,Wh_n_sum,AC other,kWh,kWh,0.001,0.0,,,,,,wh_n_sum__3588
+1367,3083,ac_power_1,AC power,W,W,1.0,0.0,,avg,,,,ac_power_1__3083
+1367,3086,ac_power_2,AC power,W,W,1.0,0.0,,avg,,,,ac_power_2__3086
+1367,3089,ac_power_3,AC power,W,W,1.0,0.0,,avg,,,,ac_power_3__3089
+1367,3091,ac_power,AC power,W,W,1.0,0.0,ac_power_1+ac_power_2+ac_power_3,avg,,,,ac_power__3091
+1367,3084,ac_frequency_1,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency_1__3084
+1367,3087,ac_frequency_2,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency_2__3087
+1367,3090,ac_frequency_3,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency_3__3090
+1367,4195,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__4195
+1367,4194,module_temp_K,Temperature module,C,C,1.0,-273.15,,avg,,,,module_temp_k__4194
+1367,4193,ambient_temp_K,Temperature ambient,C,C,1.0,-273.15,,avg,,,,ambient_temp_k__4193
+1367,3082,dc_voltage_1,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_1__3082
+1367,3085,dc_voltage_2,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_2__3085
+1367,3088,dc_voltage_3,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_3__3088
+1367,4196,wind_speed_mph,Wind speed,m/s,m/s,0.44704,0.0,,median,,,,wind_speed_mph__4196
+1368,3093,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power+inv4_dc_power+inv5_dc_power+inv6_dc_power,avg,,,,dc_power__3093
+1368,3094,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power+inv3_ac_power+inv4_ac_power+inv5_ac_power+inv6_ac_power,avg,,,,ac_power__3094
+1368,3099,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__3099
+1368,3104,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__3104
+1368,3109,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__3109
+1368,3114,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__3114
+1368,3119,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__3119
+1368,3124,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__3124
+1368,3176,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__3176
+1368,3177,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__3177
+1368,3178,inv3_dc_power,DC power,W,W,1.0,0.0,inv3_dc_voltage*inv3_dc_current,avg,,,,inv3_dc_power__3178
+1368,3179,inv4_dc_power,DC power,W,W,1.0,0.0,inv4_dc_voltage*inv4_dc_current,avg,,,,inv4_dc_power__3179
+1368,3180,inv5_dc_power,DC power,W,W,1.0,0.0,inv5_dc_voltage*inv5_dc_current,avg,,,,inv5_dc_power__3180
+1368,3181,inv6_dc_power,DC power,W,W,1.0,0.0,inv6_dc_voltage*inv6_dc_current,avg,,,,inv6_dc_power__3181
+1368,3096,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__3096
+1368,3098,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__3098
+1368,3101,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__3101
+1368,3103,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__3103
+1368,3106,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__3106
+1368,3108,inv3_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv3_ac_current__3108
+1368,3111,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__3111
+1368,3113,inv4_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv4_ac_current__3113
+1368,3116,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__3116
+1368,3118,inv5_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv5_ac_current__3118
+1368,3121,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__3121
+1368,3123,inv6_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv6_ac_current__3123
+1368,3092,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__3092
+1368,3097,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__3097
+1368,3102,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__3102
+1368,3107,inv3_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv3_ac_voltage__3107
+1368,3112,inv4_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv4_ac_voltage__3112
+1368,3117,inv5_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv5_ac_voltage__3117
+1368,3122,inv6_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv6_ac_voltage__3122
+1368,3095,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__3095
+1368,3100,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__3100
+1368,3105,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__3105
+1368,3110,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__3110
+1368,3115,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__3115
+1368,3120,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__3120
+1369,3126,dc_power,DC power,W,W,1.0,0.0,inv1_dc_power+inv2_dc_power+inv3_dc_power+inv4_dc_power+inv5_dc_power+inv6_dc_power+inv7_dc_power+inv8_dc_power+inv9_dc_power,avg,,,,dc_power__3126
+1369,3127,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power_kW+inv2_ac_power+inv3_ac_power+inv4_ac_power+inv5_ac_power+inv6_ac_power+inv7_ac_power+inv8_ac_power+inv9_ac_power,avg,,,,ac_power__3127
+1369,3138,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__3138
+1369,3142,inv3_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv3_ac_power__3142
+1369,3146,inv4_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv4_ac_power__3146
+1369,3150,inv5_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv5_ac_power__3150
+1369,3154,inv6_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv6_ac_power__3154
+1369,3158,inv7_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv7_ac_power__3158
+1369,3162,inv8_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv8_ac_power__3162
+1369,3166,inv9_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv9_ac_power__3166
+1369,3167,inv1_dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current,avg,,,,inv1_dc_power__3167
+1369,3168,inv2_dc_power,DC power,W,W,1.0,0.0,inv2_dc_voltage*inv2_dc_current,avg,,,,inv2_dc_power__3168
+1369,3169,inv3_dc_power,DC power,W,W,1.0,0.0,inv3_dc_voltage*inv3_dc_current,avg,,,,inv3_dc_power__3169
+1369,3170,inv4_dc_power,DC power,W,W,1.0,0.0,inv4_dc_voltage*inv4_dc_current,avg,,,,inv4_dc_power__3170
+1369,3171,inv5_dc_power,DC power,W,W,1.0,0.0,inv5_dc_voltage*inv5_dc_current,avg,,,,inv5_dc_power__3171
+1369,3172,inv6_dc_power,DC power,W,W,1.0,0.0,inv6_dc_voltage*inv6_dc_current,avg,,,,inv6_dc_power__3172
+1369,3173,inv7_dc_power,DC power,W,W,1.0,0.0,inv7_dc_voltage*inv7_dc_current,avg,,,,inv7_dc_power__3173
+1369,3174,inv8_dc_power,DC power,W,W,1.0,0.0,inv8_dc_voltage*inv8_dc_current,avg,,,,inv8_dc_power__3174
+1369,3175,inv9_dc_power,DC power,W,W,1.0,0.0,inv9_dc_voltage*inv9_dc_current,avg,,,,inv9_dc_power__3175
+1369,3131,inv1_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv1_dc_current__3131
+1369,3132,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__3132
+1369,3136,inv2_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv2_dc_current__3136
+1369,3137,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__3137
+1369,3140,inv3_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv3_dc_current__3140
+1369,3141,inv3_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv3_ac_current__3141
+1369,3144,inv4_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv4_dc_current__3144
+1369,3145,inv4_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv4_ac_current__3145
+1369,3148,inv5_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv5_dc_current__3148
+1369,3149,inv5_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv5_ac_current__3149
+1369,3152,inv6_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv6_dc_current__3152
+1369,3153,inv6_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv6_ac_current__3153
+1369,3156,inv7_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv7_dc_current__3156
+1369,3157,inv7_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv7_ac_current__3157
+1369,3160,inv8_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv8_dc_current__3160
+1369,3161,inv8_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv8_ac_current__3161
+1369,3164,inv9_dc_current,DC current,A,A,1.0,0.0,,avg,,,,inv9_dc_current__3164
+1369,3165,inv9_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv9_ac_current__3165
+1369,3133,inv1_ac_power_kW,AC power,kW,W,1000.0,0.0,,avg,,,,inv1_ac_power_kw__3133
+1369,3125,ac_frequency,AC other,Hz,Hz,1.0,0.0,,avg,,,,ac_frequency__3125
+1369,3128,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__3128
+1369,3134,inv2-9_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2-9_ac_voltage__3134
+1369,3129,inv1_temp,Temperature inverter,C,C,1.0,0.0,,avg,,,,inv1_temp__3129
+1369,3130,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__3130
+1369,3135,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__3135
+1369,3139,inv3_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv3_dc_voltage__3139
+1369,3143,inv4_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv4_dc_voltage__3143
+1369,3147,inv5_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv5_dc_voltage__3147
+1369,3151,inv6_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv6_dc_voltage__3151
+1369,3155,inv7_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv7_dc_voltage__3155
+1369,3159,inv8_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv8_dc_voltage__3159
+1369,3163,inv9_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv9_dc_voltage__3163
+1403,4207,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__4207
+1403,4213,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__4213
+1403,5033,dc_power,DC power,W,W,1.0,0.0,inv1_dc_voltage*inv1_dc_current1+inv1_dc_voltage*inv1_dc_current2+inv2_dc_voltage*inv2_dc_current1+inv2_dc_voltage*inv2_dc_current2,avg,,,,dc_power__5033
+1403,5034,ac_power,AC power,W,W,1.0,0.0,inv1_ac_power+inv2_ac_power,avg,,,,ac_power__5034
+1403,4206,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__4206
+1403,4212,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__4212
+1403,4205,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__4205
+1403,4211,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__4211
+1403,4214,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__4214
+1403,4222,module_temp_5,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_5__4222
+1403,4223,module_temp_6,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_6__4223
+1403,4224,module_temp_7,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_7__4224
+1403,4225,module_temp_8,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_8__4225
+1403,4217,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__4217
+1403,4218,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__4218
+1403,4219,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__4219
+1403,4220,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__4220
+1403,4221,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__4221
+1403,4202,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__4202
+1403,4208,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__4208
+1403,4203,inv1_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current1__4203
+1403,4204,inv1_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current2__4204
+1403,4209,inv2_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current1__4209
+1403,4210,inv2_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current2__4210
+1403,4215,poa_irradiance_refcell1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell1__4215
+1403,4216,poa_irradiance_refcell2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell2__4216
+1416,4742,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__4742
+1416,4762,ac_current_phA,AC current,A,A,1.0,0.0,,avg,,,,ac_current_pha__4762
+1416,4763,ac_current_phB,AC current,A,A,1.0,0.0,,avg,,,,ac_current_phb__4763
+1416,4764,ac_current_phC,AC current,A,A,1.0,0.0,,avg,,,,ac_current_phc__4764
+1416,4749,ac_current,AC current,A,A,1.0,0.0,,avg,,,,ac_current__4749
+1416,4746,power_factor,AC other,-,-,1.0,0.0,,avg,,,,power_factor__4746
+1416,4753,power_factor_phA,AC other,-,-,1.0,0.0,,avg,,,,power_factor_pha__4753
+1416,4754,power_factor_phB,AC other,-,-,1.0,0.0,,avg,,,,power_factor_phb__4754
+1416,4755,power_factor_phC,AC other,-,-,1.0,0.0,,avg,,,,power_factor_phc__4755
+1416,4745,apparent_power_kVA,AC other,kVA,VA,1000.0,0.0,,avg,,,,apparent_power_kva__4745
+1416,4744,reactive_power_kVAR,AC other,kVAR,VAR,1000.0,0.0,,avg,,,,reactive_power_kvar__4744
+1416,4747,ac_voltage_LtoL,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_ltol__4747
+1416,4748,ac_voltage_LtoN,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_lton__4748
+1416,4756,ac_voltage_AB,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_ab__4756
+1416,4757,ac_voltage_BC,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_bc__4757
+1416,4758,ac_voltage_AC,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_ac__4758
+1416,4759,ac_voltage_AN,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_an__4759
+1416,4760,ac_voltage_BN,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_bn__4760
+1416,4761,ac_voltage_CN,AC voltage,V,V,1.0,0.0,,avg,,,,ac_voltage_cn__4761
+1416,4737,dc_current_positive,DC current,A,A,1.0,0.0,,avg,,,,dc_current_positive__4737
+1416,4740,dc_current_negative,DC current,A,A,1.0,0.0,,avg,,,,dc_current_negative__4740
+1416,4733,das_battery_voltage,DC voltage battery,V,V,1.0,0.0,,avg,,,,das_battery_voltage__4733
+1416,4741,dc_power_negative,DC power,W,W,1.0,0.0,,avg,,,,dc_power_negative__4741
+1416,4738,dc_power_positive,DC power,W,W,1.0,0.0,,avg,,,,dc_power_positive__4738
+1416,4736,dc_voltage_positive,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_positive__4736
+1416,4739,dc_voltage_negative,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage_negative__4739
+1416,4734,das_temp,Temperature panel,C,C,1.0,0.0,,avg,,,,das_temp__4734
+1416,4735,enclosure_temp,Temperature enclosure,C,C,1.0,0.0,,avg,,,,enclosure_temp__4735
+1416,4743,real_power_kW,AC power other,kW,W,1000.0,0.0,,avg,,,,real_power_kw__4743
+1416,4750,real_power_phA_kW,AC power other,kW,W,1000.0,0.0,,avg,,,,real_power_pha_kw__4750
+1416,4751,real_power_phB_kW,AC power other,kW,W,1000.0,0.0,,avg,,,,real_power_phb_kw__4751
+1416,4752,real_power_phC_kW,AC power other,kW,W,1000.0,0.0,,avg,,,,real_power_phc_kw__4752
+1418,4786,ac_power_1_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=34914,ac_power_1_kwac__4786
+1418,4788,ac_power_2_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=34915,ac_power_2_kwac__4788
+1418,4790,ac_power_3_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=34916,ac_power_3_kwac__4790
+1418,4785,poa_irradiance_Sun,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,AE_HID=34917,poa_irradiance_sun__4785
+1418,4793,module_temp_F_Temp2,Temperature module,C,C,1.0,0.0,,avg,,,AE_HID=34917,module_temp_f_temp2__4793
+1418,4792,ambient_temp_F_TempF,Temperature ambient,C,C,1.0,0.0,,avg,,,AE_HID=34917,ambient_temp_f_tempf__4792
+1418,5048,ac_power,AC power,W,W,1.0,0.0,ac_power_1_KwAC+ac_power_2_KwAC+ac_power_3_KwAC,avg,,,AE_HID=0,ac_power__5048
+1418,4787,ac_kwhr_1_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=34914,ac_kwhr_1_kwhac__4787
+1418,4789,ac_kwhr_2_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=34915,ac_kwhr_2_kwhac__4789
+1418,4791,ac_kwhr_3_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=34916,ac_kwhr_3_kwhac__4791
+1418,4794,wind_speed_mph_WindSpeed,Wind speed,m/s,m/s,0.44704,0.0,,median,,,AE_HID=34917,wind_speed_mph_windspeed__4794
+1418,4795,wind_direction_WindDirection,Wind direction,degrees,degrees,1.0,0.0,,median,,,AE_HID=34917,wind_direction_winddirection__4795
+1419,4797,ac_power_1_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=50938,ac_power_1_kwac__4797
+1419,4799,ac_power_2_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=50939,ac_power_2_kwac__4799
+1419,4802,dc_current_1_Idc,DC current,A,A,0.001,0.0,,avg,,,AE_HID=50938,dc_current_1_idc__4802
+1419,4807,dc_current_2_Idc,DC current,A,A,0.001,0.0,,avg,,,AE_HID=50939,dc_current_2_idc__4807
+1419,4796,poa_irradiance_Sun,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,AE_HID=34927,poa_irradiance_sun__4796
+1419,4803,ambient_temp_F_TempF,Temperature ambient,C,C,1.0,0.0,,avg,,,AE_HID=34927,ambient_temp_f_tempf__4803
+1419,4801,dc_voltage_1_Vdc,DC voltage,V,V,0.01,0.0,,avg,,,AE_HID=50938,dc_voltage_1_vdc__4801
+1419,4806,dc_voltage_2_Vdc,DC voltage,V,V,0.01,0.0,,avg,,,AE_HID=50939,dc_voltage_2_vdc__4806
+1419,4808,ac_power,AC power,W,W,1.0,0.0,ac_power_1_KwAC+ac_power_2_KwAC,avg,,,AE_HID=0,ac_power__4808
+1419,5143,dc_power,DC power,W,W,1.0,0.0,dc_voltage_1_Vdc*dc_current_1_Idc+dc_voltage_2_Vdc*dc_current_2_Idc,avg,,,AE_HID=0,dc_power__5143
+1419,4798,ac_kwhr_1_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=50938,ac_kwhr_1_kwhac__4798
+1419,4800,ac_kwhr_2_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=50939,ac_kwhr_2_kwhac__4800
+1419,4804,wind_speed_mph_WindSpeed,Wind speed,m/s,m/s,0.44704,0.0,,median,,,AE_HID=34927,wind_speed_mph_windspeed__4804
+1419,4805,wind_direction_WindDirection,Wind direction,degrees,degrees,1.0,0.0,,median,,,AE_HID=34927,wind_direction_winddirection__4805
+1420,4812,ac_power_KwAC,AC power,W,W,1000.0,0.0,,avg,,,AE_HID=37939,ac_power_kwac__4812
+1420,4815,dc_current_I2,DC current,A,A,1.0,0.0,,avg,,,AE_HID=38074,dc_current_i2__4815
+1420,4817,ac_current_Iac,AC current,A,A,1.0,0.0,,avg,,,AE_HID=37939,ac_current_iac__4817
+1420,4816,ac_voltage_Vac,AC voltage,V,V,1.0,0.0,,avg,,,AE_HID=37939,ac_voltage_vac__4816
+1420,4810,poa_irradiance_Sun,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,AE_HID=37938,poa_irradiance_sun__4810
+1420,4811,module_temp_F_Temp1,Temperature module,C,C,0.5555556,-17.7777778,,avg,,,AE_HID=37938,module_temp_f_temp1__4811
+1420,4814,dc_voltage_Vdc,DC voltage,V,V,1.0,0.0,,avg,,,AE_HID=37939,dc_voltage_vdc__4814
+1420,5144,dc_power,DC power,W,W,1.0,0.0,dc_voltage_Vdc*dc_current_I2,avg,,,AE_HID=0,dc_power__5144
+1420,4813,ac_kwhr_KwhAC,AC energy,kWh,kWh,1.0,0.0,,sum,,,AE_HID=37939,ac_kwhr_kwhac__4813
+1422,4830,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__4830
+1422,4836,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__4836
+1422,5375,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__5375
+1422,5376,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__5376
+1422,4829,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__4829
+1422,4835,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__4835
+1422,4828,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__4828
+1422,4834,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__4834
+1422,4837,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__4837
+1422,4845,module_temp_5,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_5__4845
+1422,4846,module_temp_6,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_6__4846
+1422,4847,module_temp_7,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_7__4847
+1422,4848,module_temp_8,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_8__4848
+1422,4840,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__4840
+1422,4841,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__4841
+1422,4842,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__4842
+1422,4843,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__4843
+1422,4844,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__4844
+1422,4825,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__4825
+1422,4831,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__4831
+1422,4826,inv1_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current1__4826
+1422,4827,inv1_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current2__4827
+1422,4832,inv2_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current1__4832
+1422,4833,inv2_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current2__4833
+1422,4838,poa_irradiance_refcell1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell1__4838
+1422,4839,poa_irradiance_refcell2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell2__4839
+1423,4854,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__4854
+1423,4860,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__4860
+1423,5377,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__5377
+1423,5378,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__5378
+1423,4853,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__4853
+1423,4859,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__4859
+1423,4852,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__4852
+1423,4858,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__4858
+1423,4861,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__4861
+1423,4869,module_temp_5,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_5__4869
+1423,4870,module_temp_6,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_6__4870
+1423,4871,module_temp_7,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_7__4871
+1423,4872,module_temp_8,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_8__4872
+1423,4864,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__4864
+1423,4865,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__4865
+1423,4866,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__4866
+1423,4867,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__4867
+1423,4868,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__4868
+1423,4849,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__4849
+1423,4855,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__4855
+1423,4850,inv1_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current1__4850
+1423,4851,inv1_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current2__4851
+1423,4856,inv2_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current1__4856
+1423,4857,inv2_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current2__4857
+1423,4862,poa_irradiance_refcell1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell1__4862
+1423,4863,poa_irradiance_refcell2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell2__4863
+1429,4917,inv1_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv1_ac_power__4917
+1429,4923,inv2_ac_power,AC power,W,W,1.0,0.0,,avg,,,,inv2_ac_power__4923
+1429,5379,ac_power,AC power,W,W,1.0,0.0,,avg,,,,ac_power__5379
+1429,5380,dc_power,DC power,W,W,1.0,0.0,,avg,,,,dc_power__5380
+1429,4916,inv1_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv1_ac_current__4916
+1429,4922,inv2_ac_current,AC current,A,A,1.0,0.0,,avg,,,,inv2_ac_current__4922
+1429,4915,inv1_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv1_ac_voltage__4915
+1429,4921,inv2_ac_voltage,AC voltage,V,V,1.0,0.0,,avg,,,,inv2_ac_voltage__4921
+1429,4924,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__4924
+1429,4932,module_temp_5,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_5__4932
+1429,4933,module_temp_6,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_6__4933
+1429,4934,module_temp_7,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_7__4934
+1429,4935,module_temp_8,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_8__4935
+1429,4927,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__4927
+1429,4928,module_temp_1,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_1__4928
+1429,4929,module_temp_2,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_2__4929
+1429,4930,module_temp_3,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_3__4930
+1429,4931,module_temp_4,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp_4__4931
+1429,4912,inv1_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv1_dc_voltage__4912
+1429,4918,inv2_dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,inv2_dc_voltage__4918
+1429,4913,inv1_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current1__4913
+1429,4914,inv1_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv1_dc_current2__4914
+1429,4919,inv2_dc_current1,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current1__4919
+1429,4920,inv2_dc_current2,DC current,-,-,1.0,0.0,,,,,,inv2_dc_current2__4920
+1429,4925,poa_irradiance_refcell1,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell1__4925
+1429,4926,poa_irradiance_refcell2,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,,,,,poa_irradiance_refcell2__4926
+1430,5074,ac_power,AC power,W,W,2000.0,0.0,,avg,,,,ac_power__5074
+1430,5077,dc_power,DC power,W,W,1.0,0.0,dc_voltage*dc_current*2,avg,,,,dc_power__5077
+1430,5076,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__5076
+1430,5041,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__5041
+1430,5043,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__5043
+1430,5042,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__5042
+1430,5075,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__5075
+1430,5047,PR,PR,-,-,1.0,0.0,,,,,,pr__5047
+1430,5046,kWh_net,AC energy other,kWh,-,1.0,0.0,,,,,,kwh_net__5046
+1430,5045,kWh_gross,AC energy other,kWh,-,1.0,0.0,,,,,,kwh_gross__5045
+1430,5044,wind_speed,Wind speed,m/s,m/s,1.0,0.0,,median,,,,wind_speed__5044
+1431,5086,ac_power,AC power,W,W,1000.0,0.0,kWh_gross*4,avg,,,,ac_power__5086
+1431,5089,dc_power,DC power,W,W,1.0,0.0,dc_voltage*dc_current*3,avg,,,,dc_power__5089
+1431,5088,dc_current,DC current,A,A,1.0,0.0,,avg,,,,dc_current__5088
+1431,5078,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__5078
+1431,5080,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__5080
+1431,5079,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__5079
+1431,5087,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__5087
+1431,5084,PR,PR,-,-,1.0,0.0,,,,,,pr__5084
+1431,5083,kWh_net,AC energy other,kWh,-,1.0,0.0,,,,,,kwh_net__5083
+1431,5082,kWh_gross,AC energy other,kWh,-,1.0,0.0,,,,,,kwh_gross__5082
+1431,5081,wind_speed,Wind speed,m/s,m/s,1.0,0.0,,median,,,,wind_speed__5081
+1432,5095,ac_power,AC power,W,W,1000.0,0.0,,avg,,,,ac_power__5095
+1432,5090,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__5090
+1432,5092,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__5092
+1432,5091,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__5091
+1432,5096,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__5096
+1432,5093,kWh_net,AC energy other,kWh,kWh,1.0,0.0,,sum,,,,kwh_net__5093
+1432,5094,PR,PR,-,-,1.0,0.0,,,,,,pr__5094
+1433,5069,ac_power,AC power,W,W,1000.0,0.0,kWh_gross*4,avg,,,,ac_power__5069
+1433,5061,poa_irradiance,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,,,,poa_irradiance__5061
+1433,5063,module_temp,Temperature module,C,C,1.0,0.0,,avg,,,,module_temp__5063
+1433,5062,ambient_temp,Temperature ambient,C,C,1.0,0.0,,avg,,,,ambient_temp__5062
+1433,5070,dc_voltage,DC voltage,V,V,1.0,0.0,,avg,,,,dc_voltage__5070
+1433,5066,kWh_net,AC energy other,kWh,kWh,1.0,0.0,,sum,,,,kwh_net__5066
+1433,5065,kWh_gross,AC energy other,kWh,kWh,1.0,0.0,,sum,,,,kwh_gross__5065
+1433,5067,PR,PR,-,-,1.0,0.0,,,,,,pr__5067
+2045,38506,irradiance_global_1,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,913.0,,irradiance_ghi_o_913
+2045,38509,irradiance_albedo_2,Irradiance albedo,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,916.0,,irradiance_albedo_o_916
+2045,38510,irradiance_global_3,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,917.0,,irradiance_ghi_o_917
+2045,38511,irradiance_albedo_3,Irradiance albedo,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,918.0,,irradiance_albedo_o_918
+2045,38507,irradiance_albedo_1,Irradiance albedo,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,914.0,,irradiance_albedo_o_914
+2045,38508,irradiance_global_2,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,915.0,,irradiance_ghi_o_915
+2045,38512,battery_voltage,DC voltage,V,V,1.0,0.0,,avg,OTHER,915.0,,dc_voltage_o_915
+2045,38513,ptemp,Temperature other,C,C,1.0,0.0,,avg,OTHER,915.0,,temperature_other_o_915
+4901,82498,AmbTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2200.0,,temperature_ambient_o_2200
+4901,82575,Battery_A_Avg,DC current battery,A,A,1.0,0.0,,avg,,,,battery_a_avg__82575
+4901,82574,Battery_V_Min,DC voltage battery,V,V,1.0,0.0,,min,,,,battery_v_min__82574
+4901,82491,CR1000Temp_C_Avg,Temperature enclosure,C,C,1.0,0.0,,avg,OTHER,,,cr1000temp_c_avg__82491
+4901,82578,ChgSource_Min,Battery other,-,-,1.0,0.0,,min,,,,chgsource_min__82578
+4901,82577,ChgState_Min,Battery other,-,-,1.0,0.0,,min,,,,chgstate_min__82577
+4901,82579,CkBatt_Max,Battery other,-,-,1.0,0.0,,max,,,,ckbatt_max__82579
+4901,82510,InvEtot_kWh_Max,AC energy,kWh,kWh,1.0,0.0,,max,INVERTER,14537.0,,ac_energy_inv_14537
+4901,82503,InvIa_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14537.0,,ac_current_other_inv_14537
+4901,82504,InvIb_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14537.0,,ac_current_other_inv_14537_2
+4901,82505,InvIc_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14537.0,,ac_current_other_inv_14537_3
+4901,82509,InvPAC_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,INVERTER,14537.0,,ac_power_inv_14537
+4901,82512,InvPDC_kW_Avg,DC power,kW,kW,1.0,0.0,,avg,INVERTER,14537.0,,dc_power_inv_14537
+4901,82518,InvTempFault_Max,Temperature inverter,-,-,1.0,0.0,,max,INVERTER,14537.0,,temperature_inverter_inv_14537
+4901,82506,InvVDCin_Avg,DC voltage other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,dc_voltage_other_inv_14537
+4901,82511,InvVPVin_Avg,DC voltage other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,dc_voltage_other_inv_14537_2
+4901,82500,InvVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,ac_voltage_other_inv_14537
+4901,82501,InvVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,ac_voltage_other_inv_14537_2
+4901,82502,InvVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,ac_voltage_other_inv_14537_3
+4901,82540,PwrMtrEdel_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1863.0,,ac_power_meter_1863
+4901,82538,PwrMtrEdel_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1863.0,,ac_power_meter_1863_2
+4901,82541,PwrMtrErec_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1863.0,,ac_power_meter_1863_3
+4901,82539,PwrMtrErec_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1863.0,,ac_power_meter_1863_4
+4901,82530,PwrMtrFreqMax_Max,AC other,Hz,Hz,1.0,0.0,,max,METER,1863.0,,ac_other_meter_1863
+4901,82529,PwrMtrFreqMin_Min,AC other,Hz,Hz,1.0,0.0,,min,METER,1863.0,,ac_other_meter_1863_2
+4901,82528,PwrMtrFreq_Avg,AC other,Hz,Hz,1.0,0.0,,avg,METER,1863.0,,ac_other_meter_1863_3
+4901,82542,PwrMtrPF_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1863.0,,ac_power_other_meter_1863
+4901,82536,PwrMtrP_kVAR_Avg,AC power other,kVAR,kVAR,1.0,0.0,,avg,METER,1863.0,,ac_power_other_meter_1863_2
+4901,82537,PwrMtrP_kVA_Avg,AC power other,kVA,kVA,1.0,0.0,,avg,METER,1863.0,,ac_power_other_meter_1863_3
+4901,82535,PwrMtrP_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,METER,1863.0,,ac_power_meter_1863_5
+4901,82531,PwrMtrPhaseRev_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1863.0,,ac_power_other_meter_1863_4
+4901,82543,PwrMtrVaTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1863.0,,ac_voltage_other_meter_1863
+4901,82532,PwrMtrVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1863.0,,ac_voltage_other_meter_1863_2
+4901,82544,PwrMtrVbTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1863.0,,ac_voltage_other_meter_1863_3
+4901,82533,PwrMtrVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1863.0,,ac_voltage_other_meter_1863_4
+4901,82545,PwrMtrVcTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1863.0,,ac_voltage_other_meter_1863_5
+4901,82534,PwrMtrVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1863.0,,ac_voltage_other_meter_1863_6
+4901,82493,Pyra1_mV_Avg,Irradiance POA,mV,mV,1.0,0.0,,avg,OTHER,2195.0,west tilt,irradiance_poa_o_2195
+4901,82494,Pyra2_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2196.0,,irradiance_ghi_o_2196
+4901,82495,Pyra3_mV_Avg,Irradiance POA,mV,mV,1.0,0.0,,avg,OTHER,2197.0,east tilt,irradiance_poa_o_2197
+4901,82581,RTD_C_Avg_1,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_1__82581
+4901,82590,RTD_C_Avg_10,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_10__82590
+4901,82582,RTD_C_Avg_2,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_2__82582
+4901,82583,RTD_C_Avg_3,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_3__82583
+4901,82584,RTD_C_Avg_4,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_4__82584
+4901,82585,RTD_C_Avg_5,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_5__82585
+4901,82586,RTD_C_Avg_6,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_6__82586
+4901,82587,RTD_C_Avg_7,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_7__82587
+4901,82588,RTD_C_Avg_8,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_8__82588
+4901,82589,RTD_C_Avg_9,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_9__82589
+4901,82496,RefCell1_Wm2_Avg,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2198.0,west tilt,irradiance_poa_o_2198
+4901,82497,RefCell2_Wm2_Avg,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2199.0,east tilt,irradiance_poa_o_2199
+4901,82522,SEWSAmbientTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2201.0,,temperature_ambient_o_2201
+4901,82523,SEWSModuleTemp_C_Avg,Temperature module,C,C,1.0,0.0,,avg,OTHER,2201.0,,temperature_module_o_2201
+4901,82546,ShuntCurrent_A_Avg_1,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_1__82546
+4901,82547,ShuntCurrent_A_Avg_2,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_2__82547
+4901,82548,ShuntCurrent_A_Avg_3,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_3__82548
+4901,82549,ShuntCurrent_A_Avg_4,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_4__82549
+4901,82550,ShuntCurrent_A_Avg_5,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_5__82550
+4901,82551,ShuntCurrent_A_Avg_6,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_6__82551
+4901,82552,ShuntCurrent_A_Avg_7,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_7__82552
+4901,82560,ShuntEtot_kWh_Max_1,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_1__82560
+4901,82561,ShuntEtot_kWh_Max_2,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_2__82561
+4901,82562,ShuntEtot_kWh_Max_3,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_3__82562
+4901,82563,ShuntEtot_kWh_Max_4,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_4__82563
+4901,82564,ShuntEtot_kWh_Max_5,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_5__82564
+4901,82565,ShuntEtot_kWh_Max_6,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_6__82565
+4901,82566,ShuntEtot_kWh_Max_7,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_7__82566
+4901,82553,ShuntPDC_kW_Avg_1,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_1__82553
+4901,82554,ShuntPDC_kW_Avg_2,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_2__82554
+4901,82555,ShuntPDC_kW_Avg_3,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_3__82555
+4901,82556,ShuntPDC_kW_Avg_4,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_4__82556
+4901,82557,ShuntPDC_kW_Avg_5,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_5__82557
+4901,82558,ShuntPDC_kW_Avg_6,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_6__82558
+4901,82559,ShuntPDC_kW_Avg_7,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_7__82559
+4901,82572,WindHeatStateID_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2201.0,,wind_other_o_2201_2
+4901,82571,WindRef_V_Min,AC other,V,V,1.0,0.0,,min,OTHER,2201.0,,wind_other_o_2201_3
+4901,82570,WindSpeed_ms_Max,AC other,m/s,m/s,1.0,0.0,,max,OTHER,2201.0,,wind_speed_o_2201_2
+4901,82573,WindValid_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2201.0,,wind_other_o_2201_4
+4901,82492,DoorOpen_Min,System other,-,-,1.0,0.0,,min,,,,dooropen_min__82492
+4901,82515,InvDriveFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537
+4901,82508,InvFreq_Avg,System other,Hz,Hz,1.0,0.0,,avg,INVERTER,14537.0,,system_other_inv_14537_2
+4901,82517,InvGridFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_3
+4901,82507,InvIDCin_Avg,System other,A,A,1.0,0.0,,avg,INVERTER,14537.0,,system_other_inv_14537_4
+4901,82514,InvMainFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_5
+4901,82513,InvOpStatus_Avg,System other,-,-,1.0,0.0,,avg,INVERTER,14537.0,,system_other_inv_14537_6
+4901,82521,InvPVMStatus_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_7
+4901,82519,InvSystemFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_8
+4901,82520,InvSystemWarn_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_9
+4901,82499,InvVDVoltage_V_Avg,System other,V,V,1.0,0.0,,avg,INVERTER,14537.0,,system_other_inv_14537_10
+4901,82516,InvVoltageFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14537.0,,system_other_inv_14537_11
+4901,82576,Load_A_Avg,System other,A,A,1.0,0.0,,avg,,,,load_a_avg__82576
+4901,82525,PwrMtrIa_Avg,System other,A,A,1.0,0.0,,avg,METER,1863.0,,system_other_meter_1863
+4901,82526,PwrMtrIb_Avg,System other,A,A,1.0,0.0,,avg,METER,1863.0,,system_other_meter_1863_2
+4901,82527,PwrMtrIc_Avg,System other,A,A,1.0,0.0,,avg,METER,1863.0,,system_other_meter_1863_3
+4901,82580,Qloss_Ah_Max,System other,Ah,Ah,1.0,0.0,,max,,,,qloss_ah_max__82580
+4901,82524,SEWSPOAIrrad_Wm2_Avg,System other,W/m^2,W/m^2,1.0,0.0,,avg,,2201.0,,sewspoairrad_wm2_avg__82524
+4901,82568,WindDirAve_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2201.0,,wind_direction_o_2201
+4901,82569,WindDirStdDev_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2201.0,,wind_other_o_2201
+4901,82567,WindSpeedAve_ms,AC other,m/s,m/s,1.0,0.0,,wvc,OTHER,2201.0,,wind_speed_o_2201
+4902,82596,AmbTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2205.0,,temperature_ambient_o_2205
+4902,82673,Battery_A_Avg,DC current battery,A,A,1.0,0.0,,avg,,,,battery_a_avg__82673
+4902,82672,Battery_V_Min,DC voltage battery,V,V,1.0,0.0,,min,,,,battery_v_min__82672
+4902,82591,CR1000Temp_C_Avg,Temperature enclosure,C,C,1.0,0.0,,avg,OTHER,,,cr1000temp_c_avg__82591
+4902,82676,ChgSource_Min,Battery other,-,-,1.0,0.0,,min,,,,chgsource_min__82676
+4902,82675,ChgState_Min,Battery other,-,-,1.0,0.0,,min,,,,chgstate_min__82675
+4902,82677,CkBatt_Max,Battery other,-,-,1.0,0.0,,max,,,,ckbatt_max__82677
+4902,82608,InvEtot_kWh_Max,AC energy,kWh,kWh,1.0,0.0,,max,INVERTER,14538.0,,ac_energy_inv_14538
+4902,82601,InvIa_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14538.0,,ac_current_other_inv_14538
+4902,82602,InvIb_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14538.0,,ac_current_other_inv_14538_2
+4902,82603,InvIc_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14538.0,,ac_current_other_inv_14538_3
+4902,82607,InvPAC_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,INVERTER,14538.0,,ac_power_inv_14538
+4902,82610,InvPDC_kW_Avg,DC power,kW,kW,1.0,0.0,,avg,INVERTER,14538.0,,dc_power_inv_14538
+4902,82616,InvTempFault_Max,Temperature inverter,-,-,1.0,0.0,,max,INVERTER,14538.0,,temperature_inverter_inv_14538
+4902,82604,InvVDCin_Avg,DC voltage other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,dc_voltage_other_inv_14538
+4902,82609,InvVPVin_Avg,DC voltage other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,dc_voltage_other_inv_14538_2
+4902,82598,InvVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,ac_voltage_other_inv_14538
+4902,82599,InvVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,ac_voltage_other_inv_14538_2
+4902,82600,InvVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,ac_voltage_other_inv_14538_3
+4902,82638,PwrMtrEdel_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1864.0,,ac_power_meter_1864
+4902,82636,PwrMtrEdel_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1864.0,,ac_power_meter_1864_2
+4902,82639,PwrMtrErec_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1864.0,,ac_power_meter_1864_3
+4902,82637,PwrMtrErec_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1864.0,,ac_power_meter_1864_4
+4902,82628,PwrMtrFreqMax_Max,AC other,Hz,Hz,1.0,0.0,,max,METER,1864.0,,ac_other_meter_1864
+4902,82627,PwrMtrFreqMin_Min,AC other,Hz,Hz,1.0,0.0,,min,METER,1864.0,,ac_other_meter_1864_2
+4902,82626,PwrMtrFreq_Avg,AC other,Hz,Hz,1.0,0.0,,avg,METER,1864.0,,ac_other_meter_1864_3
+4902,82640,PwrMtrPF_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1864.0,,ac_power_other_meter_1864
+4902,82634,PwrMtrP_kVAR_Avg,AC power other,kVAR,kVAR,1.0,0.0,,avg,METER,1864.0,,ac_power_other_meter_1864_2
+4902,82635,PwrMtrP_kVA_Avg,AC power other,kVA,kVA,1.0,0.0,,avg,METER,1864.0,,ac_power_other_meter_1864_3
+4902,82633,PwrMtrP_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,METER,1864.0,,ac_power_meter_1864_5
+4902,82629,PwrMtrPhaseRev_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1864.0,,ac_power_other_meter_1864_4
+4902,82641,PwrMtrVaTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1864.0,,ac_voltage_other_meter_1864
+4902,82630,PwrMtrVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1864.0,,ac_voltage_other_meter_1864_2
+4902,82642,PwrMtrVbTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1864.0,,ac_voltage_other_meter_1864_3
+4902,82631,PwrMtrVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1864.0,,ac_voltage_other_meter_1864_4
+4902,82643,PwrMtrVcTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1864.0,,ac_voltage_other_meter_1864_5
+4902,82632,PwrMtrVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1864.0,,ac_voltage_other_meter_1864_6
+4902,82593,Pyra1_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2202.0,,irradiance_ghi_o_2202
+4902,82594,Pyra2_mV_Avg,Irradiance POA,mV,mV,1.0,0.0,,avg,OTHER,2203.0,,irradiance_poa_o_2203
+4902,82679,RTD_C_Avg_1,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_1__82679
+4902,82688,RTD_C_Avg_10,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_10__82688
+4902,82680,RTD_C_Avg_2,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_2__82680
+4902,82681,RTD_C_Avg_3,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_3__82681
+4902,82682,RTD_C_Avg_4,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_4__82682
+4902,82683,RTD_C_Avg_5,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_5__82683
+4902,82684,RTD_C_Avg_6,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_6__82684
+4902,82685,RTD_C_Avg_7,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_7__82685
+4902,82686,RTD_C_Avg_8,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_8__82686
+4902,82687,RTD_C_Avg_9,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_9__82687
+4902,82595,RefCell1_Wm2_Avg,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2204.0,,irradiance_poa_o_2204
+4902,82620,SEWSAmbientTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2206.0,,temperature_ambient_o_2206
+4902,82621,SEWSModuleTemp_C_Avg,Temperature module,C,C,1.0,0.0,,avg,OTHER,2206.0,,temperature_module_o_2206
+4902,82644,ShuntCurrent_A_Avg_1,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_1__82644
+4902,82645,ShuntCurrent_A_Avg_2,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_2__82645
+4902,82646,ShuntCurrent_A_Avg_3,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_3__82646
+4902,82647,ShuntCurrent_A_Avg_4,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_4__82647
+4902,82648,ShuntCurrent_A_Avg_5,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_5__82648
+4902,82649,ShuntCurrent_A_Avg_6,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_6__82649
+4902,82650,ShuntCurrent_A_Avg_7,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_7__82650
+4902,82658,ShuntEtot_kWh_Max_1,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_1__82658
+4902,82659,ShuntEtot_kWh_Max_2,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_2__82659
+4902,82660,ShuntEtot_kWh_Max_3,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_3__82660
+4902,82661,ShuntEtot_kWh_Max_4,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_4__82661
+4902,82662,ShuntEtot_kWh_Max_5,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_5__82662
+4902,82663,ShuntEtot_kWh_Max_6,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_6__82663
+4902,82664,ShuntEtot_kWh_Max_7,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_7__82664
+4902,82651,ShuntPDC_kW_Avg_1,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_1__82651
+4902,82652,ShuntPDC_kW_Avg_2,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_2__82652
+4902,82653,ShuntPDC_kW_Avg_3,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_3__82653
+4902,82654,ShuntPDC_kW_Avg_4,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_4__82654
+4902,82655,ShuntPDC_kW_Avg_5,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_5__82655
+4902,82656,ShuntPDC_kW_Avg_6,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_6__82656
+4902,82657,ShuntPDC_kW_Avg_7,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_7__82657
+4902,82622,SEWSPOAIrrad_Wm2_Avg,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2206.0,,irradiance_poa_o_2206
+4902,82670,WindHeatStateID_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2206.0,,wind_other_o_2206_2
+4902,82669,WindRef_V_Min,AC other,V,V,1.0,0.0,,min,OTHER,2206.0,,wind_other_o_2206_3
+4902,82668,WindSpeed_ms_Max,AC other,m/s,m/s,1.0,0.0,,max,OTHER,2206.0,,wind_speed_o_2206_2
+4902,82671,WindValid_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2206.0,,wind_other_o_2206_4
+4902,82592,DoorOpen_Min,System other,-,-,1.0,0.0,,min,,,,dooropen_min__82592
+4902,82613,InvDriveFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538
+4902,82606,InvFreq_Avg,System other,Hz,Hz,1.0,0.0,,avg,INVERTER,14538.0,,system_other_inv_14538_2
+4902,82615,InvGridFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_3
+4902,82605,InvIDCin_Avg,System other,A,A,1.0,0.0,,avg,INVERTER,14538.0,,system_other_inv_14538_4
+4902,82612,InvMainFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_5
+4902,82611,InvOpStatus_Avg,System other,-,-,1.0,0.0,,avg,INVERTER,14538.0,,system_other_inv_14538_6
+4902,82619,InvPVMStatus_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_7
+4902,82617,InvSystemFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_8
+4902,82618,InvSystemWarn_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_9
+4902,82597,InvVDVoltage_V_Avg,System other,V,V,1.0,0.0,,avg,INVERTER,14538.0,,system_other_inv_14538_10
+4902,82614,InvVoltageFault_Max,System other,-,-,1.0,0.0,,max,INVERTER,14538.0,,system_other_inv_14538_11
+4902,82674,Load_A_Avg,System other,A,A,1.0,0.0,,avg,,,,load_a_avg__82674
+4902,82623,PwrMtrIa_Avg,System other,A,A,1.0,0.0,,avg,METER,1864.0,,system_other_meter_1864
+4902,82624,PwrMtrIb_Avg,System other,A,A,1.0,0.0,,avg,METER,1864.0,,system_other_meter_1864_2
+4902,82625,PwrMtrIc_Avg,System other,A,A,1.0,0.0,,avg,METER,1864.0,,system_other_meter_1864_3
+4902,82678,Qloss_Ah_Max,System other,Ah,Ah,1.0,0.0,,max,,,,qloss_ah_max__82678
+4902,82666,WindDirAve_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2206.0,,wind_direction_o_2206
+4902,82667,WindDirStdDev_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2206.0,,wind_other_o_2206
+4902,82665,WindSpeedAve_ms,AC other,m/s,m/s,1.0,0.0,,wvc,OTHER,2206.0,,wind_speed_o_2206
+4903,82702,AmbTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2217.0,,temperature_ambient_o_2217
+4903,82785,Battery_A_Avg,DC current battery,A,A,1.0,0.0,,avg,,,,battery_a_avg__82785
+4903,82784,Battery_V_Min,DC voltage battery,V,V,1.0,0.0,,min,,,,battery_v_min__82784
+4903,82689,CR1000Temp_C_Avg,Temperature enclosure,C,C,1.0,0.0,,avg,OTHER,,,cr1000temp_c_avg__82689
+4903,82788,ChgSource_Min,Battery other,-,-,1.0,0.0,,min,,,,chgsource_min__82788
+4903,82787,ChgState_Min,Battery other,-,-,1.0,0.0,,min,,,,chgstate_min__82787
+4903,82789,CkBatt_Max,Battery other,-,-,1.0,0.0,,max,,,,ckbatt_max__82789
+4903,82734,InvEtoday_kWh_Max,AC energy,kWh,kWh,1.0,0.0,,max,INVERTER,14539.0,,ac_energy_inv_14539
+4903,82733,InvEtot_kWh_Max,AC energy,kWh,kWh,1.0,0.0,,max,INVERTER,14539.0,,ac_energy_inv_14539_2
+4903,82735,InvEyesterday_kWh_Max,AC energy,kWh,kWh,1.0,0.0,,max,INVERTER,14539.0,,ac_energy_inv_14539_3
+4903,82720,InvINeutral_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539
+4903,82726,InvIUnbal_Avg,AC current other,%,%,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539_2
+4903,82716,InvIa_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539_3
+4903,82719,InvIabcAvg_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539_4
+4903,82717,InvIb_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539_5
+4903,82718,InvIc_Avg,AC current other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,ac_current_other_inv_14539_6
+4903,82728,InvPAC_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,INVERTER,14539.0,,ac_power_inv_14539
+4903,82727,InvPDC_kW_Avg,DC power,kW,kW,1.0,0.0,,avg,INVERTER,14539.0,,dc_power_inv_14539
+4903,82731,InvPF_Avg,AC other,-,-,1.0,0.0,,avg,INVERTER,14539.0,,ac_other_inv_14539
+4903,82740,InvTempHeatsink_C_Avg,Temperature inverter,C,C,1.0,0.0,,avg,INVERTER,14539.0,,temperature_inverter_inv_14539
+4903,82738,InvTempInternalAir_C_Avg,Temperature inverter,C,C,1.0,0.0,,avg,INVERTER,14539.0,,temperature_inverter_inv_14539_2
+4903,82739,InvTempInverterAir_C_Avg,Temperature inverter,C,C,1.0,0.0,,avg,INVERTER,14539.0,,temperature_inverter_inv_14539_3
+4903,82729,InvVAR_kVAR_Avg,AC power other,kVAR,kVAR,1.0,0.0,,avg,INVERTER,14539.0,,ac_power_other_inv_14539
+4903,82730,InvVA_kVA_Avg,AC power other,kVA,kVA,1.0,0.0,,avg,INVERTER,14539.0,,ac_power_other_inv_14539_2
+4903,82713,InvVDCin_Avg,DC voltage other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,dc_voltage_other_inv_14539
+4903,82725,InvVUnbal_Avg,AC voltage other,%,%,1.0,0.0,,avg,INVERTER,14539.0,,ac_voltage_other_inv_14539
+4903,82721,InvVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,ac_voltage_other_inv_14539_2
+4903,82724,InvVabcAvg_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,ac_voltage_other_inv_14539_3
+4903,82722,InvVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,ac_voltage_other_inv_14539_4
+4903,82723,InvVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,ac_voltage_other_inv_14539_5
+4903,82759,PwrMtrEdel_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1865.0,,ac_power_meter_1865
+4903,82757,PwrMtrEdel_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1865.0,,ac_power_meter_1865_2
+4903,82760,PwrMtrErec_kVARh_Max,AC power,kVARh,kVARh,1.0,0.0,,max,METER,1865.0,,ac_power_meter_1865_3
+4903,82758,PwrMtrErec_kWh_Max,AC power,kWh,kWh,1.0,0.0,,max,METER,1865.0,,ac_power_meter_1865_4
+4903,82749,PwrMtrFreqMax_Max,AC other,Hz,Hz,1.0,0.0,,max,METER,1865.0,,ac_other_meter_1865
+4903,82748,PwrMtrFreqMin_Min,AC other,Hz,Hz,1.0,0.0,,min,METER,1865.0,,ac_other_meter_1865_2
+4903,82747,PwrMtrFreq_Avg,AC other,Hz,Hz,1.0,0.0,,avg,METER,1865.0,,ac_other_meter_1865_3
+4903,82761,PwrMtrPF_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1865.0,,ac_power_other_meter_1865
+4903,82755,PwrMtrP_kVAR_Avg,AC power other,kVAR,kVAR,1.0,0.0,,avg,METER,1865.0,,ac_power_other_meter_1865_2
+4903,82756,PwrMtrP_kVA_Avg,AC power other,kVA,kVA,1.0,0.0,,avg,METER,1865.0,,ac_power_other_meter_1865_3
+4903,82754,PwrMtrP_kW_Avg,AC power,kW,kW,1.0,0.0,,avg,METER,1865.0,,ac_power_meter_1865_5
+4903,82750,PwrMtrPhaseRev_Avg,AC power other,-,-,1.0,0.0,,avg,METER,1865.0,,ac_power_other_meter_1865_4
+4903,82762,PwrMtrVaTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1865.0,,ac_voltage_other_meter_1865
+4903,82751,PwrMtrVa_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1865.0,,ac_voltage_other_meter_1865_2
+4903,82763,PwrMtrVbTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1865.0,,ac_voltage_other_meter_1865_3
+4903,82752,PwrMtrVb_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1865.0,,ac_voltage_other_meter_1865_4
+4903,82764,PwrMtrVcTHDMax_Max,AC voltage other,%,%,1.0,0.0,,max,METER,1865.0,,ac_voltage_other_meter_1865_5
+4903,82753,PwrMtrVc_Avg,AC voltage other,V,V,1.0,0.0,,avg,METER,1865.0,,ac_voltage_other_meter_1865_6
+4903,82691,Pyra1_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2206.0,southwest,irradiance_ghi_o_2206
+4903,82692,Pyra2_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2207.0,southeast,irradiance_ghi_o_2207
+4903,82693,Pyra3_mV_Avg,Irradiance POA,mV,mV,1.0,0.0,,avg,OTHER,2208.0,southeast,irradiance_poa_o_2208
+4903,82694,Pyra4_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2209.0,northwest,irradiance_ghi_o_2209
+4903,82695,Pyra5_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2210.0,northeast,irradiance_ghi_o_2210
+4903,82696,Pyra6_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2211.0,center,irradiance_ghi_o_2211
+4903,82697,Pyra7_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2212.0,,irradiance_ghi_o_2212
+4903,82698,Pyra8_mV_Avg,Irradiance GHI,mV,mV,1.0,0.0,,avg,OTHER,2213.0,,irradiance_ghi_o_2213
+4903,82791,RTD_C_Avg_1,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_1__82791
+4903,82792,RTD_C_Avg_2,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_2__82792
+4903,82793,RTD_C_Avg_3,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_3__82793
+4903,82794,RTD_C_Avg_4,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_4__82794
+4903,82795,RTD_C_Avg_5,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_5__82795
+4903,82796,RTD_C_Avg_6,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_6__82796
+4903,82797,RTD_C_Avg_7,Temperature backsheet,C,C,1.0,0.0,,avg,OTHER,,module location varies by system,rtd_c_avg_7__82797
+4903,82699,RefCell1_Wm2_Avg,Irradiance POA,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2214.0,southwest,irradiance_poa_o_2214
+4903,82700,RefCell2_Wm2_Avg,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2215.0,center,irradiance_ghi_o_2215
+4903,82701,RefCell3_Wm2_Avg,Irradiance GHI,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2216.0,center,irradiance_ghi_o_2216
+4903,82741,SEWSAmbientTemp_C_Avg,Temperature ambient,C,C,1.0,0.0,,avg,OTHER,2218.0,,temperature_ambient_o_2218
+4903,82742,SEWSModuleTemp_C_Avg,Temperature module,C,C,1.0,0.0,,avg,OTHER,2218.0,,temperature_module_o_2218
+4903,82765,ShuntCurrent_A_Avg_1,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_1__82765
+4903,82766,ShuntCurrent_A_Avg_2,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_2__82766
+4903,82767,ShuntCurrent_A_Avg_3,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_3__82767
+4903,82768,ShuntCurrent_A_Avg_4,DC current other,A,A,1.0,0.0,,avg,,,,shuntcurrent_a_avg_4__82768
+4903,82773,ShuntEtot_kWh_Max_1,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_1__82773
+4903,82774,ShuntEtot_kWh_Max_2,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_2__82774
+4903,82775,ShuntEtot_kWh_Max_3,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_3__82775
+4903,82776,ShuntEtot_kWh_Max_4,DC energy other,kWh,kWh,1.0,0.0,,max,,,,shuntetot_kwh_max_4__82776
+4903,82769,ShuntPDC_kW_Avg_1,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_1__82769
+4903,82770,ShuntPDC_kW_Avg_2,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_2__82770
+4903,82771,ShuntPDC_kW_Avg_3,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_3__82771
+4903,82772,ShuntPDC_kW_Avg_4,DC power other,kW,kW,1.0,0.0,,avg,,,,shuntpdc_kw_avg_4__82772
+4903,82798,TCTemps_C_Avg_1,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_1__82798
+4903,82807,TCTemps_C_Avg_10,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_10__82807
+4903,82808,TCTemps_C_Avg_11,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_11__82808
+4903,82809,TCTemps_C_Avg_12,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_12__82809
+4903,82799,TCTemps_C_Avg_2,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_2__82799
+4903,82800,TCTemps_C_Avg_3,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_3__82800
+4903,82801,TCTemps_C_Avg_4,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_4__82801
+4903,82802,TCTemps_C_Avg_5,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_5__82802
+4903,82803,TCTemps_C_Avg_6,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_6__82803
+4903,82804,TCTemps_C_Avg_7,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_7__82804
+4903,82805,TCTemps_C_Avg_8,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_8__82805
+4903,82806,TCTemps_C_Avg_9,Temperature other,C,C,1.0,0.0,,avg,OTHER,,,tctemps_c_avg_9__82806
+4903,82709,TemperatureFaults_Max,Temperature other,-,-,1.0,0.0,,max,INVERTER,14539.0,,temperature_other_inv_14539
+4903,82782,WindHeatStateID_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2218.0,,wind_other_o_2218_2
+4903,82781,WindRef_V_Min,AC other,V,V,1.0,0.0,,min,OTHER,2218.0,,wind_other_o_2218_3
+4903,82780,WindSpeed_ms_Max,AC other,m/s,m/s,1.0,0.0,,max,OTHER,2218.0,,wind_speed_o_2218_2
+4903,82783,WindValid_Avg,AC other,-,-,1.0,0.0,,avg,OTHER,2218.0,,wind_other_o_2218_4
+4903,82706,DPCBFaults_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539
+4903,82690,DoorOpen_Min,System other,-,-,1.0,0.0,,min,,,,dooropen_min__82690
+4903,82704,GeneralFaults1_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_2
+4903,82705,GeneralFaults2_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_3
+4903,82707,HardwareFaults_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_4
+4903,82736,InvFreq_Avg,System other,Hz,Hz,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_5
+4903,82732,InvGndImped_kOhm_Avg,System other,kOhm,kOhm,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_6
+4903,82714,InvIDCin_Avg,System other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_7
+4903,82715,InvIGnd_Avg,System other,A,A,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_8
+4903,82737,InvOpState_Avg,System other,-,-,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_9
+4903,82703,InvVDVoltage_V_Avg,System other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_10
+4903,82712,InvVPVIn_Avg,System other,V,V,1.0,0.0,,avg,INVERTER,14539.0,,system_other_inv_14539_11
+4903,82708,InverterFaults_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_12
+4903,82786,Load_A_Avg,System other,A,A,1.0,0.0,,avg,,,,load_a_avg__82786
+4903,82711,NumActiveFaults_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_13
+4903,82744,PwrMtrIa_Avg,System other,A,A,1.0,0.0,,avg,METER,1865.0,,system_other_meter_1865
+4903,82745,PwrMtrIb_Avg,System other,A,A,1.0,0.0,,avg,METER,1865.0,,system_other_meter_1865_2
+4903,82746,PwrMtrIc_Avg,System other,A,A,1.0,0.0,,avg,METER,1865.0,,system_other_meter_1865_3
+4903,82790,Qloss_Ah_Max,System other,Ah,Ah,1.0,0.0,,max,,,,qloss_ah_max__82790
+4903,82743,SEWSPOAIrrad_Wm2_Avg,System other,W/m^2,W/m^2,1.0,0.0,,avg,OTHER,2218.0,,system_other_o_2218
+4903,82710,Warnings_Max,System other,-,-,1.0,0.0,,max,INVERTER,14539.0,,system_other_inv_14539_14
+4903,82778,WindDirAve_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2218.0,,wind_direction_o_2218
+4903,82779,WindDirStdDev_deg,AC other,Deg,Deg,1.0,0.0,,wvc,OTHER,2218.0,,wind_other_o_2218
+4903,82777,WindSpeedAve_ms,AC other,m/s,m/s,1.0,0.0,,wvc,OTHER,2218.0,,wind_speed_o_2218
