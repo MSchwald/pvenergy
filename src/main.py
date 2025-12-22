@@ -19,7 +19,7 @@ default_features: list[Feature] = [
 ]
 default_models = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
 model_names = [m.name for m in default_models]
-system_ids = [str(id) for id in Pvdaq.get_system_ids()]
+system_ids = Pvdaq.get_system_ids()
 
 def main():
     parser = argparse.ArgumentParser(prog = "pvenergy", description = "PV Energy Forecasting")
@@ -32,19 +32,19 @@ def main():
     runserver.add_argument("django_args", nargs=argparse.REMAINDER)
     
     request = subparsers.add_parser("request", help="Requests raw data from PVDAQ and NSRDB")
-    request.add_argument("--ids", nargs="+", default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids to request data for")
+    request.add_argument("--ids", nargs="+", type=int, default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids to request data for")
 
     train = subparsers.add_parser("train", help="Request data and train ML model")
-    train.add_argument("--ids", nargs="+", default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for training")
+    train.add_argument("--ids", nargs="+", type=int, default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for training")
     train.add_argument("--features", nargs="+", default=default_features, choices=ALL_FEATURE_NAMES, help="Features to use for training")
     train.add_argument("--models", nargs="+", default=model_names, choices=model_names, help="ML models to train")
 
     evaluate = subparsers.add_parser("evaluate", help="System-wise feature importance analysis for trained model")
-    evaluate.add_argument("--ids", nargs="+", default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for evaluationr")
+    evaluate.add_argument("--ids", nargs="+", type=int, default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for evaluationr")
     evaluate.add_argument("--models", nargs="+", default=model_names, choices=model_names, help="ML models to evaluate")
 
     pipeline = subparsers.add_parser("pipeline", help="Do everything: Request, train, evaluate and open Django")
-    pipeline.add_argument("--ids", nargs="+", default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for training")
+    pipeline.add_argument("--ids", nargs="+", type=int,default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for training")
     pipeline.add_argument("--features", nargs="+", default=default_features, choices=ALL_FEATURE_NAMES, help="Features to use for training")
     pipeline.add_argument("--models", nargs="+", default=model_names, choices=model_names, help="ML models to train")
 
@@ -52,7 +52,8 @@ def main():
     if args.command == "django":
         run_django(args.django_args)
     elif args.command == "runserver":
-        run_django(["runserver", "0.0.0.0:8000", *args.django_args])
+        django_args = args.django_args if args.django_args else ["0.0.0.0:8000"]
+        run_django(["runserver", *django_args])
     elif args.command == "request":
         for system_id in args.ids:
             print(Pipeline.request_data(system_id))
