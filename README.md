@@ -26,11 +26,11 @@ docker compose down
 ```
 
 ## Alternative access of the CLI
-You can also download this repository and access the CLI as follows (*recommended for LINUX/WSL2 only*):
+You can also download this repository and access the CLI directly (*recommended for LINUX/WSL2 only*), but you will have to train the models yourself before viewing the dashboard.
 * Ensure you have **Python 3.11** installed.
 * (*Optional but recommended*) Use a virtual environment via `python -m venv venv` and then `source venv/bin/activate` (Linux/macOS bash) or `.\venv\Scripts\activate.bat` (Windows).
 * Run `pip install -e .` in the root directory of this repository to install all dependencies.
-* From now on, you can run `pvenergy` together with one of the commands in the list below.
+* From now on, you can run `pvenergy` together with one of the commands in the list below. Start either with `pvenergy train` or `pvenergy pipeline` to train models.
 
 ## Complete list of commands of the CLI
 * **`runserver`**: Opens the dashboard using Django's default development server to analyze the trained models in `data/models`; if further arguments get provided, they get directly passed to Django. Django's `runserver` is just for a convenient local presentation of a Django project before eventually deploying it on a public web server.
@@ -46,4 +46,4 @@ Everything is based on **Python 3.11**.
 * **Feature engineering**: The module `pvcore/feature` contains a self-written **pandas feature accessor** `.ftr` for comfortable engineering, managing and processing features while keeping the responsibilities clearly separated. Uses **pvlib**, **numpy** and linear regression for some more complicated features.
 * **Machine learning**: After cleaning up the training data, the pipeline `pvcore/ml` uses **scikit_learn**, **xgboost** and **lightgbm** for machine learning.
 * **Web Framework**: The dashboard in `dashboard` and `pvenergy` is written with **Django** as backend and **JavaScript** / **CSS** in frontend. **matplotlib** is used for plotting.
-* **DevOps**: **Docker** to package everything and for safe development in a container.
+* **Others**: **Docker** to package everything and for safe development in a container.
