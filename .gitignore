@@ -1,24 +1,12 @@
-# Personal data to connect with APIs
-apidata.py
-
-# downloaded data to try out data processing 
 *.csv
 *.joblib
 *.parquet
-test.py
 *.png
 *.json
-pv.py
 
 # Editors
 .vscode/
 .idea/
-
-# Vagrant
-.vagrant/
-
-# Mac/OSX
-.DS_Store
 
 # Windows
 Thumbs.db
