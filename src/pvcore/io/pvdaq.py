@@ -101,12 +101,15 @@ class Pvdaq:
         """Names, description, units and comments on the metrics recorded by PVDAQ pv systems"""
         if cls._metrics is not None:
             return cls._metrics
-        metric_df = fu.concat_files(
-            directory = cls.url + "/parquet/metrics",
-            file_format ="parquet",
-            cache_directory = PVDAQ_DIR
-        )
-        metric_df.to_csv(cls.METRIC_FILE, index = False)
+        if cls.METRIC_FILE.exists():
+            metric_df = pd.read_csv(cls.METRIC_FILE)
+        else:
+            metric_df = fu.concat_files(
+                directory = cls.url + "/parquet/metrics",
+                file_format ="parquet",
+                cache_directory = PVDAQ_DIR
+            )
+            metric_df.to_csv(cls.METRIC_FILE, index = False)
         ids = cls.get_metadata().index
         cls._metrics = pd.DataFrame(index = ids, columns = cls.DATA_COLUMNS_NAMES)
         cls._metric_ids = pd.DataFrame(index = ids, columns = cls.DATA_COLUMNS_NAMES, dtype = "Int64")
