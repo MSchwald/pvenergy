@@ -1,4 +1,4 @@
-# PV-Energy Forecasting
+# Photovoltaic-Energy Forecasting
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
@@ -7,19 +7,26 @@
 ## Project Description
 This is an **end-to-end machine learning pipeline** that downloads photovoltaic data from [PVDAQ](https://openei.org/wiki/PVDAQ) and historical weather data from [NSRDB](https://nsrdb.nrel.gov/) and trains various machine learning models on forecasting the energy output of photovoltaic systems. The results are presented via a **Django-based dashboard**, which applies the trained models to [OpenMeteo](https://open-meteo.com/) weather forecasts and shows some plots, tables and statistical analysis of the models' performances.
 
-## Quick Start: Launch the dashboard
-The following docker image includes three trained models with optimized hyperparameters for a sample set of engineered features, as well as the complete raw data from *PVDAQ* and *NSRDB* used to train them. Simply run
+## Quick Start with docker
+If you have docker installed, run
 ```bash
-docker run -p 8000:8000 mschwald/pvenergy:latest
+docker run -it --rm -p 8000:8000 ghcr.io/mschwald/pvenergy:latest
 ```
-and open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser to immediately show the dashboard to analyze the results. You can also use this image to run all other commands of the underlying CLI, for example you can train the models on new features via
+and open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser to view the dashboard. This docker image includes three trained models with optimized hyperparameters for a sample set of engineered features, as well as the complete raw data from *PVDAQ* and *NSRDB* used to train them. You can also use this image to run all other commands of the underlying CLI (see the list below), but before this, first run once
 ```bash
-docker run mschwald/pvenergy:latest train --features <feature1 feature2 ...>
+docker compose up -d
 ```
-with a list of feature names separated by spaces. View the entire list of implemented features via the `train --help` function and check out the *Feature Database* section of the dashboard for explanations on their definitions.
+to mount the directories containing the models and their evaluation data (otherwise, they get deleted right after training). Then, run for example
+```bash
+docker run -it --rm mschwald/pvenergy:latest train --features <feature1 feature2 ...>
+```
+with a list of feature names separated by spaces. View the entire list of implemented features via the `train --help` function and check out the *Feature Database* section of the dashboard for explanations on their definitions. When you do not need the new models anymore, use
+```bash
+docker compose down
+```
 
-## Accessing the CLI directly
-Alternatively, you can access the CLI directly (*recommended for LINUX/WSL2 only*):
+## Alternative access of the CLI
+You can also download this repository and access the CLI as follows (*recommended for LINUX/WSL2 only*):
 * Ensure you have **Python 3.11** installed.
 * (*Optional but recommended*) Use a virtual environment via `python -m venv venv` and then `source venv/bin/activate` (Linux/macOS bash) or `.\venv\Scripts\activate.bat` (Windows).
 * Run `pip install -e .` in the root directory of this repository to install all dependencies.
