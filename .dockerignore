@@ -18,7 +18,7 @@ data/training/
 *$py.class
 .pytest_cache/
 
-# Virtuelle Umgebungen (lokal)
+# Virtual environments
 .venv/
 venv/
 env/
@@ -28,11 +28,7 @@ env/
 .idea/
 .DS_Store
 
-# Docker (man muss das Dockerfile nicht in das Image kopieren)
+# Docker
 Dockerfile
 .dockerignore
 docker-compose.yml
-
-# Dokumentation / Notizen (optional, hält das Image sauber)
-docs/
-notizen.txt
