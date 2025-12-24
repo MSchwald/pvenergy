@@ -4,6 +4,7 @@
 #
 #    pip-compile requirements.in
 #
+jinja2==3.1.6 # missing in python slim
 aiobotocore==2.26.0
     # via s3fs
 aiohappyeyeballs==2.6.1
