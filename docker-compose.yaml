@@ -1,0 +1,12 @@
+services:
+  app:
+    image: ghcr.io/mschwald/pvenergy:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - pv_models:/pvenergy/data/models
+      - pv_results:/pvenergy/data/results
+
+volumes:
+  pv_models:
+  pv_results:
