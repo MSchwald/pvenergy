@@ -1,10 +1,11 @@
 # Photovoltaic-Energy Forecasting
-
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
 ![Build Tool](https://img.shields.io/badge/Build-Hatchling-orange.svg)
 
-## Project Description
+<img width="988" height="697" alt="dashboard" src="https://github.com/user-attachments/assets/423d51b4-4506-4565-812a-df8978591acf" />
+
+## Description
 This is an **end-to-end machine learning pipeline** that downloads photovoltaic data from [PVDAQ](https://openei.org/wiki/PVDAQ) and historical weather data from [NSRDB](https://nsrdb.nrel.gov/) and trains various machine learning models on forecasting the energy output of photovoltaic systems. The results are presented via a **Django-based dashboard**, which applies the trained models to [OpenMeteo](https://open-meteo.com/) weather forecasts and shows some plots, tables and statistical analysis of the models' performances.
 
 ## Quick Start with docker
