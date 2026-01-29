@@ -26,7 +26,7 @@ ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=pvenergy.settings
 ENV PYTHONPATH="/pvenergy/src"
 
-RUN pvenergy django migrate
+#RUN pvenergy django migrate
 
 ENTRYPOINT ["pvenergy"]
 CMD ["runserver"]
