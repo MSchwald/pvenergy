@@ -80,7 +80,7 @@ class Nsrdb:
             "utc": "false",
             "leap_day": "true",
             "interval": "60",
-            "email": api_key,
+            "email": email,
         }
 
         response = requests.get(url, params = params, timeout = 180)
