@@ -35,7 +35,7 @@ def pd_styler(data: pd.DataFrame | pd.Series) -> str:
     if isinstance(df, pd.Series):
         df = df.to_frame().T
     df.columns = [feature_format(col) for col in df.columns]
-    df.columns.name, df.index.name = feature_format(df.index.name), None
+    df.columns.name, df.index.name = feature_format(str(df.index.name)), None
     df_html = df.style.format(
         formatter=number_format
     ).format_index(
@@ -58,4 +58,4 @@ def file_to_url(file: Path) -> str:
         return f"{settings.STATIC_URL}{rel.as_posix()}"
     except (ValueError, AttributeError):
         pass
-    print(f"Warning: file {file} neither in media nor staticfiles folder.")
+    raise ValueError(f"Warning: file {file} neither in media nor staticfiles folder.")

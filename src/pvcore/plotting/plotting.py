@@ -24,8 +24,7 @@ class Plot:
     def weather_forecast(cls,
             df: pd.DataFrame,
             system_id: int,
-            show_title: bool = False,
-            use_cache: bool = True
+            show_title: bool = False
         ) -> Path:
         """Creates three plots of features from OpenMeteo weather forecast"""
         cache = PLOTS_DIR / f"{cls.weather_cache_name}_{system_id}.png"
@@ -69,7 +68,7 @@ class Plot:
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
             plt.setp(ax.get_xticklabels(), rotation=90, ha='center')
 
-        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
 
         fig.savefig(cache)
 
@@ -81,8 +80,7 @@ class Plot:
     def calculated_features(cls,
             df: pd.DataFrame,
             system_id: int,
-            show_title: bool = False,
-            use_cache: bool = True
+            show_title: bool = False
         ) -> Path:
         """Creates three plots of some intuitive features calculated from the weather forecast"""
         cache = PLOTS_DIR / f"{cls.features_cache_name}_{system_id}.png"
@@ -131,7 +129,7 @@ class Plot:
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
             plt.setp(ax.get_xticklabels(), rotation=90, ha='center')
 
-        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
 
         fig.savefig(cache)
 
@@ -143,8 +141,7 @@ class Plot:
     def predict(cls,
             Y: pd.DataFrame,
             system_id: int,
-            show_title: bool = False,
-            use_cache: bool = True
+            show_title: bool = False
         ) -> Path:
         """Creates three plots of dcp prediction for all three trained models"""
         cache = PLOTS_DIR / f"{cls.prediction_cache_name}_{system_id}.png"
@@ -167,7 +164,7 @@ class Plot:
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
             plt.setp(ax.get_xticklabels(), rotation=90, ha='center')
 
-        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
 
         file = PLOTS_DIR / f"dcp_prediction_{system_id}.png"
         fig.savefig(file)
@@ -180,7 +177,7 @@ if __name__ == "__main__":
     """Testing space for designing plots"""
     #m = Model.load("xgboost_all_ids")
     df = Pipeline.weather_forecast(2)
-    ml_models = [Model.load(ml_model.name) for ml_model in [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]]
+    ml_models = tuple(Model.load(ml_model.name) for ml_model in (ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST))
     Y = Pipeline.predict(ml_models, df)
     Plot.predict(Y, 2)
     #print(Pipeline.predict(ml_models, df))

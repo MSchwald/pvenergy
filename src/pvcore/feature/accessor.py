@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Dict, Any, Union
+from typing import Dict, Any, overload, Literal
 
 from pandas.api.extensions import register_dataframe_accessor
 import pandas as pd
@@ -11,8 +11,7 @@ from .catalog import Source, Feature, FEATURE_FROM_NAME, ALL_FEATURE_NAMES
 from .processing import Processing as fp
 import pvcore.utils.file_utilities as fu
 
-# alias for typing, allowing a single or a list of features
-FeatureList = Union[Feature, tuple[Feature], list[Feature], None] 
+FeatureList = Feature | tuple[Feature, ...] | list[Feature] | None
 
 show_warnings = os.environ.get("FEATURE_DEBUG", "False") == "True"
 
@@ -22,8 +21,11 @@ class Accessor:
     Create for every pd.DataFrame df a pandas accessor df.ftr
     for convenient access and management of features, relevant constants and metadata.
     """
-    def __init__(self, pandas_obj: Union[pd.DataFrame, pd.Series]):
-        self._df: pd.DataFrame = pandas_obj
+    def __init__(self, pandas_obj: pd.DataFrame | pd.Series):
+        if isinstance(pandas_obj, pd.Series):
+            self._df = pandas_obj.to_frame()
+        else:
+            self._df = pandas_obj
         self._constants: Dict[Feature, Any] = {}
 
     def available(self, feature: Feature) -> bool:
@@ -31,9 +33,18 @@ class Accessor:
     
     @property
     def features(self) -> list[Feature]:
-        return [FEATURE_FROM_NAME[col] for col in self._df.columns.tolist() + [self._df.index.name] if col in ALL_FEATURE_NAMES]
+        return [FEATURE_FROM_NAME[str(col)] for col in self._df.columns.tolist() + [self._df.index.name] if col in ALL_FEATURE_NAMES]
 
-    def get(self, feature: FeatureList = None) -> Union[pd.Series, pd.DataFrame]:
+    @overload
+    def get(self, feature: None = ...) -> pd.DataFrame: ...
+
+    @overload
+    def get(self, feature: Feature) -> pd.Series: ...
+
+    @overload
+    def get(self, feature: list[Feature] | tuple[Feature, ...]) -> pd.DataFrame: ...
+
+    def get(self, feature: FeatureList = None) -> pd.Series | pd.DataFrame:
         """
         Return given features as a pd.Series (or as a constant)
         Read from given pf.DataFrame or calculates it missing.
@@ -66,16 +77,25 @@ class Accessor:
         col.index = self._df.index
         self._df.loc[:, feature.name] = col
 
-    def get_const(self, const_feature: FeatureList = None) -> Union[float, Dict[Feature, np.dtype]]:
+    @overload
+    def get_const(self, const_feature: None = None) -> dict[Feature, Any]: ...
+
+    @overload
+    def get_const(self, const_feature: Feature) -> Any: ...
+
+    @overload
+    def get_const(self, const_feature: list[Feature] | tuple[Feature, ...]) -> dict[Feature, Any]: ...
+
+    def get_const(self, const_feature: FeatureList = None) -> Any:
         """
         Return given constant; if constant has not yet been calculated before,
         delegate the calculation and save its result.
         """
         if const_feature is None:
             return self._constants
-        if isinstance(const_feature, list):
+        if isinstance(const_feature, (list, tuple)):
             return {ftr: self.get_const(ftr) for ftr in const_feature}
-        if const_feature in self._constants.keys():
+        if const_feature in self._constants:
             return self._constants[const_feature]
         result = self._calculate(const_feature)
         self.set_const({const_feature: result})
@@ -84,7 +104,7 @@ class Accessor:
     def set_const(self, value_dict: dict[Feature, Any]):
         self._constants.update(value_dict)
 
-    def _calculate(self, feature: Feature, show_warnings: bool = show_warnings) -> Union[pd.Series, np.dtype]:
+    def _calculate(self, feature: Feature, show_warnings: bool = show_warnings) -> pd.Series | Any:
         """Wrapper method for error handling and potential type casting when calculating missing features"""
         if feature.source != Source.CALCULATED:
             if show_warnings:
@@ -96,7 +116,7 @@ class Accessor:
             const_list = self.get_const([ftr for ftr in feature.required_features if ftr.is_constant])
             df = self.get([ftr for ftr in feature.required_features if not ftr.is_constant])
             nan_cols = [col for col in df.columns if df[col].isna().all().any()]
-            nan_consts = [const for const in const_list if pd.isna(const)]
+            nan_consts = [const for const in const_list.values() if pd.isna(const)]
             if nan_cols or nan_consts:
                 if show_warnings:
                     print(f"Warning: {nan_cols + nan_consts} is missing to calculate feature {feature}.")
@@ -124,8 +144,8 @@ class Accessor:
         self._df = self._df.drop(columns = [ftr.name for ftr in feature], errors="ignore")
         return self._df
 
-    def copy(self, feature: FeatureList | None = None) -> pd.DataFrame:
-        """Returns a copied dataframe with the requested features and same constants."""
+    def copy(self, feature: FeatureList | None = None) -> pd.DataFrame | pd.Series:
+        """Returns a copied dataframe or series with the requested features and same constants."""
         df = self.get(feature).copy()
         df.ftr.set_const(self._constants.copy())
         return df
@@ -168,7 +188,7 @@ class Accessor:
             self.set(feature, self.get(feature).clip(lower = min_value, upper = max_value))
         return self._df
  
-    def dropna(self, feature: FeatureList = None, how = "any") -> pd.DataFrame:
+    def dropna(self, feature: FeatureList = None, how: Literal["any", "all"] = "any") -> pd.DataFrame:
         if feature is None:
             feature = [ftr for ftr in self.features if ftr.name != self._df.index.name]
         if isinstance(feature, Feature):

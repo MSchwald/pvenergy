@@ -3,17 +3,17 @@ import numpy as np
 
 from sklearn.metrics import mean_squared_error, r2_score
 
-from typing import Callable
+from typing import Callable, Any
 from dataclasses import dataclass
 
 @dataclass
 class EvaluationMethod:
     """Template for creating evaluation methods for trained ML models"""
     name: str
-    method: Callable[..., pd.Series]
-    _result: pd.Series = None
+    method: Callable[..., Any]
+    _result: pd.Series | None = None
 
-    def evaluate(self, model, X_test, y_test, y_pred):
+    def evaluate(self, model, X_test, y_test, y_pred) -> pd.Series:
         result = self.method(model, X_test, y_test, y_pred)
         if isinstance(result, pd.Series):
             self._result = result
@@ -28,12 +28,15 @@ class EvaluationMethod:
         
 class EVALUATIONS:
     """Methods to analyze the performance of trained ML models"""
-    def rmse_method(model, X_test, y_test, y_pred) -> pd.Series:
+    @staticmethod
+    def rmse_method(model, X_test, y_test, y_pred) -> float:
         return np.sqrt(mean_squared_error(y_test, y_pred))
-                       
-    def r2_method(model, X_test, y_test, y_pred) -> pd.Series:
+
+    @staticmethod
+    def r2_method(model, X_test, y_test, y_pred) -> float:
         return r2_score(y_test, y_pred)
-        
+    
+    @staticmethod
     def feature_importance_method(model, X_test, y_test, y_pred) -> pd.Series:
         df = pd.DataFrame({
             'Feature': X_test.columns.tolist(),

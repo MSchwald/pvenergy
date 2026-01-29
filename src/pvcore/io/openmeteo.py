@@ -1,5 +1,8 @@
 from __future__ import annotations
-
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pathlib import Path
+    
 import requests
 import pandas as pd
 
@@ -42,7 +45,7 @@ class OpenMeteo:
 
     @classmethod
     def format_response(cls, json: str):
-        df = pd.DataFrame(data = json["hourly"]).rename(columns=cls.COLUMN_NAME_MAP).set_index(F.UTC_TIME.name)
+        df = pd.DataFrame(data = json["hourly"]).rename(columns=cls.COLUMN_NAME_MAP).set_index(F.UTC_TIME.name) # type: ignore
         df.index = pd.to_datetime(df.index)
         return df
         

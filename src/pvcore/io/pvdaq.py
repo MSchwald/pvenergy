@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
-    from feature.catalog import Feature, FeatureList
+    from pvcore.feature import Feature, FeatureList
 
 import pyarrow.dataset as ds
 import pandas as pd
@@ -36,8 +36,8 @@ class Pvdaq:
     METRIC_FILE = PVDAQ_DIR / "metric_ids.csv"
 
     #Cache for PVDAQ metadata and system constants
-    _metadata = None
-    _system_ids = None
+    _metadata: pd.DataFrame | None = None
+    _system_ids: tuple[int, ...] | None = None
     _metrics = None
     _metric_ids = None
 
@@ -49,8 +49,8 @@ class Pvdaq:
             return cls._metadata
         if cls.METADATA_FILE.exists():
             metadata_df = pd.read_csv(cls.METADATA_FILE)
-            cls._metadata = metadata_df.ftr.get().set_index(F.SYSTEM_ID.name)
-            return cls._metadata
+            cls._metadata = metadata_df.ftr.get().set_index(F.SYSTEM_ID.name) # type: ignore
+            return cls._metadata # type: ignore
 
         print("Loading PVDAQ metadata")
         prefix = cls.url + "/parquet/"
@@ -76,7 +76,7 @@ class Pvdaq:
         metadata_df.to_csv(cls.METADATA_FILE, index = True)
 
         cls._metadata = metadata_df
-        return cls._metadata      
+        return cls._metadata # type: ignore
 
     @classmethod
     def meta(cls, system_id: int) -> dict[Feature, Any]:
@@ -86,13 +86,13 @@ class Pvdaq:
         return {feature: row[feature.name] for feature in meta_df.ftr.features} 
 
     @classmethod
-    def get_system_ids(cls) -> tuple[int]:
+    def get_system_ids(cls) -> tuple[int, ...]:
         if cls._system_ids is not None:
             return cls._system_ids
         return tuple(cls.get_metadata().index)
     
     @classmethod
-    def get_good_data_system_ids(cls) -> tuple[int]:
+    def get_good_data_system_ids(cls) -> tuple[int, ...]:
         """System 4901 has two different sets of recorded metadata, hence we prefer to exclude it for now."""
         return tuple(id for id in cls.get_system_ids() if id != 4901)
 
@@ -107,7 +107,7 @@ class Pvdaq:
             metric_df = fu.concat_files(
                 directory = cls.url + "/parquet/metrics",
                 file_format ="parquet",
-                cache_directory = PVDAQ_DIR
+                cache_directory = str(PVDAQ_DIR)
             )
             metric_df.to_csv(cls.METRIC_FILE, index = False)
         ids = cls.get_metadata().index
@@ -130,7 +130,9 @@ class Pvdaq:
         Translate the standard column names in PVDAQ csv files to their ids at their end,
         as they are used as column names in PVDAQ parquet format.
         """
-        cls.get_metrics()
+        if cls._metric_ids is None:
+            cls.get_metrics()
+        assert cls._metric_ids is not None
         return cls._metric_ids
 
     @classmethod
@@ -140,14 +142,14 @@ class Pvdaq:
         Returns a list of system IDs that meet the criteria.
         """
         df = pd.concat([cls.get_metadata(), cls.get_metrics()], axis = 1)
-        df = df.ftr.dropna(metacols, how="any")
+        df = df.ftr.dropna(metacols, how="any") # type: ignore
         return list(df.index)
     
     @classmethod
     def load_raw_data(cls,
         system_id: int,
         file_format: str = "parquet",
-        cache_directory: str | None = PVDAQ_DIR,
+        cache_directory: str | None = str(PVDAQ_DIR),
         cache_single_files: bool = False,
         use_columns: list | None = None,
         parquet_filter: list[tuple] | None = None,
@@ -175,7 +177,7 @@ class Pvdaq:
     def load_measured_features(cls,
         system_id: int,
         file_format: str = "parquet",
-        cache_directory: str | None = PVDAQ_DIR,
+        cache_directory: str | None = str(PVDAQ_DIR),
         cache_single_files: bool = False,
         file_limit: int | None = None,
         mute_tqdm: bool = False

@@ -17,7 +17,7 @@ class Processing:
     tf = TimezoneFinder()
 
     @classmethod
-    def calculate(cls, feature: Feature, api: FeatureAccessor) -> Union[pd.Series, float]:
+    def calculate(cls, feature: Feature, api: FeatureAccessor) -> Union[pd.Series, float, str]:
         """Defining formulas for calculating derived features."""
         match feature:
             # Features of the Faiman model to calculate the module's temperature
@@ -41,10 +41,10 @@ class Processing:
                                                         latitude = api.get_const(F.LATITUDE),
                                                         longitude = api.get_const(F.LONGITUDE),
                                                         altitude = api.get_const(F.ELEVATION))
-                api.set(F.SOLAR_AZIMUTH, solpos["azimuth"])
-                api.set(F.SOLAR_ZENITH, solpos["apparent_zenith"])
-                api.set(F.SOLAR_UNCORRECTED_ZENITH, solpos["zenith"])
-                api.set(F.SOLAR_ELEVATION, solpos["apparent_elevation"])
+                api.set(F.SOLAR_AZIMUTH, pd.Series(solpos["azimuth"]))
+                api.set(F.SOLAR_ZENITH, pd.Series(solpos["apparent_zenith"]))
+                api.set(F.SOLAR_UNCORRECTED_ZENITH, pd.Series(solpos["zenith"]))
+                api.set(F.SOLAR_ELEVATION, pd.Series(solpos["apparent_elevation"]))
                 return api.get(feature)
 
             case F.AOI:
@@ -87,7 +87,7 @@ class Processing:
                                                             surface_azimuth = api.get_const(F.AZIMUTH),
                                                             solar_zenith = api.get(F.SOLAR_ZENITH),
                                                             solar_azimuth = api.get(F.SOLAR_AZIMUTH),
-                                                            dni = dni, ghi = ghi, dhi = dhi, albedo = albedo)
+                                                            dni = dni, ghi = ghi, dhi = dhi, albedo = albedo) # type: ignore
                 return poa["poa_global"]
             case F.CLEAR_SKY_POA:
                 poa = api.get(F.NSRDB_CLEAR_SKY_POA)
@@ -114,7 +114,9 @@ class Processing:
             # General features
             case F.TIME_ZONE:
                 tz = cls.tf.timezone_at(lat = api.get_const(F.LATITUDE),
-                                          lng = api.get_const(F.LONGITUDE))    
+                                          lng = api.get_const(F.LONGITUDE))
+                if tz is None:
+                    return ""
                 return tz    
             case F.UTC_OFFSET:
                 return pytz.timezone(api.get_const(F.TIME_ZONE)).utcoffset(pd.Timestamp("2025-01-01")).total_seconds() / 3600
@@ -142,13 +144,13 @@ class Processing:
                 days_in_year = ((t.dt.to_period("Y").dt.end_time - year_start).dt.days + 1)
 
                 year_fraction = seconds / (days_in_year * 24 * 3600)
-                return np.cos(2 * np.pi * year_fraction)
+                return pd.Series(np.cos(2 * np.pi * year_fraction))
 
             # Other derived features
             case F.POWER_RATIO:
                 return api.get(F.PVLIB_DC_POWER) / api.get_const(F.DCP0)
             case F.COS_AOI:
-                return np.cos(api.get(F.AOI))
+                return pd.Series(np.cos(api.get(F.AOI)))
             case F.TIME_SINCE_SUNLIGHT:
                 df = api.get([F.TIME, F.DAY, F.PVLIB_POA_IRRADIANCE])
                 sunrise = (
@@ -189,11 +191,11 @@ class Processing:
         if not api.available(F.PVDAQ_MODULE_TEMP):
             return 25.0, 6.84 # default values for u0, u1 from pvlib
         df_fit = api.copy([F.WIND_SPEED, F.PVLIB_POA_IRRADIANCE, F.TEMP_DIFFERENCE_MEASURED])
-        df_fit.ftr.filter({
+        df_fit.ftr.filter({ # type: ignore
             F.PVLIB_POA_IRRADIANCE: (poa_min, poa_max),
             F.TEMP_DIFFERENCE_MEASURED: (3, 60)
         })
-        return cls.faiman_regression(df_fit.ftr, alpha)
+        return cls.faiman_regression(df_fit.ftr, alpha) # type: ignore
     
     @classmethod
     def faiman_regression(cls, api: FeatureAccessor, alpha: float = 0.9) -> tuple[float, float]:
@@ -202,18 +204,18 @@ class Processing:
         X_fit = api.get([F.WIND_SPEED])
         y_fit = alpha * api.get(F.PVLIB_POA_IRRADIANCE) / api.get(F.TEMP_DIFFERENCE_MEASURED)
         reg = LinearRegression().fit(X_fit, y_fit)
-        return reg.intercept_, reg.coef_[0]  
+        return float(reg.intercept_), reg.coef_[0]  
 
     @classmethod
     def calculate_annual_dcp0_gamma(cls, api: FeatureAccessor,
                                     max_dcp_per_area: float = 150,
                                     poa_min: float = 200,
-                                    poa_max: float = 1200) -> pd.DataFrame:
+                                    poa_max: float = 1200) -> tuple[float, float]:
         area = api.get_const(F.AREA)
         physics_dcp_limit = area * max_dcp_per_area if area is not None else float('inf')
         dcp_filter_limit = min(api.get(F.PVDAQ_DC_POWER).quantile(0.99), physics_dcp_limit)
         df_fit = api.copy([F.YEAR, F.FAIMAN_MODULE_TEMP, F.PVLIB_POA_IRRADIANCE, F.PVDAQ_DC_POWER])
-        df_fit = df_fit.ftr.filter({
+        df_fit = df_fit.ftr.filter({ # type: ignore
             F.PVLIB_POA_IRRADIANCE: (poa_min, poa_max),
             F.PVDAQ_DC_POWER: (1, dcp_filter_limit)
         })
@@ -228,7 +230,7 @@ class Processing:
             dcp0, gamma = cls.dcp0_gamma_regression(year_df.ftr)
 
             # limit to reasonable values (maximally about 150 W/m² per m² of PV area)
-            if dcp0 <= 0 or dcp0 > physics_dcp_limit or gamma is None:
+            if dcp0 is not None and (dcp0 <= 0 or dcp0 > physics_dcp_limit) or gamma is None:
                  dcp0, gamma = None, None
 
             results.append({
@@ -251,10 +253,10 @@ class Processing:
     def dcp0_gamma_regression(cls, api: FeatureAccessor) -> tuple[float | None, float | None]:
         # Input features for Linear Regression
         # dcp = pdc0 * (1 + gamma * (T_cell - 25)) * POA/1000
-        X = (api.get(F.FAIMAN_MODULE_TEMP) - 25).values.reshape(-1,1)  # delta T
-        poa = (api.get(F.PVLIB_POA_IRRADIANCE) / 1000).values.reshape(-1,1)
+        X = (api.get(F.FAIMAN_MODULE_TEMP) - 25).to_numpy().reshape(-1,1)  # delta T
+        poa = (api.get(F.PVLIB_POA_IRRADIANCE) / 1000).to_numpy().reshape(-1,1)
         X_fit = np.hstack([poa, poa*X])
-        y_fit = api.get(F.PVDAQ_DC_POWER).values
+        y_fit = api.get(F.PVDAQ_DC_POWER).to_numpy()
         model = LinearRegression(fit_intercept=False)
         try:
             model.fit(X_fit, y_fit)

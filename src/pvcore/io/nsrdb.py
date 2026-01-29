@@ -1,7 +1,8 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from feature.accessor import Accessor as FeatureAccessor
+    from pvcore.feature import Accessor as FeatureAccessor
+    from pathlib import Path
 
 import pandas as pd
 import requests, os
@@ -86,7 +87,7 @@ class Nsrdb:
         if response.status_code != 200:
             print(f"HTTP Error: {response.status_code}")
             print(response.text)
-            return
+            return pd.DataFrame()
             #raise ValueError("API request failed")
 
         # NSRDB metadata is so far unused
@@ -95,15 +96,17 @@ class Nsrdb:
         data.insert(0,
             F.TIME.name,
             pd.to_datetime(
-                dict(
-                    year=data['Year'],
-                    month=data['Month'],
-                    day=data['Day'],
-                    hour=data['Hour'],
-                    minute=data['Minute']
+                pd.DataFrame(
+                    dict(
+                        year=data['Year'],
+                        month=data['Month'],
+                        day=data['Day'],
+                        hour=data['Hour'],
+                        minute=data['Minute']
+                    )
                 )
             )
-        )
+        ) 
         data = data.drop(columns=['Year','Month','Day','Hour','Minute'])
         data = data.rename(columns = cls.COLUMN_NAME_MAP)
         data = data.set_index(F.TIME.name)
@@ -128,7 +131,7 @@ class Nsrdb:
         start_year = start_date.year
         end_year = end_date.year
         years = list(range(start_year, end_year+1))
-        dfs = []
+        dfs: list[pd.DataFrame] = []
         for year in years if mute_tqdm else tqdm(years, desc=f"Loading weather data from {start_date} to {end_date} - CSVs"):
             if not mute_tqdm:
                 tqdm.write(f"Loading weather data from year {year}")
@@ -144,7 +147,7 @@ class Nsrdb:
     @classmethod
     def load_system(cls,
         api: FeatureAccessor,
-        cache_directory: str | None = NSRDB_DIR,
+        cache_directory: Path | None = NSRDB_DIR,
         cache_single_files: bool = False,
         mute_tqdm = False
     ) -> pd.DataFrame:
@@ -155,7 +158,9 @@ class Nsrdb:
             cache_path = NSRDB_DIR / f"weather_system_id={int(id)}.parquet"
         if cache_path.exists():
             return pd.read_parquet(cache_path)
-        start = api._df.index[api._df.index.year >= 1998].min()
+        idx = api._df.index
+        assert isinstance(idx, pd.DatetimeIndex)
+        start = api._df.index[idx.year >= 1998].min()
         end = api._df.index[-1]
         data = Nsrdb.load_time_range(
             api.get_const(F.LATITUDE),

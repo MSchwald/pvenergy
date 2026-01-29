@@ -14,5 +14,5 @@ MENU = [
 
 urlpatterns = make_menu_urls(MENU) + [
     path(name.replace("_","-") + "/", getattr(ApiEndpoints, name), name = name)
-    for name, method in inspect.getmembers(ApiEndpoints, inspect.isfunction) if not name.startswith("_")
+    for name, _method in inspect.getmembers(ApiEndpoints, inspect.isfunction) if not name.startswith("_")
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

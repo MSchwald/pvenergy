@@ -9,7 +9,7 @@ import json
 from pvcore.ml import Pipeline, Model, ML_MODELS
 from pvcore.io import Pvdaq, OpenMeteo
 import pvcore.utils.file_utilities as fu
-from pvcore.feature import Catalog as F, ALL_FEATURES, FEATURE_FROM_NAME
+from pvcore.feature import Catalog as F, ALL_FEATURES
 from pvcore.plotting import Plot
 from .formatting import feature_format, pd_styler, file_to_url
 
@@ -23,13 +23,13 @@ locations = tuple()
 system_constants = {}
 
 # Lazy loading of data from the main program
-def get_system_ids() -> tuple[int]:
+def get_system_ids() -> tuple[int, ...]:
     return Pipeline.TRAINING_IDS
 
 # Get loaded while already rendering in order to not delay showing the starting page for several seconds
 TRAINED_MODELS = [ML_MODELS.XGBOOST, ML_MODELS.LIGHTGBM, ML_MODELS.RANDOM_FOREST]
-ml_models: tuple[Model] = tuple()
-training_features: tuple[Feature] = (
+ml_models: tuple[Model, ...] = tuple()
+training_features: tuple[Feature, ...] = (
             F.POWER_RATIO, F.PVLIB_POA_IRRADIANCE,
             F.DAY_OF_YEAR, F.TIME_SINCE_SUNLIGHT,
             F.CLEAR_SKY_RATIO, F.COS_AOI, F.WIND_NORMAL_COMPONENT,
@@ -38,9 +38,11 @@ training_features: tuple[Feature] = (
 )
 
 class TemplateViews:
+    @staticmethod
     def individual_systems(request):
         return {"ids": get_system_ids()}
 
+    @staticmethod
     def all_systems(request):
         #df = pd.read_csv(RESULTS_DIR / "results.csv", index_col = 0).map(lambda x: feature_format(x, display_unit = False))
         #df.index.name = F.SYSTEM_ID.name
@@ -49,6 +51,7 @@ class TemplateViews:
             #"evaluations": pd_styler(df)
         }
 
+    @staticmethod
     def feature_database(request):
         features_df = "<style>.df-table th:last-child {text-align: left;}.df-table td:last-child {text-align: left;}</style>"
         features_df += pd_styler(
@@ -65,16 +68,20 @@ class TemplateViews:
         )
         return {"features": features_df}
 
+    @staticmethod
     def models_info(request):
         return {"indices": list(range(len(TRAINED_MODELS)))}
 
 class ApiEndpoints:
+    @staticmethod
     def models_names(request):
         return JsonResponse({"names": [feature_format(model.name, display_unit = False) for model in TRAINED_MODELS]})
 
+    @staticmethod
     def models_training_results(request):
         for model in ml_models:
-            model._evaluation_results.name = "Score"
+            if model._evaluation_results is not None:
+                model._evaluation_results.name = "Score"
         system_evaluation = {}
         for model in ml_models:
             df = Pipeline.system_evaluations(model, evaluate = False)
@@ -84,17 +91,19 @@ class ApiEndpoints:
                 system_evaluation[model.name] = pd_styler(df)
         return JsonResponse({
             str(i): {
-                    "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]),
-                    "target": feature_format(model._target_feature, display_unit = False),
-                    "evaluations": pd_styler(model._evaluation_results),
+                    "features": ", ".join([feature_format(name, display_unit = False) for name in model._training_features]) if model._training_features is not None else "N/A",
+                    "target": feature_format(model._target_feature, display_unit = False) if model._target_feature is not None else "N/A",
+                    "evaluations": pd_styler(model._evaluation_results) if model._evaluation_results is not None else "N/A",
                     "parameter": pd_styler(pd.Series(model.get_hyperparameters(), name="Value")),
                     "system_evaluation": system_evaluation[model.name]
             } for i, model in enumerate(ml_models)
         })
 
+    @staticmethod
     def load_metadata(request):
-        return JsonResponse({str(id): pd_styler(Pipeline.get_system_constants().loc[id].to_frame().T) for id in get_system_ids()})
+        return JsonResponse({str(id): pd_styler(Pipeline.get_system_constants().loc[[id]]) for id in get_system_ids()})
 
+    @staticmethod
     def load_weather(request):
         global locations
         if not locations:
@@ -113,6 +122,7 @@ class ApiEndpoints:
             "parameters": OpenMeteo.PARAMETERS
         })
 
+    @staticmethod
     def load_models(request):
         global ml_models
         if not ml_models:
@@ -122,6 +132,7 @@ class ApiEndpoints:
             return JsonResponse({"status": "already_loaded", "message": "Models already in memory"})
 
     @csrf_exempt
+    @staticmethod
     def save_weather(request):
         data_dict = json.loads(request.body)  # {"lat,lon": {...}, ...}
         count = 0
@@ -134,6 +145,7 @@ class ApiEndpoints:
             count += 1
         return JsonResponse({"count": count})
 
+    @staticmethod
     def plot_weather(request):
         """Plot weather forecasts"""
         global system_constants
@@ -155,6 +167,7 @@ class ApiEndpoints:
             }
         return JsonResponse(plots)
 
+    @staticmethod
     def plot_features(request):
         plots = {}
         for id in get_system_ids():
@@ -164,6 +177,7 @@ class ApiEndpoints:
             }
         return JsonResponse(plots)
 
+    @staticmethod
     def plot_predictions(request):
         results = {}
         for id in get_system_ids():

@@ -19,8 +19,8 @@ class Feature:
     data_type: Any = float
     is_constant: bool = False
     unit: str = ""
-    required_features: tuple[Feature] = tuple()
-    optional_features: tuple[Feature] = tuple()
+    required_features: tuple[Feature, ...] = tuple()
+    optional_features: tuple[Feature, ...] = tuple()
     label: str = ""
     description: str = ""
 
@@ -195,11 +195,11 @@ class Catalog:
     RELATIVE_AZIMUTH = Feature("relative_azimuth", unit="°", required_features = (AZIMUTH, SOLAR_AZIMUTH),
         description="Difference between the azimuth angles of the photovoltaic module and the sun")
     
-ALL_FEATURES: tuple[Feature] = tuple(
+ALL_FEATURES: tuple[Feature, ...] = tuple(
         feature for feature in vars(Catalog).values() if isinstance(feature, Feature)
     )
-ALL_FEATURE_NAMES: tuple[str] = tuple(feature.name for feature in ALL_FEATURES)
-CALCULATED_FEATURES: tuple[Feature] = tuple(
+ALL_FEATURE_NAMES: tuple[str, ...] = tuple(feature.name for feature in ALL_FEATURES)
+CALCULATED_FEATURES: tuple[Feature, ...] = tuple(
     feature for feature in ALL_FEATURES if feature.source == Source.CALCULATED
 )
 
