@@ -1,12 +1,11 @@
 from __future__ import annotations
+import pandas as pd
 from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
-    from feature.catalog import Feature
+    from pvcore.feature import Feature
 
 import json
-import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 from pvcore.io import Pvdaq, Nsrdb, OpenMeteo
@@ -18,29 +17,30 @@ from .model import Model, ML_MODELS
 class Pipeline:
 
     _system_constants: pd.DataFrame | None = None
-    TRAINING_IDS: tuple[int] = tuple(
+    TRAINING_IDS: tuple[int, ...] = tuple(
         id for id in Pvdaq.filter_systems(
             metacols = [F.PVDAQ_DC_POWER, F.PVDAQ_MODULE_TEMP, F.TILT, F.AZIMUTH]
         ) if id in Pvdaq.get_good_data_system_ids() and not id in (50, 51, 1200, 1201, 1202, 1203, 1204, 1283, 1403, 1420) and id < 1422
     )
 
+    @staticmethod
     def request_data(
         system_id: int,
         cache_name: str | None = "pv_and_weather",
-        mute_tqdm = False
+        mute_tqdm: bool = False
     ) -> pd.DataFrame:
         """Requests features from PVDAQ and NSRDB for system with given ID."""
         if cache_name:
             cache = MERGED_DIR / f"{cache_name}_system_id={system_id}.parquet"
             if cache.exists():
-                df = fu.get_file(cache)
+                df = fu.get_file(str(cache))
                 df.ftr.set_const(Pvdaq.meta(system_id))
                 return df
         pv_data = Pvdaq.load_measured_features(system_id = system_id, mute_tqdm = mute_tqdm)
         meta = pv_data.ftr.get_const()
         if pv_data.empty:
             return pd.DataFrame()
-        weather_data = Nsrdb.load_system(pv_data.ftr, mute_tqdm = mute_tqdm).sort_index()
+        weather_data = Nsrdb.load_system(pv_data.ftr, mute_tqdm = mute_tqdm).sort_index() # type: ignore
         if not mute_tqdm:
             tqdm.write("Merging PV and weather data...")
         pv_data = pv_data.sort_index()
@@ -58,11 +58,11 @@ class Pipeline:
 
     @classmethod
     def get_training_data(cls,
-        system_ids: tuple[int],
-        features: tuple[Feature],
+        system_ids: tuple[int, ...],
+        features: tuple[Feature, ...],
         clip_features: dict[Feature, tuple[int | None, int | None]] = {},
         filter_features: dict[Feature, tuple[int | None, int | None]] = {},
-        mute_tqdm = False, # Reduce info on data processing printed by the console
+        mute_tqdm: bool = False, # Reduce info on data processing printed by the console
         cache_name: str | None = None, # Cache training data before machine learning
         use_cache: bool = True
     ) -> pd.DataFrame:
@@ -79,7 +79,7 @@ class Pipeline:
         cached_ids = system_constants.index.to_list()
 
         # Download pv and weather data and calculate requested features for the given pv systems
-        dfs = []
+        dfs: list[pd.DataFrame] = []
         for system_id in tqdm(system_ids, desc=f"Preprocessing PVDAQ and NSRDB data"):
             tqdm.write(f"Loading training data for system {system_id}")
             df = cls.request_data(system_id = system_id, mute_tqdm = mute_tqdm)
@@ -137,7 +137,7 @@ class Pipeline:
     def system_constants(cls, system_id: int) -> dict[Feature, Any]:
         const_df = cls.get_system_constants().reset_index()
         const_dict = const_df[const_df[F.SYSTEM_ID.name] == system_id].to_dict(orient="records")[0]
-        return {FEATURE_FROM_NAME[name]: value for name, value in const_dict.items()}
+        return {FEATURE_FROM_NAME[str(name)]: value for name, value in const_dict.items()}
 
     @staticmethod
     def train_test_split(
@@ -145,30 +145,48 @@ class Pipeline:
         y: pd.DataFrame,
         test_size: float = 0.2
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        """Splits data randomly into training and testing data for machine learning"""
-        print(f"\nChoosing a random {int(100*(1-test_size))}:{int(100*test_size)} split of the data:")
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size = test_size,
-            random_state = 42 # A random seed, only for reproducibility of the results
-        )
-        print(f"  {X_train.shape[0]} samples for training data.")
-        print(f"  {X_test.shape[0]} samples to testing data.")
+        """Splits data randomly (but by entire days) into training and testing data for machine learning"""
+        #print(f"\nChoosing a random {int(100*(1-test_size))}:{int(100*test_size)} split of the data:")
+        idx = X.index
+        assert isinstance(idx, pd.DatetimeIndex)
+        unique_days = pd.Series(idx.date).unique()
+        
+        np.random.seed(42)
+        np.random.shuffle(unique_days)
+        split_idx = int(len(unique_days) * test_size)
+
+        idxn = idx.normalize()
+        train_days = pd.to_datetime(unique_days[split_idx:]).normalize()
+        test_days = pd.to_datetime(unique_days[:split_idx]).normalize()
+        train_mask = idxn.isin(train_days)
+        test_mask = idxn.isin(test_days)
+        
+        X_train, X_test = X[train_mask], X[test_mask]
+        y_train, y_test = y[train_mask], y[test_mask]
+
+        print(f"\nChoosing a day-based {int(100*(1-test_size))}:{int(100*test_size)} split:")
+        print(f"  Total days: {len(unique_days)} (Training: {len(train_days)}, Test: {len(test_days)})")
+        print(f"  Samples for training: {X_train.shape[0]}")
+        print(f"  Samples for testing:  {X_test.shape[0]}")
+        
         return X_train, X_test, y_train, y_test
 
     @classmethod
     def fleet_analysis(cls,
-        training_features: tuple[Feature],
+        training_features: tuple[Feature, ...],
         target_feature: Feature = F.PVDAQ_DC_POWER,
-        system_ids: tuple[int] = TRAINING_IDS,
+        system_ids: tuple[int, ...] = TRAINING_IDS,
         clip_features: dict[Feature, tuple[int | None, int | None]] = {F.PVDAQ_DC_POWER: (0, None)},
         filter_features: dict[Feature, tuple[int | None, int | None]] = {F.PVDAQ_DC_POWER: (0, 3000), F.PVLIB_POA_IRRADIANCE: (1, None)},
         ml_model: Model = ML_MODELS.RANDOM_FOREST,
-        hyper_parameter_search: bool = False,
-        mute_tqdm = False, # Reduce info on data processing printed by the console
+        tune: bool = False, # Search for best hyperparameters
+        n_trials: int = 10,
+        cv: int = 3,
+        mute_tqdm: bool = False, # Reduce info on data processing printed by the console
         training_data_cache: str | None = "full_training_data", # Cache training data before machine learning
         use_cached_training_data: bool = True,
         save_model_name: str | None = None
-    ):
+    ) -> pd.Series:
         """
         Train a given ML-model on pv and weather data for the PVDAQ pv systems
         of the given system IDs. Provide: Training and target features from
@@ -193,13 +211,16 @@ class Pipeline:
         print([ftr for ftr in features if not df_full.ftr.available(ftr)])
 
         # Split data into training data and target feature
-        X: pd.DataFrame = df_full.ftr.get([ftr for ftr in features if ftr != target_feature])
-        y: pd.Series = df_full.ftr.get(target_feature)
+        X: pd.DataFrame = df_full.ftr.get([ftr for ftr in features if ftr != target_feature]) # type: ignore
+        y: pd.Series = df_full.ftr.get(target_feature) # type: ignore
         
-        X_train, X_test, y_train, y_test = cls.train_test_split(X, y)
+        X_train, X_test, y_train, y_test = cls.train_test_split(X, y) # type: ignore
 
-        print(f"\nTraining ML-model '{ml_model.name}' to predict feature '{target_feature}'.")                      
-        ml_model.train(X_train, y_train, hyper_parameter_search)
+        print(f"\nTraining ML-model '{ml_model.name}' to predict feature '{target_feature}'.")     
+        if tune:
+            ml_model.tune(X_train, y_train, n_trials, cv) # type: ignore
+        else:
+            ml_model.train(X_train, y_train) # type: ignore
 
         print(f"Testing trained model on predicting '{target_feature}' from the randomly chosen testing data.")
         y_pred = ml_model.predict(X_test)
@@ -216,12 +237,12 @@ class Pipeline:
     
     @classmethod
     def individual_analysis(cls,
-            system_ids: tuple[int] = TRAINING_IDS,
+            system_ids: tuple[int, ...] = TRAINING_IDS,
             *args,
             cache_name: str | None = "training_data",
             **kwargs
-        ):
-        results = []
+        ) -> pd.DataFrame:
+        results: list[pd.Series] = []
         for id in system_ids:
             if cache_name is not None:
                 training_data_cache = f"{cache_name}_{id}"
@@ -231,20 +252,22 @@ class Pipeline:
             res.name = id
             results.append(res)
 
-        df = pd.concat(results, axis = 1).transpose()
+        df: pd.DataFrame = pd.concat(results, axis = 1).transpose()
         df.index.name = F.SYSTEM_ID.name
         return df
     
     @classmethod
     def system_evaluations(cls,
         trained_model: Model,
-        system_ids: tuple[int] = TRAINING_IDS,
+        system_ids: tuple[int, ...] = TRAINING_IDS,
         evaluate: bool = True
     ) -> pd.DataFrame:
         """
         Evaluates a trained model's performance on each system individually
         If evaluate == False, then this function only returns the cache if available.        
         """
+        if trained_model._training_features is None:
+            raise RuntimeError(f"Model {trained_model.name} has not been trained yet.")
         features = tuple(FEATURE_FROM_NAME[name] for name in trained_model._training_features)
         if features is None:
             print(f"Warning: Model {trained_model} has not been trained yet.")
@@ -284,29 +307,29 @@ class Pipeline:
         df.insert(
             0,
             F.TIME.name,
-            (df.ftr.get(F.UTC_TIME) + pd.Timedelta(
+            (df.ftr.get(F.UTC_TIME) + pd.Timedelta( # type: ignore
                     hours = df.ftr.get_const(F.UTC_OFFSET)
                 )
             ).dt.tz_localize(None)
-        )
+        ) 
         df = df.set_index(F.TIME.name)
         return df
 
     @classmethod
     def integrate_timeseries(lcs, series: pd.Series) -> float:
         """Numeric integration of a pandas DatetimeIndex via trapezoid rule."""
-        dt = series.index.to_series().diff().dt.total_seconds().fillna(0)
+        dt = series.index.to_series().diff().dt.total_seconds().fillna(0) # type: ignore
         return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
 
     @classmethod
-    def predict(cls, model: Model | tuple[Model], df: pd.DataFrame) -> pd.DataFrame:
+    def predict(cls, model: Model | tuple[Model, ...], df: pd.DataFrame) -> pd.DataFrame:
         if isinstance(model, Model):
-            model = tuple(model,)
+            model = (model,)
         untrained = tuple(m for m in model if m._trained_model is None)
         if untrained:
             raise RuntimeError(f"Models {untrained} have not been trained yet.")
         results = []
-        sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1
+        sunny = df.ftr.get(F.PVLIB_POA_IRRADIANCE) >= 1 # type: ignore
         df_sunny = df.loc[sunny].copy() # can this copy be avoided?
         df_sunny.ftr.set_const(df.ftr.get_const())
         for m in model:
