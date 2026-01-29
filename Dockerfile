@@ -20,7 +20,7 @@ COPY data/raw/pvdaq/metadata.csv ./data/raw/pvdaq/metadata.csv
 COPY data/raw/pvdaq/metric_ids.csv ./data/raw/pvdaq/metric_ids.csv
 COPY data/merged ./data/merged
 COPY data/results ./data/results
-COPY data/models ./data/models
+#COPY data/models ./data/models
 
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=pvenergy.settings
