@@ -10,7 +10,7 @@ authors = [
 ]
 description = "ML-Pipeline & Django Dashboard for forecasting energy output of photovoltaic systems"
 readme = "README.md"
-requires-python = "3.11"
+requires-python = "==3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
