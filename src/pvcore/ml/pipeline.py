@@ -146,7 +146,6 @@ class Pipeline:
         test_size: float = 0.2
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Splits data randomly (but by entire days) into training and testing data for machine learning"""
-        #print(f"\nChoosing a random {int(100*(1-test_size))}:{int(100*test_size)} split of the data:")
         idx = X.index
         assert isinstance(idx, pd.DatetimeIndex)
         unique_days = pd.Series(idx.date).unique()
@@ -316,7 +315,7 @@ class Pipeline:
         return df
 
     @classmethod
-    def integrate_timeseries(lcs, series: pd.Series) -> float:
+    def integrate_timeseries(cls, series: pd.Series) -> float:
         """Numeric integration of a pandas DatetimeIndex via trapezoid rule."""
         dt = series.index.to_series().diff().dt.total_seconds().fillna(0) # type: ignore
         return ((series + series.shift(1)) / 2 * dt / 3600000).sum()
