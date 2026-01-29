@@ -3,6 +3,7 @@
 *.parquet
 *.png
 *.json
+*.db
 
 # Editors
 .vscode/
