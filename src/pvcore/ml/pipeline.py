@@ -11,7 +11,7 @@ from tqdm import tqdm
 from pvcore.io import Pvdaq, Nsrdb, OpenMeteo
 from pvcore.feature import Catalog as F, FEATURE_FROM_NAME
 import pvcore.utils.file_utilities as fu
-from pvcore.paths import MERGED_DIR, TRAINING_DIR, RESULTS_DIR
+from pvcore.paths import MERGED_DIR, TRAINING_DIR, RESULTS_DIR, DATA_DIR
 from .model import Model, ML_MODELS
 
 class Pipeline:
@@ -109,7 +109,7 @@ class Pipeline:
         """Calculate relevant system constants and cache the result to save time."""
         if cls._system_constants is not None:
             return cls._system_constants
-        constant_file = RESULTS_DIR / "system_constants.csv"
+        constant_file = DATA_DIR / "system_constants.csv"
         if constant_file.exists():
             df = pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
             cls._system_constants = df
