@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-MODELS_DIR="/pvenergy/data/models"
+MODELS_DIR="/workspaces/pvenergy/data/models"
 MISSING_MODELS=()
 
 [ ! -f "$MODELS_DIR/xgboost.joblib" ] && MISSING_MODELS+=("xgboost")
