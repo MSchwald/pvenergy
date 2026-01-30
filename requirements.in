@@ -2,6 +2,7 @@
 Django==5.2.9
 envvars==0.3.0
 hatch-requirements-txt
+jinja2==3.1.6
 joblib==1.5.2
 lightgbm==4.6.0
 matplotlib==3.8.2

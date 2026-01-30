@@ -31,6 +31,7 @@ h5py==3.15.1
 hatch-requirements-txt==0.4.1
 hatchling==1.28.0
 idna==3.11
+jinja2==3.1.6
 jmespath==1.0.1
 joblib==1.5.2
 kiwisolver==1.4.9
