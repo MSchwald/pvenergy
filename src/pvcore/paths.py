@@ -17,6 +17,8 @@ MERGED_DIR = DATA_DIR / "merged"
 RESULTS_DIR = DATA_DIR / "results"
 TRAINING_DIR = DATA_DIR / "training"
 DB_DIR = DATA_DIR / "db"
+CONSTANT_FILE = DATA_DIR / "system_constants.csv"
+OPTUNA_DB = DB_DIR / "optuna.db"
 
 # Trained ml models
 MODELS_DIR = DATA_DIR / "models"
