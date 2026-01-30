@@ -16,19 +16,26 @@ COPY pyproject.toml README.md LICENSE ./
 COPY src/ ./src/
 RUN pip install --no-cache-dir --no-deps .
 
+# Static data
 COPY data/raw/pvdaq/metadata.csv ./data/raw/pvdaq/metadata.csv
 COPY data/raw/pvdaq/metric_ids.csv ./data/raw/pvdaq/metric_ids.csv
-COPY data/merged ./data/merged
-COPY data/results ./data/results
+COPY data/merged/ ./data/merged/
+COPY data/system_constants.csv ./data/system_constants.csv
 
-RUN mkdir -p data/results data/models
+# Data for default features
+RUN mkdir -p /pvenergy/defaults/training /pvenergy/defaults/results
+COPY data/training/ /pvenergy/defaults/training/
+COPY data/results/ /pvenergy/defaults/results/
+
+# Directories to be mounted
+RUN mkdir -p data/results data/models data/training
 
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=pvenergy.settings
 ENV PYTHONPATH="/pvenergy/src"
 
-COPY scripts/entrypoint.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
+COPY scripts/entrypoint.sh /pvenergy/scripts/entrypoint.sh
+RUN chmod +x /pvenergy/scripts/entrypoint.sh
+ENTRYPOINT ["/pvenergy/scripts/entrypoint.sh"]
 
-ENTRYPOINT ["./entrypoint.sh"]
 CMD ["pvenergy", "runserver"]
