@@ -20,11 +20,11 @@ docker compose exec app pvenergy train --features <feature1 feature2 ...>
 with a custom list of feature names separated by spaces. View the entire list of implemented features via the `train --help` function and check out the *Feature Database* section of the dashboard for explanations on their definitions.
 
 ## Alternative access of the CLI
-You can also download this repository and access the CLI directly (*recommended for LINUX/WSL2 only*), but you will have to train the models yourself before viewing the dashboard.
+You can also download this repository and access the CLI directly (*recommended for LINUX/WSL2 only*).
 * Ensure you have **Python 3.11** installed.
 * (*Optional but recommended*) Use a virtual environment via `python -m venv venv` and then `source venv/bin/activate` (Linux/macOS bash) or `.\venv\Scripts\activate.bat` (Windows).
 * Run `pip install -e .` in the root directory of this repository to install all dependencies.
-* From now on, you can run `pvenergy` together with one of the commands in the list below. Start either with `pvenergy train` or `pvenergy pipeline` to train models.
+* From now on, you can run **`pvenergy`** together with one of the commands in the list below. You need to start either with `pvenergy train` or `pvenergy pipeline` to train models before being able to view the dashboard.
 
 ## Complete list of commands of the CLI
 * **`runserver`**: Opens the dashboard using Django's default development server to analyze the trained models in `data/models`; if further arguments get provided, they get directly passed to Django. Django's `runserver` is just for a convenient local presentation of a Django project before eventually deploying it on a public web server.
