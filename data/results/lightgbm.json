@@ -1,0 +1,29 @@
+{
+  "system_ids": [
+    2,
+    3,
+    4,
+    10,
+    33,
+    34,
+    1229,
+    1276,
+    1277,
+    1284,
+    1289
+  ],
+  "features": [
+    "power_ratio",
+    "poa_irradiance_calculated",
+    "annual_cosinus",
+    "time_since_sunrise",
+    "clear_sky_ratio",
+    "cos_aoi",
+    "wind_normal_component",
+    "poa*cos_aoi",
+    "dhi/ghi",
+    "dcp/area",
+    "gamma*temp_diff",
+    "relative_azimuth"
+  ]
+}
