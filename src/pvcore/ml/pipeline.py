@@ -7,11 +7,13 @@ if TYPE_CHECKING:
 import json
 import numpy as np
 from tqdm import tqdm
+from multiprocessing import Process
+from optuna_dashboard import run_server
 
 from pvcore.io import Pvdaq, Nsrdb, OpenMeteo
 from pvcore.feature import Catalog as F, FEATURE_FROM_NAME
 import pvcore.utils.file_utilities as fu
-from pvcore.paths import MERGED_DIR, TRAINING_DIR, RESULTS_DIR, DATA_DIR
+from pvcore.paths import MERGED_DIR, TRAINING_DIR, RESULTS_DIR, CONSTANT_FILE, OPTUNA_DB
 from .model import Model, ML_MODELS
 
 class Pipeline:
@@ -87,7 +89,7 @@ class Pipeline:
                 df.ftr.set_const(cls.system_constants(system_id))
             df = df.ftr.get(features)
             # Clean up data for each system individually
-            df = df.ftr.clip(clip_features)
+            df = df.ftr.clip(clip_features) # type: ignore
             df = df.ftr.filter(filter_features)
             df = df.ftr.dropna(features)
             if not df.empty:
@@ -109,7 +111,7 @@ class Pipeline:
         """Calculate relevant system constants and cache the result to save time."""
         if cls._system_constants is not None:
             return cls._system_constants
-        constant_file = DATA_DIR / "system_constants.csv"
+        constant_file = CONSTANT_FILE
         if constant_file.exists():
             df = pd.read_csv(constant_file, index_col = F.SYSTEM_ID.name)
             cls._system_constants = df
@@ -181,6 +183,7 @@ class Pipeline:
         tune: bool = False, # Search for best hyperparameters
         n_trials: int = 10,
         cv: int = 3,
+        dashboard: bool = False, # Opens Optuna's dashboard for analyzing results of hyperparameter tuning
         mute_tqdm: bool = False, # Reduce info on data processing printed by the console
         training_data_cache: str | None = "full_training_data", # Cache training data before machine learning
         use_cached_training_data: bool = True,
@@ -215,7 +218,11 @@ class Pipeline:
         
         X_train, X_test, y_train, y_test = cls.train_test_split(X, y) # type: ignore
 
-        print(f"\nTraining ML-model '{ml_model.name}' to predict feature '{target_feature}'.")     
+        print(f"\nTraining ML-model '{ml_model.name}' to predict feature '{target_feature}'.")   
+        if dashboard:
+            p = Process(target=run_server, args=(f"sqlite:///{OPTUNA_DB}",), kwargs={"host": "0.0.0.0", "port": 8080}, daemon=True)
+            p.start()
+            print("Open http://localhost:8080 in your browser to see Optuna's Dashboard.")  
         if tune:
             ml_model.tune(X_train, y_train, n_trials, cv) # type: ignore
         else:

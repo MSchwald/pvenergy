@@ -3,6 +3,7 @@ services:
     image: ghcr.io/mschwald/pvenergy:latest
     ports:
       - "8000:8000"
+      - "8080:8080"
     volumes:
       - ./data/training:/pvenergy/data/training
       - ./data/models:/pvenergy/data/models

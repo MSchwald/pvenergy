@@ -41,6 +41,7 @@ def main():
     train.add_argument("--tune", action="store_true", help="Use Optuna hyperparameter optimization")
     train.add_argument("--trials", type=int, default=10, help="Number of Optuna trials")
     train.add_argument("--cv", type=int, default=3, help="CV folds for hyperparameter tuning")
+    train.add_argument("--dashboard", action="store_true", help="Open Optuna's dashboard for analyzing results of hyperparameter tuning")
 
     evaluate = subparsers.add_parser("evaluate", help="System-wise feature importance analysis for trained model")
     evaluate.add_argument("--ids", nargs="+", type=int, default=Pipeline.TRAINING_IDS, choices=system_ids, help="PVDAQ system ids for evaluationr")
@@ -58,6 +59,7 @@ def main():
     if args.command == "django":
         run_django(args.django_args)
     elif args.command == "runserver":
+        print("Open http://127.0.0.1:8000 in your browser to see the PV Dashboard.")
         django_args = args.django_args if args.django_args else ["0.0.0.0:8000"]
         run_django(["runserver", *django_args])
     elif args.command == "request":
@@ -72,7 +74,8 @@ def main():
                 save_model_name = ml_model.name,
                 tune = args.tune,
                 n_trials = args.trials,
-                cv = args.cv
+                cv = args.cv,
+                dashboard = args.dashboard
             )
     elif args.command == "evaluate":
         for name in args.models:
@@ -90,6 +93,7 @@ def main():
                 cv = args.cv
             )
             Pipeline.system_evaluations(trained_model = ml_model, system_ids = args.ids)
+        print("Open http://127.0.0.1:8000 in your browser to see the PV Dashboard.")
         run_django(["runserver"])
 
 def run_django(args):
