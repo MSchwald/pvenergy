@@ -4,6 +4,7 @@
 *.png
 *.json
 *.db
+.devcontainer/
 
 # Editors
 .vscode/
