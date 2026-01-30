@@ -1,13 +1,15 @@
+
 Django==5.2.9
 envvars==0.3.0
+hatch-requirements-txt
 joblib==1.5.2
 lightgbm==4.6.0
 matplotlib==3.8.2
 natsort==8.4.0
-pandas==2.3.3
 numpy==1.26.4
-optuna==4.6.0
 optuna-integration==4.7.0
+optuna==4.6.0
+pandas==2.3.3
 pvlib==0.13.1
 pyarrow==22.0.0
 pytz==2025.2
@@ -17,5 +19,3 @@ scikit_learn==1.7.2
 timezonefinder==8.1.0
 tqdm==4.67.1
 xgboost==3.1.2
-
-hatch-requirements-txt
