@@ -2,8 +2,19 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'optuna.db'
+      - '.gitignore'
+      - '.dockerignore'
+      - '.env'
+      - 'db.sqlite3'
+      - 'data/**'
+      - 'media/**'
+      - 'venv/**'
+      - 'staticfiles/**'
 
 permissions:
   contents: read

@@ -1,4 +1,4 @@
-Django==5.2.8
+Django==5.2.9
 envvars==0.3.0
 joblib==1.5.2
 lightgbm==4.6.0
