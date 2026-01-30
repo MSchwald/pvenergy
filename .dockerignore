@@ -7,7 +7,6 @@ media/
 data/raw/pvdaq/system_id*
 data/raw/openmeteo/
 data/raw/nsrdb/
-data/training/
 data/models/
 workflows/
 
