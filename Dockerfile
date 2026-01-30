@@ -20,13 +20,15 @@ COPY data/raw/pvdaq/metadata.csv ./data/raw/pvdaq/metadata.csv
 COPY data/raw/pvdaq/metric_ids.csv ./data/raw/pvdaq/metric_ids.csv
 COPY data/merged ./data/merged
 COPY data/results ./data/results
-#COPY data/models ./data/models
+
+RUN mkdir -p data/results data/models
 
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=pvenergy.settings
 ENV PYTHONPATH="/pvenergy/src"
 
-#RUN pvenergy django migrate
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["pvenergy"]
-CMD ["runserver"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["pvenergy", "runserver"]
