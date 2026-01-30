@@ -7,4 +7,5 @@ services:
       - ./data/training:/pvenergy/data/training
       - ./data/models:/pvenergy/data/models
       - ./data/results:/pvenergy/data/results
+      - ./data/db:/pvenergy/data/db
     restart: unless-stopped

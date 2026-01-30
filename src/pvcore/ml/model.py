@@ -14,7 +14,7 @@ from optuna.integration import OptunaSearchCV
 from optuna.samplers import TPESampler
     
 from pvcore.feature import FEATURE_FROM_NAME
-from pvcore.paths import MODELS_DIR
+from pvcore.paths import MODELS_DIR, DB_DIR
 from .evaluation import EVALUATIONS, ALL_EVALUATIONS
 
 from dataclasses import dataclass
@@ -97,7 +97,7 @@ class Model:
         assert isinstance(idx, pd.DatetimeIndex)
         groups = idx.normalize()
         cv_splitter = GroupKFold(n_splits=cv)
-        storage_url = "sqlite:///optuna.db"
+        storage_url = f"sqlite:///{DB_DIR / 'optuna.db'}"
         study_name = f"{self.name}_study2"
         sampler = TPESampler(seed=42)
         study = optuna.create_study(

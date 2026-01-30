@@ -16,6 +16,7 @@ OPENMETEO_DIR = RAW_DATA_DIR / "openmeteo"
 MERGED_DIR = DATA_DIR / "merged"
 RESULTS_DIR = DATA_DIR / "results"
 TRAINING_DIR = DATA_DIR / "training"
+DB_DIR = DATA_DIR / "db"
 
 # Trained ml models
 MODELS_DIR = DATA_DIR / "models"

@@ -8,10 +8,11 @@ data/raw/pvdaq/system_id*
 data/raw/openmeteo/
 data/raw/nsrdb/
 data/models/
-workflows/
+data/db/
 
 # Git
 .git
+.github/
 .gitignore
 
 # Python Caches
