@@ -6,6 +6,7 @@ matplotlib==3.8.2
 natsort==8.4.0
 pandas==2.3.3
 numpy==1.26.4
+optuna==4.6.0
 pvlib==0.13.1
 pyarrow==22.0.0
 pytz==2025.2
